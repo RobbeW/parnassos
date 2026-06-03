@@ -57,7 +57,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-18";
+const APP_VERSION = "20260603-19";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -1334,6 +1334,16 @@ function renderTheoryTrace(table, theory) {
   table.appendChild(tbody);
 }
 
+function createTheoryTraceDetails(theory) {
+  const traceDetails = createUiElement("details", "theory-extra");
+  traceDetails.open = true;
+  traceDetails.appendChild(createUiElement("summary", "", theory.traceTitle || "Voorbeelddata"));
+  const traceTable = createUiElement("table", "theory-trace-table");
+  renderTheoryTrace(traceTable, theory);
+  traceDetails.appendChild(traceTable);
+  return traceDetails;
+}
+
 function renderTheoryStepper(container, exercise, theory) {
   const steps = Array.isArray(theory && theory.steps) ? theory.steps : [];
   const codeLines = Array.isArray(theory && theory.code) ? theory.code : [];
@@ -1357,8 +1367,12 @@ function renderTheoryStepper(container, exercise, theory) {
     wrap.appendChild(summary);
   }
 
-  const stepButtons = createUiElement("div", "theory-step-buttons");
-  wrap.appendChild(stepButtons);
+  const showTraceBeforeSteps = String(theory.traceTitle || "")
+    .toLowerCase()
+    .includes("voorbeelddata");
+  if (showTraceBeforeSteps) {
+    wrap.appendChild(createTheoryTraceDetails(theory));
+  }
 
   const card = createUiElement("article", "theory-step-card");
   const stepTitle = createUiElement("h4", "", "");
@@ -1400,13 +1414,9 @@ function renderTheoryStepper(container, exercise, theory) {
   detailsGrid.append(variableBlock, outputBlock);
   wrap.appendChild(detailsGrid);
 
-  const traceDetails = createUiElement("details", "theory-extra");
-  traceDetails.open = true;
-  traceDetails.appendChild(createUiElement("summary", "", theory.traceTitle || "Voorbeeldtrace"));
-  const traceTable = createUiElement("table", "theory-trace-table");
-  renderTheoryTrace(traceTable, theory);
-  traceDetails.appendChild(traceTable);
-  wrap.appendChild(traceDetails);
+  if (!showTraceBeforeSteps) {
+    wrap.appendChild(createTheoryTraceDetails(theory));
+  }
 
   function selectStep(nextIndex) {
     stepIndex = Math.min(Math.max(nextIndex, 0), steps.length - 1);
@@ -1426,20 +1436,7 @@ function renderTheoryStepper(container, exercise, theory) {
     prevButton.disabled = stepIndex === 0;
     nextButton.disabled = stepIndex === steps.length - 1;
     nextButton.textContent = stepIndex === steps.length - 1 ? "Laatste stap" : "Volgende stap";
-
-    Array.from(stepButtons.children).forEach((button, index) => {
-      button.classList.toggle("current", index === stepIndex);
-      button.setAttribute("aria-current", index === stepIndex ? "step" : "false");
-    });
   }
-
-  steps.forEach((step, index) => {
-    const button = createUiElement("button", "theory-step-jump", String(index + 1));
-    button.type = "button";
-    button.title = step.title || `Stap ${index + 1}`;
-    button.addEventListener("click", () => selectStep(index));
-    stepButtons.appendChild(button);
-  });
 
   prevButton.addEventListener("click", () => selectStep(stepIndex - 1));
   nextButton.addEventListener("click", () => selectStep(stepIndex + 1));

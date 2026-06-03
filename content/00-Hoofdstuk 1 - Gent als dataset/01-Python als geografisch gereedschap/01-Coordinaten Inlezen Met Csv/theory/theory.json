@@ -89,13 +89,13 @@
       "output": "Belfort Brugge - erfgoed\nStation Brugge - station\nMinnewater - park\nSint-Janshospitaal - museum\nAantal plaatsen: 4"
     }
   ],
-  "traceTitle": "Voorbeeldtrace",
-  "traceColumns": ["rij", "rij[0]", "rij[1]", "aantal"],
+  "traceTitle": "Voorbeelddata",
+  "traceColumns": ["naam", "type", "lat", "lon"],
   "traceRows": [
-    ["1", "Belfort Brugge", "erfgoed", "1"],
-    ["2", "Station Brugge", "station", "2"],
-    ["3", "Minnewater", "park", "3"],
-    ["4", "Sint-Janshospitaal", "museum", "4"]
+    ["Belfort Brugge", "erfgoed", "51.2089", "3.2242"],
+    ["Station Brugge", "station", "51.1972", "3.2172"],
+    ["Minnewater", "park", "51.2014", "3.2246"],
+    ["Sint-Janshospitaal", "museum", "51.2046", "3.2240"]
   ],
   "mistakes": [
     ["De koprij niet overslaan.", "Dan probeert je lus ook de kolomnamen als plaats te verwerken."],

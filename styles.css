@@ -653,9 +653,7 @@ body {
 
 .theory-read-actions,
 .theory-controls,
-.theory-stepper-head,
-.theory-step-buttons,
-.theory-concepts {
+.theory-stepper-head {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -694,39 +692,6 @@ body {
 .theory-summary {
   margin: 0 0 0.75rem;
   padding-left: 1.15rem;
-}
-
-.theory-chip {
-  border-radius: 999px;
-  border: 1px solid rgba(82, 0, 255, 0.18);
-  background: #f7f3ff;
-  color: var(--brand-purple);
-  padding: 0.28rem 0.55rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.theory-step-buttons {
-  margin: 0.75rem 0;
-}
-
-.theory-step-jump {
-  width: 2rem;
-  height: 2rem;
-  border: 0;
-  border-radius: 50%;
-  background: var(--brand-purple);
-  color: #fff;
-  font-weight: 800;
-  cursor: pointer;
-  opacity: 0.72;
-}
-
-.theory-step-jump.current {
-  background: #fff;
-  color: var(--brand-purple);
-  outline: 2px solid var(--brand-purple);
-  opacity: 1;
 }
 
 .theory-step-card {
