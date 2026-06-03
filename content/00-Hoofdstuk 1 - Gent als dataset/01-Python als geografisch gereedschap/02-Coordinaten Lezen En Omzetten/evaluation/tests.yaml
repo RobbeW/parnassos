@@ -1,0 +1,7 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Stadhuis Gent: 51.0543 3.725
+        Gent-Sint-Pieters: 51.0362 3.7102
+        UZ Gent: 51.0247 3.7268

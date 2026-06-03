@@ -1,0 +1,807 @@
+<!--
+  Parnassos - product landing page
+  Copyright (c) 2026 Robbe Wulgaert
+  Citeer/vermeld als: Robbe Wulgaert, AI in de Klas, robbewulgaert.be
+-->
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parnassos - Python, data en GIS</title>
+  <meta name="description" content="Parnassos is een cursusomgeving waarin leerlingen Python gebruiken om Gent te onderzoeken met data, tabellen, coordinaten en kaarten.">
+  <meta name="author" content="Robbe Wulgaert, AI in de Klas, robbewulgaert.be">
+  <meta name="copyright" content="Copyright (c) 2026 Robbe Wulgaert">
+
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="shortcut icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="64x64" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand: #5200FF;
+      --brand-dark: #3700B3;
+      --aqua: #3dffd0;
+      --ink: #181421;
+      --muted: #625b70;
+      --paper: #ffffff;
+      --mist: #f8f7f3;
+      --line: #e2ddea;
+      --soft: #f7f3ff;
+      --good: #16834a;
+      --neutral: #6d6677;
+      --shadow: 0 18px 55px rgba(32, 20, 54, 0.10);
+      --card-shadow: 0 10px 30px rgba(32, 20, 54, 0.08);
+      --max: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      line-height: 1.55;
+      background:
+        radial-gradient(circle at top left, rgba(82, 0, 255, 0.09), transparent 34rem),
+        linear-gradient(180deg, #ffffff 0%, var(--mist) 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.94em;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: 12px;
+      left: -999px;
+      z-index: 100;
+      border-radius: 8px;
+      background: var(--brand);
+      color: #fff;
+      padding: 10px 14px;
+      font-weight: 900;
+    }
+
+    .skip-link:focus {
+      left: 12px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(226, 221, 234, 0.78);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      box-shadow: 0 12px 24px rgba(82, 0, 255, 0.24);
+      flex: 0 0 auto;
+    }
+
+    .brand-title {
+      display: block;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+
+    .brand-subtitle {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 999px;
+      padding: 12px 16px;
+      border: 1px solid transparent;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--brand);
+      box-shadow: 0 16px 30px rgba(82, 0, 255, 0.23);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      background: var(--brand-dark);
+      outline: none;
+    }
+
+    .btn-secondary {
+      color: var(--brand);
+      background: #fff;
+      border-color: rgba(82, 0, 255, 0.22);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: var(--soft);
+      border-color: rgba(82, 0, 255, 0.40);
+      outline: none;
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 68vh;
+      display: grid;
+      align-items: end;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(18, 10, 34, 0.84) 0%, rgba(18, 10, 34, 0.58) 52%, rgba(18, 10, 34, 0.18) 100%),
+        url("media/DJI_0442.jpg") center / cover no-repeat;
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 92px 22px 64px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: #dff6ee;
+      font-size: 0.92rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 3px;
+      border-radius: 8px;
+      background: var(--aqua);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 5.2rem;
+      line-height: 0.96;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .hero-actions .btn-secondary {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .hero-actions .btn-secondary:hover,
+    .hero-actions .btn-secondary:focus-visible {
+      background: rgba(255, 255, 255, 0.20);
+    }
+
+    .intro-strip {
+      background: var(--mist);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .strip-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .strip-item {
+      border-left: 5px solid var(--brand);
+      padding: 4px 0 4px 14px;
+    }
+
+    .strip-item:nth-child(2) {
+      border-color: var(--brand);
+    }
+
+    .strip-item:nth-child(3) {
+      border-color: var(--brand-dark);
+    }
+
+    .strip-item strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 1.02rem;
+    }
+
+    .strip-item span {
+      display: block;
+      color: var(--muted);
+    }
+
+    .section {
+      padding: 70px 22px;
+    }
+
+    .section:nth-of-type(even) {
+      background: var(--mist);
+    }
+
+    .section-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section-head {
+      max-width: 820px;
+      margin-bottom: 28px;
+    }
+
+    .section h2 {
+      margin: 0;
+      color: var(--brand-dark);
+      font-size: 2.65rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .section-lede {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 22px;
+      box-shadow: 0 12px 28px rgba(23, 32, 38, 0.07);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 1.18rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .card.accent-green {
+      border-top: 5px solid var(--brand);
+    }
+
+    .card.accent-water {
+      border-top: 5px solid var(--brand);
+    }
+
+    .card.accent-brick {
+      border-top: 5px solid var(--brand-dark);
+    }
+
+    .chapter-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .chapter-highlight {
+      border-radius: 8px;
+      padding: 26px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 92% 10%, rgba(61, 255, 208, 0.22), transparent 14rem),
+        linear-gradient(145deg, #23143d 0%, #10091d 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .chapter-highlight h3 {
+      margin: 0 0 10px;
+      font-size: 1.55rem;
+    }
+
+    .chapter-highlight p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .topic-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .topic-list li {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+    }
+
+    .topic-list b {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--brand-dark);
+      background: var(--soft);
+      font-size: 0.92rem;
+    }
+
+    .topic-list strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .topic-list span {
+      color: var(--muted);
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      counter-reset: step;
+    }
+
+    .workflow-step {
+      position: relative;
+      min-height: 190px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 20px;
+    }
+
+    .workflow-step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 34px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--brand);
+      font-weight: 900;
+    }
+
+    .workflow-step h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .workflow-step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+      gap: 26px;
+      align-items: start;
+    }
+
+    .note {
+      border-left: 6px solid var(--brand);
+      border-radius: 8px;
+      background: #fff;
+      padding: 22px;
+      box-shadow: 0 12px 28px rgba(23, 32, 38, 0.07);
+    }
+
+    .note h3 {
+      margin: 0 0 10px;
+      font-size: 1.22rem;
+    }
+
+    .note p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .steps {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .steps li {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .steps strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .steps span {
+      color: var(--muted);
+    }
+
+    .site-footer {
+      color: #efe8ff;
+      background: #110b1c;
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 34px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .site-footer strong {
+      color: #fff;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-weight: 800;
+    }
+
+    .site-footer a {
+      color: rgba(234, 243, 239, 0.84);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .site-footer a:hover,
+    .site-footer a:focus-visible {
+      color: #fff;
+      outline: none;
+    }
+
+    @media (max-width: 960px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 4rem;
+      }
+
+      .strip-grid,
+      .grid,
+      .chapter-panel,
+      .workflow,
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-step {
+        min-height: auto;
+      }
+
+      .workflow-step::before {
+        margin-bottom: 18px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .hero {
+        min-height: 62vh;
+      }
+
+      .hero-inner {
+        padding-top: 64px;
+        padding-bottom: 46px;
+      }
+
+      h1 {
+        font-size: 3.1rem;
+      }
+
+      .hero-copy,
+      .section-lede {
+        font-size: 1rem;
+      }
+
+      .section {
+        padding: 50px 18px;
+      }
+
+      .section h2 {
+        font-size: 2rem;
+      }
+
+      .hero-actions,
+      .footer-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Spring naar inhoud</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Hoofdnavigatie">
+      <a class="brand" href="index.html" aria-label="Parnassos startpagina">
+        <span class="brand-mark">Pa</span>
+        <span>
+          <span class="brand-title">Parnassos</span>
+          <span class="brand-subtitle">Python, data en GIS met Gent als oefenterrein</span>
+        </span>
+      </a>
+      <a class="btn btn-primary" href="platform.html">Start leerplatform</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <div class="hero-inner">
+          <span class="eyebrow">cursus in opbouw</span>
+          <h1 id="hero-title">Parnassos</h1>
+          <p class="hero-copy">
+            Python wordt hier een gereedschap voor geografisch onderzoek. Leerlingen werken met
+            Gentse plaatsen, tabellen, coordinaten en kaarten. De korte oefeningen staan in de
+            leeromgeving; de grotere onderzoeksopdrachten openen in Google Colab.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="platform.html">Start leerplatform</a>
+            <a class="btn btn-secondary" href="#cursus">Bekijk cursusopbouw</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="intro-strip" aria-label="Kern van de cursus">
+      <div class="strip-grid">
+        <div class="strip-item">
+          <strong>Voor leerlingen die Python kennen</strong>
+          <span>Variabelen, invoer, lussen en lijsten worden kort herhaald in een nieuwe context.</span>
+        </div>
+        <div class="strip-item">
+          <strong>Met Gent als dataset</strong>
+          <span>De voorbeelden vertrekken van echte plaatsen, wijken, coordinaten en stedelijke vragen.</span>
+        </div>
+        <div class="strip-item">
+          <strong>Grote oefeningen in Colab</strong>
+          <span>Voor pandas, GeoPandas, kaartlagen en langere analyses werken leerlingen in notebooks.</span>
+        </div>
+      </div>
+    </div>
+
+    <section id="platform" class="section" aria-labelledby="platform-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2 id="platform-title">Wat is Parnassos?</h2>
+          <p class="section-lede">
+            Parnassos is de oefenomgeving bij de Colab-notebooks. Leerlingen herhalen eerst
+            de Python die ze nodig hebben. Daarna gaan ze vanuit de cursus naar de juiste notebook
+            voor tabellen, kaartlagen en analyse.
+          </p>
+        </div>
+        <div class="grid">
+          <article class="card accent-green">
+            <h3>Python herhalen in context</h3>
+            <p>Leerlingen oefenen met <code>input()</code>, <code>int()</code>, <code>float()</code>, rekenen, lijsten, lussen en eenvoudige tabellen. De gegevens gaan telkens over Gent.</p>
+          </article>
+          <article class="card accent-water">
+            <h3>Geografische begrippen</h3>
+            <p>De oefeningen introduceren coordinaten, afstand, richting, wijken, bevolkingscijfers en kaartlagen.</p>
+          </article>
+          <article class="card accent-brick">
+            <h3>Van oefening naar notebook</h3>
+            <p>Na de voorbereiding volgt een Colab-notebook met grotere datasets, kaarten, checklist en korte reflectievragen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cursus" class="section" aria-labelledby="cursus-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2 id="cursus-title">Cursusopbouw</h2>
+          <p class="section-lede">
+            De cursus groeit hoofdstuk per hoofdstuk. Elk hoofdstuk bevat enkele korte
+            Parnassos-oefeningen en een grotere Colab-opdracht.
+          </p>
+        </div>
+        <div class="chapter-panel">
+          <article class="chapter-highlight">
+            <h3>Startpunt: Gent als dataset</h3>
+            <p>
+              Het eerste hoofdstuk vertrekt van Gent. Leerlingen herhalen Python met plaatsen,
+              coordinaten, wijken en bevolkingscijfers.
+            </p>
+          </article>
+          <ol class="topic-list">
+            <li>
+              <b>1</b>
+              <span><strong>Gent als dataset.</strong> Python herhalen met plaatsen, coordinaten, wijken en bevolking.</span>
+            </li>
+            <li>
+              <b>2</b>
+              <span><strong>Van tabel naar kaart.</strong> CSV's lezen, dataframes bekijken en kaartlagen opbouwen.</span>
+            </li>
+            <li>
+              <b>3</b>
+              <span><strong>Afstand en bereikbaarheid.</strong> Afstanden, routes en bereikbaarheid vergelijken.</span>
+            </li>
+            <li>
+              <b>4</b>
+              <span><strong>Stedelijke voorzieningen.</strong> Scholen, zorg, groen en mobiliteit in kaart brengen.</span>
+            </li>
+            <li>
+              <b>5</b>
+              <span><strong>Onderzoeksproject.</strong> Een ruimtelijke vraag uitwerken met kaart, tabel en besluit.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="werkwijze" class="section" aria-labelledby="werkwijze-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2 id="werkwijze-title">Zo loopt een hoofdstuk</h2>
+          <p class="section-lede">
+            Per hoofdstuk is de volgorde dezelfde: korte voorbereiding, notebook, controle
+            en bespreking.
+          </p>
+        </div>
+        <div class="workflow">
+          <article class="workflow-step">
+            <h3>Voorbereiding in Parnassos</h3>
+            <p>Leerlingen maken korte oefeningen met startercode, testcases en het ingebouwde formularium.</p>
+          </article>
+          <article class="workflow-step">
+            <h3>Notebook openen</h3>
+            <p>De cursus verwijst naar de juiste Colab-notebook voor de grotere opdracht.</p>
+          </article>
+          <article class="workflow-step">
+            <h3>Onderzoek uitvoeren</h3>
+            <p>Leerlingen werken met dataframes, kaartlagen, analyses en korte notities.</p>
+          </article>
+          <article class="workflow-step">
+            <h3>Nakijken en bespreken</h3>
+            <p>Checklist en reviewvragen helpen om code, kaart en conclusie na te kijken.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Parnassos</strong><br>
+        Robbe Wulgaert, AI in de Klas, robbewulgaert.be<br>
+        © 2026 Robbe Wulgaert. Alle rechten voorbehouden.
+      </div>
+      <div class="footer-links">
+        <a href="LICENSE">Licentie</a>
+        <a href="https://robbewulgaert.be/contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

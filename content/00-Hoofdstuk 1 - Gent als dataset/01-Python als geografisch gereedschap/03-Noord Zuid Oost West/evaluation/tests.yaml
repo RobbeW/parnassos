@@ -1,0 +1,7 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Gent-Sint-Pieters: zuidwest
+        Gravensteen: noordwest
+        Portus Ganda: noordoost

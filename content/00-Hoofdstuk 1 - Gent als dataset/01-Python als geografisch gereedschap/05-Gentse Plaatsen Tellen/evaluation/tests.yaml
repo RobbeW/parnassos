@@ -1,0 +1,6 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Aantal parken: 2
+        Aantal zorgplaatsen: 2

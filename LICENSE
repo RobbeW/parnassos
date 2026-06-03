@@ -1,0 +1,30 @@
+Parnassos License (Educational Use with Attribution)
+Copyright (c) 2026 Robbe Wulgaert
+
+This license applies to the original Parnassos materials in this repository,
+unless a file states otherwise. This includes course texts, exercise
+descriptions, starter code, tests, interface text, documentation, and media
+created for Parnassos.
+
+Permission is granted, free of charge, to use, copy, and adapt these materials
+for educational use, provided that clear attribution to Robbe Wulgaert is
+included in the used material, interface, or accompanying documentation.
+
+Adapted versions must not imply that they are official Parnassos materials
+unless this has been agreed with the copyright holder.
+
+Any use outside educational settings, including commercial use, paid
+distribution, sublicensing, or relicensing, requires prior written permission
+from the copyright holder.
+
+Third-party software components, external services, and external datasets used
+with this project remain subject to their own licenses and terms. See
+THIRD_PARTY_NOTICES.md for third-party software notices.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

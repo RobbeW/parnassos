@@ -1,0 +1,18 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdin: "Gent\n4\n51.0543\n3.7250\n"
+      stdout: |
+        Onderzoeksgebied: Gent
+        Aantal plaatsen: 4
+        Centrum: 51.0543 3.725
+    - stdin: "Ledeberg\n3\n51.0385\n3.7442\n"
+      stdout: |
+        Onderzoeksgebied: Ledeberg
+        Aantal plaatsen: 3
+        Centrum: 51.0385 3.7442
+    - stdin: "Sint-Amandsberg\n2\n51.0637\n3.7499\n"
+      stdout: |
+        Onderzoeksgebied: Sint-Amandsberg
+        Aantal plaatsen: 2
+        Centrum: 51.0637 3.7499

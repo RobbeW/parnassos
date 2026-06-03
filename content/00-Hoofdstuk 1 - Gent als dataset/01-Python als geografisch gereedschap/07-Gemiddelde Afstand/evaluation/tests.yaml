@@ -1,0 +1,4 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: "Gemiddelde afstand: 2.2 km"

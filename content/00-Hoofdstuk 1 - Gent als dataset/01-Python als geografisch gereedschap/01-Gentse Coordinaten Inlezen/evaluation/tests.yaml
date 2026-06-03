@@ -1,0 +1,9 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Stadhuis Gent - bestuur
+        Gent-Sint-Pieters - station
+        UZ Gent - ziekenhuis
+        Blaarmeersen - park
+        Aantal plaatsen: 4

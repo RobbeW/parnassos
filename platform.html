@@ -1,0 +1,1591 @@
+<!-- Copyright 2026 - Gebruik vrij voor educatie mits expliciete naamsvermelding -->
+<!--Auteur: Robbe Wulgaert / aiindeklas.be-->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Delphi - Python in de Klas</title>
+  <meta name="description" content="Lichtgewicht Python leeromgeving voor in de klas">
+
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="shortcut icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="64x64" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+  <link rel="stylesheet" href="styles.css?v=20260520-1">
+  <style id="platform-language-toggle-styles">
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(82, 0, 255, 0.22);
+  border-radius: 999px;
+  background: #fff;
+  padding: 4px;
+  box-shadow: 0 10px 24px rgba(82, 0, 255, 0.08);
+}
+.language-toggle button {
+  min-width: 44px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: transparent;
+  color: var(--muted, #625b70);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+.language-toggle button.is-active {
+  background: var(--brand, var(--brand-purple, var(--primary, #5200FF)));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(82, 0, 255, 0.20);
+}
+.language-toggle button:focus-visible {
+  outline: 3px solid rgba(61, 255, 208, 0.75);
+  outline-offset: 2px;
+}
+.header-actions .language-toggle,
+.toolbar .language-toggle,
+.app-actions .language-toggle {
+  flex: 0 0 auto;
+}
+@media (max-width: 760px) {
+  .language-toggle { order: 2; }
+}
+</style>
+<style id="platform-header-style">
+:root {
+  --platform-brand: #5200FF;
+  --platform-brand-dark: #3700B3;
+  --platform-aqua: #03ddef;
+  --platform-ink: #1A224C;
+  --platform-muted: #625b70;
+  --platform-line: rgba(82, 0, 255, 0.16);
+  --platform-shadow: 0 10px 26px rgba(26, 34, 76, 0.06);
+  --platform-strong-shadow: 0 16px 30px rgba(82, 0, 255, 0.22);
+}
+.app-page .app-header,
+body > header.topbar,
+body > header:not(.site-header):not(.app-header):not(.topbar) {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(82, 0, 255, 0.12);
+  box-shadow: var(--platform-shadow);
+  backdrop-filter: blur(14px);
+}
+.app-page .app-header {
+  padding: 14px clamp(18px, 4vw, 34px);
+}
+body > header.topbar,
+body > header:not(.site-header):not(.app-header):not(.topbar) {
+  padding: 12px 18px;
+  gap: 14px;
+}
+.app-page .app-header h1 {
+  color: var(--platform-ink);
+  letter-spacing: 0;
+}
+.app-page .app-header .eyebrow {
+  margin: 0 0 5px;
+  color: var(--platform-brand);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.ai-brand,
+.brand,
+.opdracht strong {
+  color: var(--platform-ink);
+}
+.ai-brand a,
+.brand .title {
+  color: var(--platform-brand);
+  text-decoration: none;
+}
+.app-page .header-actions,
+.topbar .toolbar,
+header .app-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+.app-page .header-actions .primary-button,
+.app-page .header-actions .secondary-button,
+.app-page .header-actions .ghost-button,
+.topbar .toolbar > button,
+header .app-actions .btn {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(82, 0, 255, 0.18);
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: #ffffff;
+  color: var(--platform-brand-dark);
+  font: inherit;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--platform-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+.app-page .header-actions .primary-button,
+.topbar .toolbar > button.is-primary,
+header .app-actions .btn.primary,
+header .app-actions #btn-pdf {
+  border-color: var(--platform-brand);
+  background: var(--platform-brand);
+  color: #ffffff;
+  box-shadow: var(--platform-strong-shadow);
+}
+.app-page .header-actions .primary-button:hover,
+.app-page .header-actions .secondary-button:hover,
+.app-page .header-actions .ghost-button:hover,
+.topbar .toolbar > button:hover,
+header .app-actions .btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(82, 0, 255, 0.45);
+  box-shadow: 0 14px 30px rgba(82, 0, 255, 0.12);
+}
+.app-page .header-actions .primary-button:hover,
+header .app-actions .btn.primary:hover,
+header .app-actions #btn-pdf:hover {
+  background: var(--platform-brand-dark);
+  border-color: var(--platform-brand-dark);
+}
+.language-toggle {
+  min-height: 42px;
+  border-color: rgba(82, 0, 255, 0.18) !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  box-shadow: var(--platform-shadow) !important;
+}
+.language-toggle button {
+  border-radius: 999px !important;
+  font-weight: 900 !important;
+}
+.language-toggle button.is-active {
+  background: var(--platform-brand) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(82, 0, 255, 0.20) !important;
+}
+.app-page .status-pill {
+  min-height: 40px;
+  border: 1px solid rgba(82, 0, 255, 0.16);
+  border-radius: 999px;
+  padding: 9px 14px;
+  background: #ffffff;
+  color: var(--platform-brand-dark);
+  font-weight: 900;
+  box-shadow: var(--platform-shadow);
+}
+body > header .tabs {
+  display: inline-flex;
+  gap: 4px;
+  border: 1px solid rgba(82, 0, 255, 0.16);
+  border-radius: 999px;
+  padding: 4px;
+  background: #ffffff;
+  box-shadow: var(--platform-shadow);
+}
+body > header .tab {
+  min-height: 36px;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--platform-brand-dark);
+  font-weight: 900;
+}
+body > header .tab.active {
+  background: var(--platform-brand);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(82, 0, 255, 0.20);
+}
+.topbar .exercise-btn {
+  box-shadow: var(--platform-shadow);
+}
+.topbar .exercise-btn.current {
+  box-shadow: 0 0 0 3px rgba(82, 0, 255, 0.14), var(--platform-shadow);
+}
+@media (max-width: 760px) {
+  .app-page .header-actions,
+  .topbar .toolbar,
+  header .app-actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .app-page .header-actions > *,
+  .topbar .toolbar > button,
+  header .app-actions .btn {
+    min-width: 0;
+  }
+}
+
+/* Shared learning-platform header rhythm. */
+body > header.topbar.learning-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(82, 0, 255, 0.12);
+  box-shadow: var(--platform-shadow);
+  color: var(--platform-ink);
+  backdrop-filter: blur(14px);
+}
+
+.topbar.learning-header .exercise-progress,
+.topbar.learning-header .tabs {
+  flex: 0 1 auto;
+  max-width: min(44vw, 620px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(82, 0, 255, 0.45) transparent;
+}
+
+.topbar.learning-header .opdracht {
+  flex: 1 1 260px;
+  min-width: 200px;
+  max-width: 44rem;
+  line-height: 1.3;
+}
+
+.topbar.learning-header .opdracht strong {
+  color: var(--platform-ink);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.topbar.learning-header .opdracht span,
+.topbar.learning-header .opdracht .opdracht-tekst {
+  color: var(--platform-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar.learning-header .toolbar,
+.topbar.learning-header .app-actions {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.topbar.learning-header .language-toggle {
+  order: 0 !important;
+}
+
+.topbar.learning-header .toolbar > button,
+.topbar.learning-header .app-actions > button,
+.topbar.learning-header .app-actions > .btn {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(82, 0, 255, 0.18);
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: #ffffff;
+  color: var(--platform-brand-dark);
+  font: inherit;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: var(--platform-shadow);
+}
+
+.topbar.learning-header .toolbar > button:hover,
+.topbar.learning-header .toolbar > button:focus-visible,
+.topbar.learning-header .app-actions > button:hover,
+.topbar.learning-header .app-actions > button:focus-visible,
+.topbar.learning-header .app-actions > .btn:hover,
+.topbar.learning-header .app-actions > .btn:focus-visible {
+  background: #ffffff;
+  border-color: rgba(82, 0, 255, 0.45);
+  color: var(--platform-brand-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(82, 0, 255, 0.12);
+  outline: none;
+}
+
+body.dark > header.topbar.learning-header,
+html[data-theme="dark"] body > header.topbar.learning-header,
+html.dark body > header.topbar.learning-header {
+  background: rgba(35, 39, 46, 0.96);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+body.dark .topbar.learning-header .opdracht strong,
+html[data-theme="dark"] .topbar.learning-header .opdracht strong,
+html.dark .topbar.learning-header .opdracht strong {
+  color: #ffffff;
+}
+
+body.dark .topbar.learning-header .opdracht span,
+html[data-theme="dark"] .topbar.learning-header .opdracht span,
+html.dark .topbar.learning-header .opdracht span {
+  color: #cbd2df;
+}
+
+@media (max-width: 900px) {
+  body > header.topbar.learning-header {
+    align-items: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .topbar.learning-header .exercise-progress,
+  .topbar.learning-header .tabs,
+  .topbar.learning-header .opdracht,
+  .topbar.learning-header .toolbar,
+  .topbar.learning-header .app-actions {
+    flex-basis: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .topbar.learning-header .toolbar,
+  .topbar.learning-header .app-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar.learning-header .toolbar,
+  .topbar.learning-header .app-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topbar.learning-header .language-toggle,
+  .topbar.learning-header .toolbar > button,
+  .topbar.learning-header .app-actions > button,
+  .topbar.learning-header .app-actions > .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 460px) {
+  .topbar.learning-header .toolbar,
+  .topbar.learning-header .app-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar.learning-header .toolbar > button,
+  .topbar.learning-header .app-actions > button,
+  .topbar.learning-header .app-actions > .btn {
+    white-space: normal;
+  }
+}
+</style>
+</head>
+<body>
+  <div id="course-loading" class="course-loading" role="status" aria-live="polite" aria-busy="true">
+    <div class="course-loading-card">
+      <div class="course-loading-mark" aria-hidden="true">Py</div>
+      <h2>Parnassos wordt geladen</h2>
+      <p id="course-loading-message" class="course-loading-message">We zetten de Python-leeromgeving klaar.</p>
+      <div class="course-loading-track" aria-hidden="true">
+        <span id="course-loading-bar" class="course-loading-bar"></span>
+      </div>
+      <p id="course-loading-detail" class="course-loading-detail">Catalogus openen...</p>
+    </div>
+  </div>
+
+  <header class="topbar learning-header">
+    <div class="exercise-progress" id="exercise-progress" aria-label="Voortgang"></div>
+
+    <div class="opdracht" id="opdracht">
+      <strong id="opdracht-titel">Python Sandbox</strong>
+      <span id="opdracht-tekst">Vrij oefenen met Python in de browser.</span>
+    </div>
+
+    <div class="toolbar">
+      
+      <div class="language-toggle" role="group" aria-label="Taalkeuze">
+        <button type="button" class="is-active" data-language-choice="nl" aria-pressed="true">NL</button>
+        <button type="button" data-language-choice="en" aria-pressed="false">ENG</button>
+      </div>
+      <button class="brand-btn" id="toggle-theme" title="Donkere/lichte modus">Thema</button>
+      <button class="brand-btn" id="export-pdf" title="Exporteer reeks naar PDF">PDF-reeks</button>
+      <button class="brand-btn" id="reset-progress" title="Wis opgeslagen voortgang">Voortgang wissen</button>
+    </div>
+  </header>
+
+  <aside class="course-menu" id="course-menu" aria-label="Cursusmenu">
+    <div class="menu-header">
+      <span class="menu-title">Menu</span>
+      <button class="close-menu" id="close-menu" aria-label="Sluit menu">x</button>
+    </div>
+    <nav class="menu-content">
+      <h3>Inhoud</h3>
+      <ul class="chapter-list" id="menu-chapters"></ul>
+      <div class="menu-project-panel">
+        <details class="menu-project-details">
+          <summary>Over Project Delphi</summary>
+          <div class="menu-project-body">
+            <p>
+              <strong>Project Delphi</strong> is mijn Python-versie van het idee achter JS in de Klas:
+              leerlingen laten oefenen in de browser, met duidelijke feedback en zo weinig mogelijk technische ballast.
+            </p>
+            <p>
+              De inhoud kan uit Dodona-achtige oefenmappen komen, maar Delphi zelf is bewust kleiner:
+              handig voor klassikaal oefenen, snel testen en een helder PDF-bewijs achteraf.
+            </p>
+            <p>
+              Contact:
+              <a href="https://robbewulgaert.be/contact" target="_blank" rel="noopener noreferrer">
+                robbewulgaert.be/contact
+              </a>
+            </p>
+            <p>
+              Deze webomgeving is bedoeld voor gebruik in de klas en voor collega-leerkrachten
+              die de cursus willen inkijken, aanpassen of fork-en.
+            </p>
+            <p>
+              Licenties:
+              <a href="LICENSE" target="_blank" rel="noopener noreferrer">Project Delphi License</a>
+              (educatief gebruik met expliciete naamsvermelding) en
+              <a href="THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">third-party notices</a>
+              voor gebruikte componenten zoals Papyros (MIT).
+            </p>
+          </div>
+        </details>
+      </div>
+    </nav>
+  </aside>
+
+  <button id="menu-tab" class="menu-tab" title="Toon menu">Menu</button>
+
+  <main class="main-layout" id="main-layout">
+    <section class="editor-pane" id="editor-pane">
+      <div class="pane-label">Code-editor</div>
+      <div id="code-editor"></div>
+      <br>
+      <button class="brand-btn run-btn" id="run-code">Uitvoeren</button>
+      <br><br>
+      <div class="runtime-input-wrap">
+        <div class="runtime-input-label">Invoer voor <code>input()</code></div>
+        <div class="runtime-input-row">
+          <input
+            id="runtime-input"
+            class="runtime-input-field"
+            type="text"
+            autocomplete="off"
+            placeholder="Typ een antwoord en druk Enter"
+          >
+          <button class="brand-btn runtime-input-send" id="runtime-input-send" type="button">Verzend</button>
+        </div>
+        <div id="runtime-input-status" class="runtime-input-status idle">Geen open input-vraag.</div>
+      </div>
+      <div class="console-label">Uitvoer</div>
+      <pre id="console-output" class="console-output" aria-live="polite"></pre>
+      <div class="metrics-row">
+        <span id="metrics">Pogingen: 0 | Tijd: 0s</span>
+      </div>
+    </section>
+
+    <div class="splitter" id="splitter" role="separator" aria-label="Panelen herschalen"></div>
+
+    <section class="assignment-pane" id="assignment-pane">
+      <div class="assignment-header">
+        <span class="pane-label">Oefening</span>
+        <span class="status-pill idle" id="runtime-status">Runtime initialiseren...</span>
+      </div>
+      <article class="assignment-card">
+        <h2 id="assignment-title">Sandbox</h2>
+        <section class="assignment-block">
+          <h3>Beschrijving</h3>
+          <div id="assignment-markdown" class="assignment-markdown"></div>
+        </section>
+      </article>
+    </section>
+  </main>
+
+  <button class="help-btn" id="help-btn" title="Toon Python cheatsheet">?</button>
+
+  <div class="modal" id="help-modal" aria-hidden="true">
+    <div class="modal-box help-box">
+      <button class="modal-close" id="close-help" aria-label="Sluit help">x</button>
+      <h2>Python Formularium</h2>
+
+      <div class="help-grid">
+        <section class="help-section">
+          <h3>Uitvoer, invoer en variabelen</h3>
+          <ul>
+            <li><code>print("Hallo")</code> schrijft tekst naar de uitvoer.</li>
+            <li><code>naam = "Ada"</code> bewaart een waarde in een variabele.</li>
+            <li><code>input("Vraag: ")</code> vraagt invoer. Het antwoord is altijd tekst.</li>
+            <li><code>int(antwoord)</code> maakt een geheel getal van tekst.</li>
+            <li><code>float(antwoord)</code> maakt een kommagetal van tekst.</li>
+            <li><code>str(getal)</code> maakt tekst van een getal.</li>
+          </ul>
+          <pre><code>leeftijd = int(input("Leeftijd? "))
+print("Je bent", leeftijd, "jaar.")</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Tekst netjes combineren</h3>
+          <ul>
+            <li><code>print("Score:", score)</code> is meestal het veiligst in deze cursus.</li>
+            <li><code>"Score: " + str(score)</code> kan ook, maar getallen moeten eerst naar tekst.</li>
+            <li><code>f"Score: {score}"</code> is handig wanneer je al wat vlotter bent.</li>
+            <li>Let op punten, hoofdletters en spaties: de testcases vergelijken de uitvoer.</li>
+          </ul>
+          <pre><code>naam = input("Naam? ")
+punten = 17
+print("Proficiat", naam + ", je behaalde", punten, "punten.")</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Rekenen en afronden</h3>
+          <ul>
+            <li><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> zijn de gewone rekenoperatoren.</li>
+            <li><code>**</code> berekent machten: <code>zijde ** 2</code>.</li>
+            <li><code>//</code> deelt zonder rest: <code>17 // 5</code> geeft <code>3</code>.</li>
+            <li><code>%</code> geeft de rest: <code>17 % 5</code> geeft <code>2</code>.</li>
+            <li><code>round(x, 2)</code> rondt af op twee cijfers na de komma.</li>
+          </ul>
+          <pre><code>prijs = 12.5
+aantal = 3
+totaal = round(prijs * aantal, 2)
+print("Totaal:", totaal)</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Math en random</h3>
+          <ul>
+            <li><code>import math</code> zet wiskundige functies klaar.</li>
+            <li><code>math.sqrt(x)</code> berekent een vierkantswortel.</li>
+            <li><code>math.pi</code> gebruikt de juiste waarde van pi.</li>
+            <li><code>math.ceil(x)</code> rondt naar boven af, <code>math.floor(x)</code> naar beneden.</li>
+            <li><code>import random</code> zet toeval klaar.</li>
+            <li><code>random.randint(1, 6)</code> geeft een geheel getal van 1 tot en met 6.</li>
+          </ul>
+          <pre><code>import random
+
+dobbelsteen = random.randint(1, 6)
+print("Je gooide", dobbelsteen)</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Selectie: if, elif, else</h3>
+          <ul>
+            <li><code>if voorwaarde:</code> voert code uit als de voorwaarde waar is.</li>
+            <li><code>elif voorwaarde:</code> test een volgende mogelijkheid.</li>
+            <li><code>else:</code> vangt de rest op.</li>
+            <li>Na <code>if</code>, <code>elif</code> en <code>else</code> komt een dubbelepunt.</li>
+            <li>De regels onder de keuze moeten inspringen.</li>
+          </ul>
+          <pre><code>score = int(input("Score? "))
+
+if score &gt;= 10:
+    print("Geslaagd")
+else:
+    print("Niet geslaagd")</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Voorwaarden combineren</h3>
+          <ul>
+            <li><code>==</code> vergelijkt of twee waarden gelijk zijn.</li>
+            <li><code>!=</code> betekent niet gelijk aan.</li>
+            <li><code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code> vergelijken getallen.</li>
+            <li><code>and</code> betekent dat beide voorwaarden waar moeten zijn.</li>
+            <li><code>or</code> betekent dat minstens een voorwaarde waar moet zijn.</li>
+            <li><code>not</code> keert een voorwaarde om.</li>
+          </ul>
+          <pre><code>leeftijd = int(input("Leeftijd? "))
+lengte = int(input("Lengte? "))
+
+if leeftijd &gt;= 12 and lengte &gt;= 140:
+    print("Je mag binnen.")</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Begrensde herhaling: for en range</h3>
+          <ul>
+            <li><code>for i in range(5):</code> herhaalt 5 keer: <code>0</code> tot en met <code>4</code>.</li>
+            <li><code>range(1, 6)</code> gaat van <code>1</code> tot en met <code>5</code>.</li>
+            <li><code>range(2, 11, 2)</code> gaat van <code>2</code> tot en met <code>10</code> in stappen van <code>2</code>.</li>
+            <li>Gebruik een teller of somvariabele als je iets wil bijhouden.</li>
+          </ul>
+          <pre><code>som = 0
+
+for getal in range(1, 6):
+    som = som + getal
+
+print("Som:", som)</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Lijsten en strings</h3>
+          <ul>
+            <li><code>lijst = []</code> maakt een lege lijst.</li>
+            <li><code>lijst.append(waarde)</code> voegt iets toe achteraan.</li>
+            <li><code>len(lijst)</code> telt het aantal elementen.</li>
+            <li><code>lijst[0]</code> neemt het eerste element.</li>
+            <li><code>for item in lijst:</code> overloopt elk element.</li>
+            <li><code>for letter in woord:</code> overloopt elke letter van een string.</li>
+          </ul>
+          <pre><code>woord = "python"
+aantal = 0
+
+for letter in woord:
+    if letter == "p":
+        aantal = aantal + 1
+
+print("Aantal p:", aantal)</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Tabellen en CSV</h3>
+          <ul>
+            <li><code>import csv</code> zet functies klaar om CSV-tabellen te lezen.</li>
+            <li><code>from io import StringIO</code> laat Python een tekstblok behandelen als een bestand.</li>
+            <li><code>csv.reader(bestand)</code> leest een CSV-tabel rij per rij.</li>
+            <li><code>next(lezer)</code> slaat een rij over, bijvoorbeeld de kolomnamen.</li>
+            <li><code>rij[0]</code> neemt de eerste kolom uit een rij.</li>
+          </ul>
+          <pre><code>import csv
+from io import StringIO
+
+bestand = StringIO(data)
+lezer = csv.reader(bestand)
+next(lezer)
+
+for rij in lezer:
+    naam = rij[0]
+    soort = rij[1]</code></pre>
+        </section>
+
+        <section class="help-section">
+          <h3>Voorwaardelijke herhaling: while</h3>
+          <ul>
+            <li><code>while voorwaarde:</code> blijft herhalen zolang de voorwaarde waar is.</li>
+            <li>Zorg dat er in de lus iets verandert, anders stopt de lus nooit.</li>
+            <li>Gebruik <code>while saldo &lt; doel:</code> voor groeiproblemen zoals sparen.</li>
+            <li>Gebruik <code>while antwoord != "stop":</code> wanneer de gebruiker mag blijven invoeren.</li>
+          </ul>
+          <pre><code>saldo = 100
+jaar = 0
+
+while saldo &lt; 150:
+    saldo = saldo * 1.05
+    jaar = jaar + 1
+
+print("Aantal jaren:", jaar)</code></pre>
+        </section>
+
+        <section class="help-section help-section-wide">
+          <h3>Tips bij veelgemaakte fouten</h3>
+          <ul>
+            <li>Staat er een dubbelepunt na <code>if</code>, <code>elif</code>, <code>else</code>, <code>for</code> of <code>while</code>?</li>
+            <li>Springt de code binnen een keuze of lus overal even ver in?</li>
+            <li>Heb je <code>==</code> gebruikt om te vergelijken en <code>=</code> om toe te kennen?</li>
+            <li>Heb je invoer omgezet met <code>int()</code> of <code>float()</code> voor je ermee rekent?</li>
+            <li>Komt je <code>print()</code>-zin exact overeen met de gevraagde tekst, inclusief punt en spaties?</li>
+          </ul>
+        </section>
+      </div>
+
+      <details class="help-legacy-table">
+        <summary>Volledig formularium in tabel</summary>
+      <div class="help-table-wrap">
+        <table class="help-table">
+          <thead>
+            <tr>
+              <th>Functie of statement</th>
+              <th>Beschrijving NL (kort)</th>
+              <th>Syntax</th>
+              <th>Uitzonderingen / opletten voor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>print()</code></td>
+              <td>Schrijft tekst of waarden naar de uitvoer.</td>
+              <td><code>print("Hallo")</code></td>
+              <td>De uitvoer moet vaak exact overeenkomen met de testcases. Let op hoofdletters, spaties en leestekens.</td>
+            </tr>
+            <tr>
+              <td>Variabele</td>
+              <td>Bewaart een waarde onder een naam.</td>
+              <td><code>naam = "Ada"</code></td>
+              <td>Gebruik <code>=</code> om een waarde toe te kennen. Gebruik <code>==</code> alleen om te vergelijken.</td>
+            </tr>
+            <tr>
+              <td><code>input()</code></td>
+              <td>Vraagt invoer aan de gebruiker.</td>
+              <td><code>input("Vraag: ")</code></td>
+              <td>Het antwoord is altijd tekst, dus een <code>str</code>.</td>
+            </tr>
+            <tr>
+              <td><code>int()</code></td>
+              <td>Zet tekst of een getal om naar een geheel getal.</td>
+              <td><code>int("7")</code></td>
+              <td>Bij <code>int(7.9)</code> wordt afgekapt, niet afgerond.</td>
+            </tr>
+            <tr>
+              <td><code>float()</code></td>
+              <td>Zet tekst om naar een kommagetal.</td>
+              <td><code>float("3.29")</code></td>
+              <td>Nodig wanneer je met kommagetallen uit <code>input()</code> wil rekenen.</td>
+            </tr>
+            <tr>
+              <td><code>str()</code></td>
+              <td>Zet een getal om naar tekst.</td>
+              <td><code>str(getal)</code></td>
+              <td>Nodig wanneer je getallen met tekst wil samenplakken.</td>
+            </tr>
+            <tr>
+              <td>Tekst combineren met komma's</td>
+              <td>Combineert tekst en waarden in <code>print()</code>.</td>
+              <td><code>print("Score:", score)</code></td>
+              <td>Meestal het veiligst. Python voegt automatisch spaties toe.</td>
+            </tr>
+            <tr>
+              <td>String-concatenatie</td>
+              <td>Plakt tekststukken samen.</td>
+              <td><code>"Score: " + str(score)</code></td>
+              <td>Kan alleen met strings. Getallen eerst omzetten met <code>str()</code>.</td>
+            </tr>
+            <tr>
+              <td>f-string</td>
+              <td>Zet waarden netjes in een tekstzin.</td>
+              <td><code>f"Score: {score}"</code></td>
+              <td>Handig, maar iets moeilijker voor beginners.</td>
+            </tr>
+            <tr>
+              <td>Rekenoperatoren</td>
+              <td>Voert gewone berekeningen uit.</td>
+              <td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></td>
+              <td><code>/</code> geeft een kommagetal als resultaat.</td>
+            </tr>
+            <tr>
+              <td>Machten</td>
+              <td>Berekent een macht.</td>
+              <td><code>zijde ** 2</code></td>
+              <td>Controleer de volgorde van de waarden.</td>
+            </tr>
+            <tr>
+              <td>Delen zonder rest</td>
+              <td>Geeft het gehele quotient van een deling.</td>
+              <td><code>17 // 5</code></td>
+              <td>Handig samen met <code>%</code> bij deelbaarheid.</td>
+            </tr>
+            <tr>
+              <td>Restdeling</td>
+              <td>Geeft de rest van een deling.</td>
+              <td><code>17 % 5</code></td>
+              <td>Handig voor even/oneven en deelbaarheid.</td>
+            </tr>
+            <tr>
+              <td><code>round()</code></td>
+              <td>Rondt een waarde af.</td>
+              <td><code>round(x, 2)</code></td>
+              <td><code>round(x)</code> geeft een <code>int</code>. <code>round(x, 0)</code> geeft een <code>float</code>.</td>
+            </tr>
+            <tr>
+              <td><code>import</code></td>
+              <td>Laadt een bibliotheek.</td>
+              <td><code>import math</code></td>
+              <td>Zet imports bij voorkeur bovenaan het programma.</td>
+            </tr>
+            <tr>
+              <td><code>import csv</code></td>
+              <td>Laadt de bibliotheek om CSV-tabellen te lezen.</td>
+              <td><code>import csv</code></td>
+              <td>Gebruik dit wanneer je tekstdata rij per rij wil lezen.</td>
+            </tr>
+            <tr>
+              <td><code>StringIO</code></td>
+              <td>Laat Python een tekstblok behandelen als een bestand.</td>
+              <td><code>from io import StringIO</code></td>
+              <td>Handig voor kleine oefendatasets in de code zelf.</td>
+            </tr>
+            <tr>
+              <td><code>csv.reader()</code></td>
+              <td>Leest een CSV-tabel rij per rij.</td>
+              <td><code>lezer = csv.reader(bestand)</code></td>
+              <td>Elke rij is een lijst. De waarden zijn eerst tekst.</td>
+            </tr>
+            <tr>
+              <td><code>next()</code></td>
+              <td>Slaat de volgende rij over.</td>
+              <td><code>next(lezer)</code></td>
+              <td>Vaak gebruikt om de rij met kolomnamen over te slaan.</td>
+            </tr>
+            <tr>
+              <td><code>math.sqrt()</code></td>
+              <td>Berekent een vierkantswortel.</td>
+              <td><code>math.sqrt(x)</code></td>
+              <td>Vereist <code>import math</code>. Let op de haakjes.</td>
+            </tr>
+            <tr>
+              <td><code>math.pi</code></td>
+              <td>Geeft de wiskundige waarde van pi.</td>
+              <td><code>math.pi</code></td>
+              <td>Gebruik dit liever dan zelf <code>3.14</code> te typen.</td>
+            </tr>
+            <tr>
+              <td><code>math.ceil()</code></td>
+              <td>Rondt naar boven af.</td>
+              <td><code>math.ceil(x)</code></td>
+              <td>Vereist <code>import math</code>.</td>
+            </tr>
+            <tr>
+              <td><code>math.floor()</code></td>
+              <td>Rondt naar beneden af.</td>
+              <td><code>math.floor(x)</code></td>
+              <td>Vereist <code>import math</code>.</td>
+            </tr>
+            <tr>
+              <td><code>random.randint()</code></td>
+              <td>Geeft een willekeurig geheel getal.</td>
+              <td><code>random.randint(1, 6)</code></td>
+              <td>Vereist <code>import random</code>. Beide grenzen tellen mee.</td>
+            </tr>
+            <tr>
+              <td><code>if</code></td>
+              <td>Voert code uit als een voorwaarde waar is.</td>
+              <td><code>if voorwaarde:</code></td>
+              <td>Dubbelepunt verplicht. De code eronder moet inspringen.</td>
+            </tr>
+            <tr>
+              <td><code>elif</code></td>
+              <td>Test een volgende mogelijkheid.</td>
+              <td><code>elif voorwaarde:</code></td>
+              <td>Je mag meerdere <code>elif</code>-blokken gebruiken.</td>
+            </tr>
+            <tr>
+              <td><code>else</code></td>
+              <td>Vangt alle overige gevallen op.</td>
+              <td><code>else:</code></td>
+              <td>Er mag maar een <code>else</code> zijn. Na <code>else</code> komt geen voorwaarde.</td>
+            </tr>
+            <tr>
+              <td>Vergelijkingsoperatoren</td>
+              <td>Vergelijken waarden.</td>
+              <td><code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code></td>
+              <td><code>==</code> vergelijkt. <code>=</code> kent een waarde toe.</td>
+            </tr>
+            <tr>
+              <td><code>and</code></td>
+              <td>Combineert voorwaarden. Beide moeten waar zijn.</td>
+              <td><code>if a &gt; 0 and b &gt; 0:</code></td>
+              <td>Alleen waar als beide voorwaarden waar zijn.</td>
+            </tr>
+            <tr>
+              <td><code>or</code></td>
+              <td>Combineert voorwaarden. Minstens een moet waar zijn.</td>
+              <td><code>if a &gt; 0 or b &gt; 0:</code></td>
+              <td>Waar zodra een van de voorwaarden waar is.</td>
+            </tr>
+            <tr>
+              <td><code>not</code></td>
+              <td>Keert een voorwaarde om.</td>
+              <td><code>if not klaar:</code></td>
+              <td>Maakt <code>True</code> tot <code>False</code> en omgekeerd.</td>
+            </tr>
+            <tr>
+              <td><code>for</code></td>
+              <td>Herhaalt code een vast aantal keer.</td>
+              <td><code>for i in range(5):</code></td>
+              <td><code>range(5)</code> loopt van <code>0</code> tot en met <code>4</code>.</td>
+            </tr>
+            <tr>
+              <td><code>range()</code></td>
+              <td>Bepaalt start, stop en stapgrootte van een herhaling.</td>
+              <td><code>range(1, 6)</code></td>
+              <td>De stopwaarde telt niet mee.</td>
+            </tr>
+            <tr>
+              <td><code>range()</code> met stap</td>
+              <td>Herhaalt met een vaste stapgrootte.</td>
+              <td><code>range(2, 11, 2)</code></td>
+              <td>Deze reeks geeft <code>2, 4, 6, 8, 10</code>.</td>
+            </tr>
+            <tr>
+              <td>Teller of somvariabele</td>
+              <td>Houdt een veranderende waarde bij in een lus.</td>
+              <td><code>som = som + getal</code></td>
+              <td>Eerst initialiseren voor de lus.</td>
+            </tr>
+            <tr>
+              <td>Lijst maken</td>
+              <td>Maakt een lege lijst.</td>
+              <td><code>lijst = []</code></td>
+              <td>Gebruik dit om meerdere waarden te bewaren.</td>
+            </tr>
+            <tr>
+              <td><code>append()</code></td>
+              <td>Voegt een waarde toe aan een lijst.</td>
+              <td><code>lijst.append(waarde)</code></td>
+              <td>Verandert de lijst, maar print niets vanzelf.</td>
+            </tr>
+            <tr>
+              <td><code>len()</code></td>
+              <td>Telt het aantal elementen of tekens.</td>
+              <td><code>len(lijst)</code></td>
+              <td>Indexen beginnen nog altijd bij <code>0</code>.</td>
+            </tr>
+            <tr>
+              <td>Indexering</td>
+              <td>Neemt een element uit een lijst.</td>
+              <td><code>lijst[0]</code></td>
+              <td>Het eerste element heeft index <code>0</code>, niet <code>1</code>.</td>
+            </tr>
+            <tr>
+              <td>Lijst van lijsten</td>
+              <td>Bewaart een tabel als rijen en kolommen.</td>
+              <td><code>plaatsen = [[naam, soort], [naam, soort]]</code></td>
+              <td>Elke rij is zelf opnieuw een lijst.</td>
+            </tr>
+            <tr>
+              <td>Kolom uit een rij</td>
+              <td>Neemt een waarde uit een rij van een tabel.</td>
+              <td><code>naam = rij[0]</code></td>
+              <td>Ook hier begint Python te tellen vanaf <code>0</code>.</td>
+            </tr>
+            <tr>
+              <td>Lijst overlopen</td>
+              <td>Overloopt elk element van een lijst.</td>
+              <td><code>for item in lijst:</code></td>
+              <td>De lusvariabele is tijdelijk en krijgt telkens een nieuwe waarde.</td>
+            </tr>
+            <tr>
+              <td>String overlopen</td>
+              <td>Overloopt elke letter van een string.</td>
+              <td><code>for letter in woord:</code></td>
+              <td>Een string kan je behandelen als een reeks letters.</td>
+            </tr>
+            <tr>
+              <td><code>while</code></td>
+              <td>Herhaalt zolang een voorwaarde waar is.</td>
+              <td><code>while voorwaarde:</code></td>
+              <td>Zorg dat er in de lus iets verandert, anders stopt de lus nooit.</td>
+            </tr>
+            <tr>
+              <td>Invoer blijven vragen</td>
+              <td>Laat de gebruiker herhaald invoer geven.</td>
+              <td><code>while antwoord != "stop":</code></td>
+              <td>Vergeet niet om <code>antwoord</code> in de lus opnieuw te vragen.</td>
+            </tr>
+            <tr>
+              <td>Groeiproblemen</td>
+              <td>Herhaalt tot een doel bereikt is.</td>
+              <td><code>while saldo &lt; doel:</code></td>
+              <td>Pas de waarde in de lus aan, bijvoorbeeld met rente of groei.</td>
+            </tr>
+            <tr>
+              <td>Dubbelepunt</td>
+              <td>Sluit een blok-statement af.</td>
+              <td><code>if ...:</code>, <code>for ...:</code>, <code>while ...:</code></td>
+              <td>Ontbrekend dubbelepunt geeft een syntaxfout.</td>
+            </tr>
+            <tr>
+              <td>Inspringing</td>
+              <td>Toont welke code bij een keuze of lus hoort.</td>
+              <td>Vier spaties inspringen</td>
+              <td>Ongelijke inspringing veroorzaakt fouten.</td>
+            </tr>
+            <tr>
+              <td>Exacte uitvoer</td>
+              <td>Zorgt dat de output klopt met de opdracht.</td>
+              <td><code>print(...)</code></td>
+              <td>Let op punten, komma's, hoofdletters, spaties en exacte formulering.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="modal" id="ask-modal" aria-hidden="true">
+    <div class="modal-box">
+      <h3>Invoer gevraagd</h3>
+      <p class="modal-message" id="ask-modal-msg"></p>
+      <input id="ask-modal-input" class="modal-input" type="text" autocomplete="off">
+      <div class="modal-actions">
+        <button class="brand-btn" id="ask-modal-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="eval-modal" aria-hidden="true">
+    <div class="modal-box eval-modal-box">
+      <button class="modal-close" id="close-eval-modal" aria-label="Sluit evaluatie">x</button>
+      <div class="eval-modal-header">
+        <h3 id="eval-modal-title">Evaluatieresultaat</h3>
+        <span class="eval-pill ok" id="eval-modal-pill">Geslaagd</span>
+      </div>
+      <p class="eval-summary" id="eval-modal-summary"></p>
+      <div class="eval-cases" id="eval-modal-cases"></div>
+      <div class="modal-actions">
+        <button class="brand-btn" id="eval-modal-ok">Sluiten</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="pdf-modal" aria-hidden="true">
+    <div class="modal-box pdf-modal-box">
+      <button class="modal-close" id="close-pdf-modal" aria-label="Sluit exportvenster">x</button>
+      <h3>Reeks exporteren naar PDF</h3>
+      <p class="pdf-modal-intro">Vul onderstaande gegevens in voor de bundel-export.</p>
+      <div class="pdf-form-grid">
+        <label class="pdf-form-label" for="pdf-first-name">Voornaam</label>
+        <input
+          id="pdf-first-name"
+          class="modal-input"
+          type="text"
+          autocomplete="given-name"
+          required
+        >
+
+        <label class="pdf-form-label" for="pdf-last-name">Familienaam</label>
+        <input
+          id="pdf-last-name"
+          class="modal-input"
+          type="text"
+          autocomplete="family-name"
+          required
+        >
+
+        <label class="pdf-form-label" for="pdf-class-name">Klas</label>
+        <input
+          id="pdf-class-name"
+          class="modal-input"
+          type="text"
+          autocomplete="organization"
+          required
+        >
+      </div>
+      <div class="modal-actions pdf-modal-actions">
+        <button class="brand-btn secondary-btn" id="pdf-cancel" type="button">Annuleren</button>
+        <button class="brand-btn" id="pdf-confirm" type="button">Exporteren</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="reset-modal" aria-hidden="true">
+    <div class="modal-box reset-modal-box">
+      <h3>Voortgang wissen</h3>
+      <p class="modal-message">Kies wat je wil wissen.</p>
+      <div class="modal-actions reset-modal-actions">
+        <button class="brand-btn" id="reset-current" type="button">Alleen huidige oefening</button>
+        <button class="brand-btn secondary-btn" id="reset-all" type="button">Volledige cursus</button>
+        <button class="brand-btn secondary-btn" id="reset-cancel" type="button">Annuleren</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "https://unpkg.com/comlink@4.4.2?module": "https://esm.sh/comlink@4.4.2/es2022/comlink.bundle.mjs",
+        "https://unpkg.com/comlink@^4.4.2?module": "https://esm.sh/comlink@4.4.2/es2022/comlink.bundle.mjs",
+        "https://unpkg.com/@dodona/lit-state@1.1.1?module": "https://cdn.jsdelivr.net/npm/@dodona/lit-state@1.1.1/+esm",
+        "https://unpkg.com/@dodona/lit-state@^1.1.1?module": "https://cdn.jsdelivr.net/npm/@dodona/lit-state@1.1.1/+esm",
+        "/node/process.mjs": "./browser-process.mjs",
+        "https://unpkg.com/sync-message@0.0.12?module": "https://esm.sh/sync-message@0.0.12/es2022/sync-message.bundle.mjs",
+        "https://unpkg.com/sync-message@^0.0.12?module": "https://esm.sh/sync-message@0.0.12/es2022/sync-message.bundle.mjs",
+        "https://unpkg.com/comsync@0.0.9?module": "https://esm.sh/comsync@0.0.9/es2022/comsync.bundle.mjs",
+        "https://unpkg.com/comsync@^0.0.9?module": "https://esm.sh/comsync@0.0.9/es2022/comsync.bundle.mjs",
+        "https://unpkg.com/node-polyglot@2.6.0?module": "https://esm.sh/node-polyglot@2.6.0/es2022/node-polyglot.bundle.mjs",
+        "https://unpkg.com/node-polyglot@^2.6.0?module": "https://esm.sh/node-polyglot@2.6.0/es2022/node-polyglot.bundle.mjs",
+        "https://unpkg.com/pyodide-worker-runner@1.4.0?module": "https://esm.sh/pyodide-worker-runner@1.4.0/es2022/pyodide-worker-runner.bundle.mjs",
+        "https://unpkg.com/pyodide-worker-runner@^1.4.0?module": "https://esm.sh/pyodide-worker-runner@1.4.0/es2022/pyodide-worker-runner.bundle.mjs"
+      }
+    }
+  </script>
+  <script src="app.js?v=20260603-1"></script>
+<script id="platform-language-toggle-script">
+(() => {
+  const LANGUAGE_KEY = "aiindeklas:index-language";
+  const TRANSLATIONS = {
+  "Taalkeuze": "Language selection",
+  "Startpagina": "Start page",
+  "Start platform": "Start platform",
+  "Start leerplatform": "Start learning platform",
+  "Niet verbonden": "Not connected",
+  "Verbind": "Connect",
+  "Verbinden": "Connecting",
+  "Bouw": "Build",
+  "Bouwen": "Building",
+  "Voorspel": "Predict",
+  "Voorspellen": "Predicting",
+  "Meet": "Measure",
+  "Meten": "Measuring",
+  "Vergelijk": "Compare",
+  "Vergelijken": "Comparing",
+  "Besluit": "Conclusion",
+  "Besluiten": "Concluding",
+  "Kalibreer": "Calibrate",
+  "Kalibreren": "Calibrating",
+  "Observeer": "Observe",
+  "Observeren": "Observing",
+  "Speel": "Play",
+  "Model": "Model",
+  "Kies model": "Choose model",
+  "Test": "Test",
+  "Testen": "Testing",
+  "Sorteer": "Sort",
+  "Sorteren": "Sorting",
+  "Menu": "Menu",
+  "Inhoud": "Contents",
+  "Sluiten": "Close",
+  "Sluiten X": "Close X",
+  "x": "x",
+  "X": "X",
+  "Oefening": "Exercise",
+  "OEFENING": "EXERCISE",
+  "Code-editor": "Code editor",
+  "Editor": "Editor",
+  "Uitvoeren": "Run",
+  "Uitvoer": "Output",
+  "Console-uitvoer": "Console output",
+  "Feedback": "Feedback",
+  "Status": "Status",
+  "Data": "Data",
+  "Diagnose": "Diagnostics",
+  "Nog geen data ontvangen.": "No data received yet.",
+  "Laatste regel: --": "Last line: --",
+  "Laatste code: --": "Last code: --",
+  "Rapport": "Report",
+  "Rapportinstellingen": "Report settings",
+  "Wie maakt dit rapport?": "Who is making this report?",
+  "Naam": "Name",
+  "Naam:": "Name:",
+  "Naam of namen": "Name or names",
+  "Klas": "Class",
+  "Klas:": "Class:",
+  "Annuleren": "Cancel",
+  "Annuleer": "Cancel",
+  "OK": "OK",
+  "Doorgaan": "Continue",
+  "Reset": "Reset",
+  "Genereer PDF": "Generate PDF",
+  "Maak PDF": "Create PDF",
+  "Exporteren": "Export",
+  "Exporteren naar PDF": "Export to PDF",
+  "Reeks exporteren naar PDF": "Export series to PDF",
+  "PDF-reeks": "PDF series",
+  "Exporteer reeks naar PDF": "Export series to PDF",
+  "Vooruitgang wissen": "Clear progress",
+  "Voortgang wissen": "Clear progress",
+  "Wis opgeslagen voortgang": "Clear saved progress",
+  "Alleen huidige oefening": "Current exercise only",
+  "Alle voortgang": "All progress",
+  "Volledige reeks": "Full series",
+  "Volledige cursus": "Full course",
+  "Kies wat je wil wissen.": "Choose what you want to clear.",
+  "Donker/Licht": "Dark/Light",
+  "Thema": "Theme",
+  "Donkere/lichte modus": "Dark/light mode",
+  "Donkere of lichte modus": "Dark or light mode",
+  "Formularium": "Reference sheet",
+  "HTML Formularium": "HTML reference sheet",
+  "Python Formularium": "Python reference sheet",
+  "Blockly Formularium": "Blockly reference sheet",
+  "Hulp": "Help",
+  "Help": "Help",
+  "Schema": "Diagram",
+  "Checklist": "Checklist",
+  "Onderzoeksvraag": "Research question",
+  "Hypothese": "Hypothesis",
+  "Besluit en reflectie": "Conclusion and reflection",
+  "Reflectie": "Reflection",
+  "Korte reflectie": "Short reflection",
+  "Waarde": "Value",
+  "Variabele": "Variable",
+  "Proef": "Trial",
+  "Duur": "Duration",
+  "Plek": "Location",
+  "Tijd": "Time",
+  "Bron": "Source",
+  "Klasse": "Class",
+  "Zekerheid": "Confidence",
+  "Verwacht": "Expected",
+  "Voorspeld": "Predicted",
+  "Verstuurd": "Sent",
+  "Projectstappen": "Project steps",
+  "Onderzoeksstappen": "Research steps",
+  "Auteur: Robbe Wulgaert Â· AI in de Klas Â· robbewulgaert.be Â· Â© 2026 Robbe Wulgaert. Alle rechten voorbehouden.": "Author: Robbe Wulgaert Â· AI in de Klas Â· robbewulgaert.be Â· Â© 2026 Robbe Wulgaert. All rights reserved.",
+  "Parnassos wordt geladen": "Loading Parnassos",
+  "We zetten de Python-leeromgeving klaar.": "Preparing the Python learning environment.",
+  "Catalogus openen...": "Opening catalogue...",
+  "Python Sandbox": "Python Sandbox",
+  "Vrij oefenen met Python in de browser.": "Practise Python freely in the browser.",
+  "Invoer voor": "Input for",
+  "Verzend": "Send",
+  "Geen open input-vraag.": "No open input question.",
+  "Runtime initialiseren...": "Initialising runtime...",
+  "Beschrijving": "Description",
+  "Over Project Delphi": "About Project Delphi",
+  "is mijn Python-versie van het idee achter JS in de Klas:": "is my Python version of the idea behind JS in de Klas:",
+  "leerlingen laten oefenen in de browser, met duidelijke feedback en zo weinig mogelijk technische ballast.": "letting students practise in the browser, with clear feedback and as little technical baggage as possible.",
+  "De inhoud kan uit Dodona-achtige oefenmappen komen, maar Delphi zelf is bewust kleiner:": "The content can come from Dodona-like exercise folders, but Delphi itself is deliberately smaller:",
+  "handig voor klassikaal oefenen, snel testen en een helder PDF-bewijs achteraf.": "useful for classroom practice, quick testing and clear PDF evidence afterwards.",
+  "Contact:": "Contact:",
+  "Deze webomgeving is bedoeld voor gebruik in de klas en voor collega-leerkrachten": "This web environment is intended for classroom use and for fellow teachers",
+  "die de cursus willen inkijken, aanpassen of fork-en.": "who want to inspect, adapt or fork the course.",
+  "Licenties:": "Licences:",
+  "Project Delphi License": "Project Delphi License",
+  "(educatief gebruik met expliciete naamsvermelding) en": "(educational use with explicit attribution) and",
+  "voor gebruikte componenten zoals Papyros (MIT).": "for components used, such as Papyros (MIT).",
+  "Uitvoer, invoer en variabelen": "Output, input and variables",
+  "schrijft tekst naar de uitvoer.": "writes text to the output.",
+  "bewaart een waarde in een variabele.": "stores a value in a variable.",
+  "vraagt invoer. Het antwoord is altijd tekst.": "asks for input. The answer is always text.",
+  "maakt een geheel getal van tekst.": "turns text into an integer.",
+  "maakt een kommagetal van tekst.": "turns text into a decimal number.",
+  "maakt tekst van een getal.": "turns a number into text.",
+  "Tekst netjes combineren": "Combining text neatly",
+  "is meestal het veiligst in deze cursus.": "is usually safest in this course.",
+  "kan ook, maar getallen moeten eerst naar tekst.": "also works, but numbers must first be converted to text.",
+  "is handig wanneer je al wat vlotter bent.": "is useful once you are a little more fluent.",
+  "Let op punten, hoofdletters en spaties: de testcases vergelijken de uitvoer.": "Watch punctuation, capital letters and spaces: the test cases compare the output.",
+  "Rekenen en afronden": "Calculating and rounding",
+  "zijn de gewone rekenoperatoren.": "are the regular arithmetic operators.",
+  "berekent machten:": "calculates powers:",
+  "deelt zonder rest:": "divides without remainder:",
+  "geeft": "gives",
+  "geeft de rest:": "gives the remainder:",
+  "rondt af op twee cijfers na de komma.": "rounds to two decimal places.",
+  "Math en random": "Math and random",
+  "zet wiskundige functies klaar.": "prepares mathematical functions.",
+  "berekent een vierkantswortel.": "calculates a square root.",
+  "gebruikt de juiste waarde van pi.": "uses the correct value of pi.",
+  "rondt naar boven af,": "rounds up,",
+  "naar beneden.": "down.",
+  "zet toeval klaar.": "prepares randomness.",
+  "geeft een geheel getal van 1 tot en met 6.": "gives an integer from 1 through 6.",
+  "Selectie: if, elif, else": "Selection: if, elif, else",
+  "voert code uit als de voorwaarde waar is.": "runs code if the condition is true.",
+  "test een volgende mogelijkheid.": "tests a next possibility.",
+  "vangt de rest op.": "catches the rest.",
+  "komt een dubbelepunt.": "comes a colon.",
+  "De regels onder de keuze moeten inspringen.": "The lines under the choice must be indented.",
+  "Voorwaarden combineren": "Combining conditions",
+  "vergelijkt of twee waarden gelijk zijn.": "checks whether two values are equal.",
+  "betekent niet gelijk aan.": "means not equal to.",
+  "vergelijken getallen.": "compare numbers.",
+  "betekent dat beide voorwaarden waar moeten zijn.": "means both conditions must be true.",
+  "betekent dat minstens een voorwaarde waar moet zijn.": "means at least one condition must be true.",
+  "keert een voorwaarde om.": "negates a condition.",
+  "Begrensde herhaling: for en range": "Counted loops: for and range",
+  "herhaalt 5 keer:": "repeats 5 times:",
+  "gaat van": "goes from",
+  "tot en met": "through",
+  "in stappen van": "in steps of",
+  "Gebruik een teller of somvariabele als je iets wil bijhouden.": "Use a counter or sum variable if you want to keep track of something.",
+  "Lijsten en strings": "Lists and strings",
+  "maakt een lege lijst.": "creates an empty list.",
+  "voegt iets toe achteraan.": "adds something at the end.",
+  "telt het aantal elementen.": "counts the number of elements.",
+  "neemt het eerste element.": "takes the first element.",
+  "overloopt elk element.": "iterates over each element.",
+  "overloopt elke letter van een string.": "iterates over each letter of a string.",
+  "Voorwaardelijke herhaling: while": "Conditional loops: while",
+  "blijft herhalen zolang de voorwaarde waar is.": "keeps repeating while the condition is true.",
+  "Zorg dat er in de lus iets verandert, anders stopt de lus nooit.": "Make sure something changes in the loop, otherwise the loop never stops.",
+  "voor groeiproblemen zoals sparen.": "for growth problems such as saving money.",
+  "wanneer de gebruiker mag blijven invoeren.": "when the user may keep entering input.",
+  "Tips bij veelgemaakte fouten": "Tips for common mistakes",
+  "Volledig formularium in tabel": "Full reference sheet in table",
+  "Functie of statement": "Function or statement",
+  "Beschrijving NL (kort)": "Description EN (short)",
+  "Syntax": "Syntax",
+  "Uitzonderingen / opletten voor": "Exceptions / watch out for"
+};
+  const PATTERNS = [
+  {
+    "pattern": "^Voortgang: (.+)$",
+    "replacement": "Progress: $1"
+  },
+  {
+    "pattern": "^Snelheid: (.+) ms/stap$",
+    "replacement": "Speed: $1 ms/step"
+  },
+  {
+    "pattern": "^Snelheid: (.+)$",
+    "replacement": "Speed: $1"
+  },
+  {
+    "pattern": "^Pogingen: (.+) \\| Tijd: (.+)$",
+    "replacement": "Attempts: $1 | Time: $2"
+  },
+  {
+    "pattern": "^Level (.+)$",
+    "replacement": "Level $1"
+  },
+  {
+    "pattern": "^Turtle Level$",
+    "replacement": "Turtle level"
+  },
+  {
+    "pattern": "^Open: (.+)$",
+    "replacement": "Open: $1"
+  },
+  {
+    "pattern": "^Gesloten: (.+)$",
+    "replacement": "Closed: $1"
+  },
+  {
+    "pattern": "^Status: (.+)$",
+    "replacement": "Status: $1"
+  },
+  {
+    "pattern": "^Ronde (.+)$",
+    "replacement": "Round $1"
+  },
+  {
+    "pattern": "^dt = (.+) s\\. (.+)$",
+    "replacement": "dt = $1 s. $2"
+  }
+];
+  const META = {
+  "title": "Project Delphi - Python in the Classroom",
+  "description": "Lightweight Python learning environment for class."
+};
+  const SKIP_SELECTOR = "script, style, noscript, textarea, input, canvas, svg, iframe, code, pre, kbd, samp, [contenteditable='true'], .CodeMirror, .cm-editor, .blocklySvg, .blocklyWidgetDiv, .blocklyTooltipDiv";
+  const TRANSLATABLE_ATTRIBUTES = ["aria-label", "alt", "title", "placeholder"];
+  const OBSERVER_OPTIONS = { childList: true, subtree: true, characterData: true };
+  const textRecords = new WeakMap();
+  const attrRecords = new WeakMap();
+  let currentLanguage = "nl";
+  let applying = false;
+  let observer = null;
+  let queuedMutations = [];
+  let translationScheduled = false;
+  let originalTitle = document.title;
+  let originalDescription = null;
+  const normalize = (value) => String(value || "").replace(/s+/g, " ").trim();
+  function preserveOuterWhitespace(original, translated) {
+    const start = String(original).match(/^s*/)?.[0] || "";
+    const end = String(original).match(/s*$/)?.[0] || "";
+    return start + translated + end;
+  }
+  function translateKey(key) {
+    if (Object.prototype.hasOwnProperty.call(TRANSLATIONS, key)) return TRANSLATIONS[key];
+    for (const item of PATTERNS) {
+      const regex = new RegExp(item.pattern);
+      if (regex.test(key)) return key.replace(regex, item.replacement);
+    }
+    return null;
+  }
+  function shouldSkipNode(node) {
+    const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+    return !element || element.closest(SKIP_SELECTOR);
+  }
+  function setTextNodeValue(node, value, record) {
+    if (node.nodeValue !== value) node.nodeValue = value;
+    record.translated = value;
+    record.translatedByUs = true;
+  }
+  function translateTextNode(node) {
+    if (!node || node.nodeType !== Node.TEXT_NODE || shouldSkipNode(node)) return;
+    const raw = node.nodeValue || "";
+    if (!normalize(raw)) return;
+    let record = textRecords.get(node);
+    if (!record) {
+      record = { original: raw, translated: "", translatedByUs: false };
+      textRecords.set(node, record);
+    }
+    if (currentLanguage === "en") {
+      if (record.translatedByUs && raw === record.translated) return;
+      record.original = raw;
+      const translated = translateKey(normalize(record.original));
+      if (!translated) {
+        record.translated = "";
+        record.translatedByUs = false;
+        return;
+      }
+      const next = preserveOuterWhitespace(record.original, translated);
+      if (next !== raw) setTextNodeValue(node, next, record);
+      else {
+        record.translated = "";
+        record.translatedByUs = false;
+      }
+    } else if (record.translatedByUs) {
+      if (raw !== record.original) node.nodeValue = record.original;
+      record.translated = "";
+      record.translatedByUs = false;
+    }
+  }
+  function getAttributeRecord(element, attr, current) {
+    let records = attrRecords.get(element);
+    if (!records) {
+      records = new Map();
+      attrRecords.set(element, records);
+    }
+    if (!records.has(attr)) records.set(attr, { original: current, translated: "", translatedByUs: false });
+    return records.get(attr);
+  }
+  function translateElementAttributes(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE || element.closest(SKIP_SELECTOR)) return;
+    TRANSLATABLE_ATTRIBUTES.forEach((attr) => {
+      if (!element.hasAttribute(attr)) return;
+      const current = element.getAttribute(attr) || "";
+      if (!normalize(current)) return;
+      const record = getAttributeRecord(element, attr, current);
+      if (currentLanguage === "en") {
+        if (record.translatedByUs && current === record.translated) return;
+        record.original = current;
+        const translated = translateKey(normalize(record.original));
+        if (!translated) {
+          record.translated = "";
+          record.translatedByUs = false;
+          return;
+        }
+        if (translated !== current) {
+          element.setAttribute(attr, translated);
+          record.translated = translated;
+          record.translatedByUs = true;
+        } else {
+          record.translated = "";
+          record.translatedByUs = false;
+        }
+      } else if (record.translatedByUs) {
+        if (current !== record.original) element.setAttribute(attr, record.original);
+        record.translated = "";
+        record.translatedByUs = false;
+      }
+    });
+  }
+  function translateAttributes(root = document.body) {
+    if (!root) return;
+    if (root.nodeType === Node.ELEMENT_NODE) translateElementAttributes(root);
+    if (root.querySelectorAll) {
+      root.querySelectorAll("[aria-label], [alt], [title], [placeholder]").forEach(translateElementAttributes);
+    }
+  }
+  function translateTree(root = document.body) {
+    if (!root) return;
+    if (root.nodeType === Node.TEXT_NODE) {
+      translateTextNode(root);
+      return;
+    }
+    if (shouldSkipNode(root)) return;
+    translateAttributes(root);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        return shouldSkipNode(node) || !normalize(node.nodeValue) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(translateTextNode);
+  }
+  function pauseObserver(callback) {
+    if (observer) observer.disconnect();
+    applying = true;
+    try {
+      callback();
+    } finally {
+      applying = false;
+      if (observer && document.body) observer.observe(document.body, OBSERVER_OPTIONS);
+    }
+  }
+  function syncChrome() {
+    document.documentElement.lang = currentLanguage === "en" ? "en" : "nl-BE";
+    document.title = currentLanguage === "en" && META.title ? META.title : originalTitle;
+    const description = document.querySelector('meta[name="description"]');
+    if (description) {
+      if (originalDescription === null) originalDescription = description.getAttribute("content") || "";
+      description.setAttribute("content", currentLanguage === "en" && META.description ? META.description : originalDescription);
+    }
+    document.querySelectorAll("[data-language-choice]").forEach((button) => {
+      const isActive = button.dataset.languageChoice === currentLanguage;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+  function setLanguage(language) {
+    currentLanguage = language === "en" ? "en" : "nl";
+    pauseObserver(() => {
+      translateTree(document.body);
+      syncChrome();
+    });
+    try { localStorage.setItem(LANGUAGE_KEY, currentLanguage); } catch (error) {}
+  }
+  function processQueuedMutations() {
+    translationScheduled = false;
+    if (applying || currentLanguage !== "en" || !queuedMutations.length) {
+      queuedMutations = [];
+      return;
+    }
+    const mutations = queuedMutations;
+    queuedMutations = [];
+    pauseObserver(() => {
+      const roots = new Set();
+      const textNodes = new Set();
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) textNodes.add(node);
+          else if (node.nodeType === Node.ELEMENT_NODE) roots.add(node);
+        });
+        if (mutation.type === "characterData") textNodes.add(mutation.target);
+      });
+      roots.forEach((root) => translateTree(root));
+      textNodes.forEach((node) => translateTextNode(node));
+    });
+  }
+  function scheduleMutationTranslation(mutations) {
+    if (applying || currentLanguage !== "en") return;
+    queuedMutations.push(...mutations);
+    if (translationScheduled) return;
+    translationScheduled = true;
+    const schedule = window.requestAnimationFrame || ((callback) => window.setTimeout(callback, 0));
+    schedule(processQueuedMutations);
+  }
+  function initLanguageToggle() {
+    document.querySelectorAll("[data-language-choice]").forEach((button) => {
+      button.addEventListener("click", () => setLanguage(button.dataset.languageChoice));
+    });
+    observer = new MutationObserver(scheduleMutationTranslation);
+    let saved = "nl";
+    try {
+      const requested = new URLSearchParams(window.location.search).get("lang");
+      saved = requested || localStorage.getItem(LANGUAGE_KEY) || "nl";
+    } catch (error) {}
+    setLanguage(saved === "en" ? "en" : "nl");
+    window.setPlatformLanguage = setLanguage;
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initLanguageToggle);
+  else initLanguageToggle();
+
+})();
+</script>
+</body>
+</html>

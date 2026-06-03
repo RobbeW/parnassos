@@ -1,0 +1,25 @@
+{
+  "description": {
+    "names": {
+      "nl": "Inleiding",
+      "en": "Introduction"
+    }
+  },
+  "evaluation": {
+    "pythia_judge": "output"
+  },
+  "labels": [
+    "Robbe Wulgaert",
+    "Python", 
+    "Python in de Klas", 
+    "Inleiding",
+    "Sint-Lievenscollege Gent",
+    "Dieter Vanderfaeillie"
+  ],
+  "type": "content",
+  "access": "public",
+  "internals": {
+    "token": "27HVa2RF5hbARIP7bV8cc68Xd7FICPFqNUigPMPB22AfxdkZtjTRM4A5HI-jgkuF",
+    "_info": "These fields are used for internal bookkeeping in Dodona, please do not change them."
+  }
+}

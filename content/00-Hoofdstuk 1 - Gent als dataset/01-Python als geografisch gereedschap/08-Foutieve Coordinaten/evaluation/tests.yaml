@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Stadhuis Gent: geldig
+        Brussel-Centraal: fout
+        UZ Gent: geldig
+        Zeehaven foutpunt: fout

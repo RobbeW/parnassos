@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Gravensteen: dichtbij
+        Gent-Sint-Pieters: matig
+        UZ Gent: ver
+        Blaarmeersen: ver

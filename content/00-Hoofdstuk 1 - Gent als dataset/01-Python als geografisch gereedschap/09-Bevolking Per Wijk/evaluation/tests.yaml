@@ -1,0 +1,7 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Totale bevolking: 101000
+        Grootste wijk: Sint-Amandsberg
+        Wijken boven 20000: 3
