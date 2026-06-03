@@ -1,14 +1,48 @@
 {
-  "generatedAt": "2026-06-03T12:46:34.024Z",
+  "generatedAt": "2026-06-03T17:05:46.615Z",
   "sourceRoot": "content",
   "totals": {
-    "chapters": 1,
-    "subchapters": 1,
-    "exercises": 14,
-    "evaluableExercises": 10,
-    "theoryItems": 4
+    "chapters": 3,
+    "subchapters": 3,
+    "exercises": 21,
+    "evaluableExercises": 13,
+    "theoryItems": 8
   },
   "chapters": [
+    {
+      "id": "00-Inleiding",
+      "title": "Inleiding",
+      "order": 0,
+      "path": "content/00-Inleiding",
+      "subchapters": [
+        {
+          "id": "00-Inleiding/01-Wegwijs in Parnassos",
+          "title": "Wegwijs in Parnassos",
+          "order": 1,
+          "path": "content/00-Inleiding/01-Wegwijs in Parnassos",
+          "exercises": [
+            {
+              "id": "00-Inleiding/01-Wegwijs in Parnassos/00-Rondleiding Door De Leeromgeving",
+              "title": "Rondleiding door de leeromgeving",
+              "order": 0,
+              "type": "theory",
+              "evaluable": false,
+              "path": "content/00-Inleiding/01-Wegwijs in Parnassos/00-Rondleiding Door De Leeromgeving",
+              "configPath": "content/00-Inleiding/01-Wegwijs in Parnassos/00-Rondleiding Door De Leeromgeving/config.json",
+              "descriptionPath": "content/00-Inleiding/01-Wegwijs in Parnassos/00-Rondleiding Door De Leeromgeving/description/description.nl.md",
+              "testsPath": null,
+              "testsFormat": null,
+              "starterPath": "content/00-Inleiding/01-Wegwijs in Parnassos/00-Rondleiding Door De Leeromgeving/starter/starter.py",
+              "theoryKind": "tour",
+              "theoryPath": "content/00-Inleiding/01-Wegwijs in Parnassos/00-Rondleiding Door De Leeromgeving/theory/theory.json",
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "00-Hoofdstuk 1 - Gent als dataset",
       "title": "Hoofdstuk 1 Gent als dataset",
@@ -35,7 +69,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/00-Van Python naar GIS/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/01-Coordinaten Inlezen Met Csv",
@@ -51,7 +87,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/01-Coordinaten Inlezen Met Csv/starter/starter.py",
               "theoryKind": "steps",
               "theoryPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/01-Coordinaten Inlezen Met Csv/theory/theory.json",
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/01-Gentse Coordinaten Inlezen",
@@ -67,7 +105,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/01-Gentse Coordinaten Inlezen/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/02-Coordinaten Lezen En Omzetten",
@@ -83,7 +123,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/02-Coordinaten Lezen En Omzetten/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/03-Noord Zuid Oost West",
@@ -99,7 +141,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/03-Noord Zuid Oost West/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/04-Afstand Berekenen Met Coordinaten",
@@ -115,7 +159,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/04-Afstand Berekenen Met Coordinaten/starter/starter.py",
               "theoryKind": "steps",
               "theoryPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/04-Afstand Berekenen Met Coordinaten/theory/theory.json",
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/04-Afstand Tot Het Centrum",
@@ -131,7 +177,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/04-Afstand Tot Het Centrum/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/05-Gentse Plaatsen Tellen",
@@ -147,7 +195,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/05-Gentse Plaatsen Tellen/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/06-Dichtbij Of Veraf",
@@ -163,7 +213,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/06-Dichtbij Of Veraf/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/07-Gemiddelde Afstand",
@@ -179,7 +231,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/07-Gemiddelde Afstand/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/08-Coordinaten Controleren Met Grenzen",
@@ -195,7 +249,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/08-Coordinaten Controleren Met Grenzen/starter/starter.py",
               "theoryKind": "steps",
               "theoryPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/08-Coordinaten Controleren Met Grenzen/theory/theory.json",
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/08-Foutieve Coordinaten",
@@ -211,7 +267,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/08-Foutieve Coordinaten/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/09-Bevolking Analyseren Met Tellers",
@@ -227,7 +285,9 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/09-Bevolking Analyseren Met Tellers/starter/starter.py",
               "theoryKind": "steps",
               "theoryPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/09-Bevolking Analyseren Met Tellers/theory/theory.json",
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
             },
             {
               "id": "00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/09-Bevolking Per Wijk",
@@ -243,7 +303,133 @@
               "starterPath": "content/00-Hoofdstuk 1 - Gent als dataset/01-Python als geografisch gereedschap/09-Bevolking Per Wijk/starter/starter.py",
               "theoryKind": null,
               "theoryPath": null,
-              "videoUrl": null
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01-Hoofdstuk 2 - Gent op de kaart",
+      "title": "Hoofdstuk 2 Gent op de kaart",
+      "order": 1,
+      "path": "content/01-Hoofdstuk 2 - Gent op de kaart",
+      "subchapters": [
+        {
+          "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart",
+          "title": "Van tabel naar kaart",
+          "order": 1,
+          "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart",
+          "exercises": [
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/00-Kaartdata Voor Gent",
+              "title": "Kaartdata voor Gent",
+              "order": 0,
+              "type": "theory",
+              "evaluable": false,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/00-Kaartdata Voor Gent",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/00-Kaartdata Voor Gent/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/00-Kaartdata Voor Gent/description/description.nl.md",
+              "testsPath": null,
+              "testsFormat": null,
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/00-Kaartdata Voor Gent/starter/starter.py",
+              "theoryKind": "steps",
+              "theoryPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/00-Kaartdata Voor Gent/theory/theory.json",
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            },
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/01-Kolommen Voor Een Kaart",
+              "title": "Kolommen voor een kaart",
+              "order": 1,
+              "type": "exercise",
+              "evaluable": true,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/01-Kolommen Voor Een Kaart",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/01-Kolommen Voor Een Kaart/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/01-Kolommen Voor Een Kaart/description/description.nl.md",
+              "testsPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/01-Kolommen Voor Een Kaart/evaluation/tests.yaml",
+              "testsFormat": "yaml",
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/01-Kolommen Voor Een Kaart/starter/starter.py",
+              "theoryKind": null,
+              "theoryPath": null,
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            },
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/02-Afstand Als Kaartdata",
+              "title": "Afstand als kaartdata",
+              "order": 2,
+              "type": "theory",
+              "evaluable": false,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/02-Afstand Als Kaartdata",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/02-Afstand Als Kaartdata/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/02-Afstand Als Kaartdata/description/description.nl.md",
+              "testsPath": null,
+              "testsFormat": null,
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/02-Afstand Als Kaartdata/starter/starter.py",
+              "theoryKind": "steps",
+              "theoryPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/02-Afstand Als Kaartdata/theory/theory.json",
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            },
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/03-Afstand Toevoegen Aan Kaartdata",
+              "title": "Afstand toevoegen aan kaartdata",
+              "order": 3,
+              "type": "exercise",
+              "evaluable": true,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/03-Afstand Toevoegen Aan Kaartdata",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/03-Afstand Toevoegen Aan Kaartdata/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/03-Afstand Toevoegen Aan Kaartdata/description/description.nl.md",
+              "testsPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/03-Afstand Toevoegen Aan Kaartdata/evaluation/tests.yaml",
+              "testsFormat": "yaml",
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/03-Afstand Toevoegen Aan Kaartdata/starter/starter.py",
+              "theoryKind": null,
+              "theoryPath": null,
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            },
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/04-Klassen Voor Markers",
+              "title": "Klassen voor markers",
+              "order": 4,
+              "type": "exercise",
+              "evaluable": true,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/04-Klassen Voor Markers",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/04-Klassen Voor Markers/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/04-Klassen Voor Markers/description/description.nl.md",
+              "testsPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/04-Klassen Voor Markers/evaluation/tests.yaml",
+              "testsFormat": "yaml",
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/04-Klassen Voor Markers/starter/starter.py",
+              "theoryKind": null,
+              "theoryPath": null,
+              "videoUrl": null,
+              "colabUrl": null,
+              "colabLabel": null
+            },
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/05-Open De Colab Notebook",
+              "title": "Open de Colab-notebook",
+              "order": 5,
+              "type": "theory",
+              "evaluable": false,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/05-Open De Colab Notebook",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/05-Open De Colab Notebook/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/05-Open De Colab Notebook/description/description.nl.md",
+              "testsPath": null,
+              "testsFormat": null,
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/05-Open De Colab Notebook/starter/starter.py",
+              "theoryKind": "notebook",
+              "theoryPath": null,
+              "videoUrl": null,
+              "colabUrl": "https://colab.research.google.com/",
+              "colabLabel": "Open Colab-notebook (draft)"
             }
           ]
         }

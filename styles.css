@@ -661,10 +661,103 @@ body {
 }
 
 .theory-video,
-.theory-stepper {
+.theory-stepper,
+.notebook-launch {
   margin-top: 1rem;
   border-top: 1px solid #ececf3;
   padding-top: 0.9rem;
+}
+
+.notebook-launch h3 {
+  margin: 0 0 0.35rem;
+  color: var(--brand-purple);
+}
+
+.notebook-launch-note {
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+}
+
+.notebook-launch-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.notebook-read-action {
+  margin-top: 0.85rem;
+}
+
+.tour-intro {
+  margin-top: 1rem;
+  border-top: 1px solid #ececf3;
+  padding-top: 0.9rem;
+}
+
+.tour-intro h3 {
+  margin: 0 0 0.35rem;
+  color: var(--brand-purple);
+}
+
+.tour-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3500;
+  pointer-events: none;
+}
+
+.tour-highlight {
+  position: fixed;
+  border: 3px solid var(--brand-purple);
+  border-radius: 10px;
+  background: rgba(82, 0, 255, 0.08);
+  box-shadow:
+    0 0 0 9999px rgba(18, 15, 28, 0.18),
+    0 14px 40px rgba(82, 0, 255, 0.22);
+  transition: left 260ms ease, top 260ms ease, width 260ms ease, height 260ms ease;
+}
+
+.tour-callout {
+  position: fixed;
+  pointer-events: auto;
+  border: 1px solid rgba(82, 0, 255, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  padding: 0.9rem;
+  box-shadow: 0 18px 48px rgba(32, 22, 64, 0.18);
+  transition: left 260ms ease, top 260ms ease;
+}
+
+.tour-callout h3 {
+  margin: 0 0 0.35rem;
+  color: var(--brand-purple);
+}
+
+.tour-callout p {
+  margin: 0 0 0.75rem;
+}
+
+.tour-status {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.tour-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-highlight,
+  .tour-callout {
+    transition: none;
+  }
 }
 
 .theory-stepper-head {

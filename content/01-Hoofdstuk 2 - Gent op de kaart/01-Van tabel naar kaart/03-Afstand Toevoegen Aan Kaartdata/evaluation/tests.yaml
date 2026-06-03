@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Gent-Sint-Pieters: 2.3 km
+        UZ Gent: 3.3 km
+        Gravensteen: 0.4 km
+        Blaarmeersen: 3.2 km

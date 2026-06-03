@@ -1,0 +1,89 @@
+{
+  "title": "Van rij naar kaartpunt",
+  "summary": [
+    "Elke rij stelt een plaats voor.",
+    "De eerste kolommen beschrijven wat de plaats is.",
+    "Latitude en longitude bepalen waar de marker op de kaart komt.",
+    "Een popup gebruikt tekst uit dezelfde rij."
+  ],
+  "concepts": [
+    "lijst van lijsten",
+    "latitude",
+    "longitude",
+    "popup",
+    "marker"
+  ],
+  "code": [
+    "plaatsen = [",
+    "    [\"Stadhuis Gent\", \"bestuur\", 51.0543, 3.7250],",
+    "    [\"Gent-Sint-Pieters\", \"station\", 51.0362, 3.7102],",
+    "    [\"UZ Gent\", \"ziekenhuis\", 51.0247, 3.7268],",
+    "    [\"Blaarmeersen\", \"park\", 51.0470, 3.6807],",
+    "]",
+    "",
+    "for plaats in plaatsen:",
+    "    naam = plaats[0]",
+    "    soort = plaats[1]",
+    "    lat = plaats[2]",
+    "    lon = plaats[3]",
+    "",
+    "    popup = naam + \" (\" + soort + \")\"",
+    "    print(popup + \" ->\", lat, lon)"
+  ],
+  "steps": [
+    {
+      "title": "Lees de voorbeelddata.",
+      "explanation": "De tabel is nog gewoon Python: een lijst met rijen. Elke rij is opnieuw een lijst.",
+      "lines": [1, 2, 3, 4, 5, 6],
+      "variables": [
+        ["plaatsen", "4 rijen", "Vier plaatsen in Gent."],
+        ["plaats[0]", "naam", "Tekst voor de marker."],
+        ["plaats[2]", "latitude", "Noord-zuidpositie."]
+      ]
+    },
+    {
+      "title": "Overloop elke rij.",
+      "explanation": "De for-lus geeft telkens één plaats aan de variabele plaats.",
+      "lines": [8],
+      "variables": [
+        ["plaats", "[\"Stadhuis Gent\", \"bestuur\", 51.0543, 3.7250]", "De eerste rij in de lus."]
+      ]
+    },
+    {
+      "title": "Haal de kolommen uit de rij.",
+      "explanation": "Voor een kaart hebben we vooral naam, latitude en longitude nodig. Het type gebruiken we straks voor tekst of kleur.",
+      "lines": [9, 10, 11, 12],
+      "variables": [
+        ["naam", "Stadhuis Gent", "plaats[0]."],
+        ["soort", "bestuur", "plaats[1]."],
+        ["lat", "51.0543", "plaats[2]."],
+        ["lon", "3.7250", "plaats[3]."]
+      ]
+    },
+    {
+      "title": "Maak tekst voor een popup.",
+      "explanation": "Een marker op een kaart kan extra tekst tonen. Die tekst bouwen we hier op met naam en soort.",
+      "lines": [14],
+      "variables": [
+        ["popup", "Stadhuis Gent (bestuur)", "Tekst voor de marker."]
+      ]
+    },
+    {
+      "title": "Controleer de uitvoer.",
+      "explanation": "In Colab wordt dit later een marker. Hier controleren we eerst of de juiste gegevens uit elke rij komen.",
+      "lines": [15],
+      "variables": [
+        ["uitvoer", "4 regels", "Elke regel bevat popuptekst en coördinaten."]
+      ],
+      "output": "Stadhuis Gent (bestuur) -> 51.0543 3.725\nGent-Sint-Pieters (station) -> 51.0362 3.7102\nUZ Gent (ziekenhuis) -> 51.0247 3.7268\nBlaarmeersen (park) -> 51.047 3.6807"
+    }
+  ],
+  "traceTitle": "Voorbeelddata",
+  "traceColumns": ["naam", "type", "lat", "lon"],
+  "traceRows": [
+    ["Stadhuis Gent", "bestuur", "51.0543", "3.7250"],
+    ["Gent-Sint-Pieters", "station", "51.0362", "3.7102"],
+    ["UZ Gent", "ziekenhuis", "51.0247", "3.7268"],
+    ["Blaarmeersen", "park", "51.0470", "3.6807"]
+  ]
+}

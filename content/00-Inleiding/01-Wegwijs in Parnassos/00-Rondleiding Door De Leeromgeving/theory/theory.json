@@ -1,0 +1,46 @@
+{
+  "title": "Wegwijs in Parnassos",
+  "intro": "Volg de paarse markering. Je kan de rondleiding stap voor stap doorlopen.",
+  "steps": [
+    {
+      "selector": "#exercise-progress",
+      "title": "Voortgang",
+      "text": "Bovenaan zie je de onderdelen van het huidige subhoofdstuk. Een paars rondje is theorie. Een groen rondje is klaar."
+    },
+    {
+      "selector": "#assignment-markdown",
+      "title": "Opdracht en uitleg",
+      "text": "Rechts lees je de opdracht, theorie of checklist. Begin altijd hier voor je code aanpast."
+    },
+    {
+      "selector": ".CodeMirror",
+      "title": "Code-editor",
+      "text": "Links schrijf je Python. In echte oefeningen vul je de lege plekken aan of pas je bestaande code aan."
+    },
+    {
+      "selector": "#run-code",
+      "title": "Uitvoeren",
+      "text": "Met deze knop voer je je code uit. Bij oefeningen worden daarna ook de tests gecontroleerd."
+    },
+    {
+      "selector": "#console-output",
+      "title": "Uitvoer",
+      "text": "Hier verschijnt wat Python print. Vergelijk dit met de verwachte uitvoer in de opdracht."
+    },
+    {
+      "selector": ".runtime-input-wrap",
+      "title": "Invoer",
+      "text": "Sommige oefeningen gebruiken input(). Dan typ je hier je antwoord en druk je op Enter of Verzend."
+    },
+    {
+      "selector": "#menu-tab",
+      "title": "Menu",
+      "text": "Via het menu ga je naar andere hoofdstukken, oefeningen, theorie en Colab-notebooks."
+    },
+    {
+      "selector": "#help-btn",
+      "title": "Formularium",
+      "text": "Met het vraagteken open je het Python-formularium. Gebruik het wanneer je twijfelt aan syntax of een bouwsteen."
+    }
+  ]
+}

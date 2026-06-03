@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Gravensteen: groen
+        Gent-Sint-Pieters: oranje
+        UZ Gent: paars
+        Blaarmeersen: paars

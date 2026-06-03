@@ -57,7 +57,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-19";
+const APP_VERSION = "20260603-22";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -105,6 +105,7 @@ const state = {
   inputPumpTimer: null,
   backendInputBridgeInstalled: false,
   liveOutputTimer: null,
+  activeTourCleanup: null,
   toastTimer: null,
   timerRunning: false,
   timerLastStart: 0,
@@ -1271,6 +1272,204 @@ function renderTheoryVideo(container, exercise) {
   container.appendChild(wrap);
 }
 
+function renderTheoryNotebook(container, exercise) {
+  const wrap = createUiElement("section", "notebook-launch");
+  wrap.appendChild(createUiElement("h3", "", "Colab-notebook"));
+  wrap.appendChild(
+    createUiElement(
+      "p",
+      "notebook-launch-note",
+      "Open de notebook wanneer de leerkracht aangeeft dat je naar Colab mag gaan."
+    )
+  );
+
+  const colabUrl = exercise && exercise.colabUrl ? exercise.colabUrl : "";
+  if (colabUrl) {
+    const link = createUiElement(
+      "a",
+      "brand-btn primary notebook-launch-button",
+      exercise.colabLabel || "Open Colab-notebook"
+    );
+    link.href = colabUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.addEventListener("click", () => {
+      markTheoryItemCompleted(exercise, { toast: false });
+    });
+    wrap.appendChild(link);
+  } else {
+    const button = createUiElement(
+      "button",
+      "brand-btn notebook-launch-button",
+      exercise && exercise.colabLabel ? exercise.colabLabel : "Colab-link volgt"
+    );
+    button.type = "button";
+    button.disabled = true;
+    wrap.appendChild(button);
+  }
+
+  const readWrap = createUiElement("div", "notebook-read-action");
+  appendTheoryReadButton(readWrap, exercise);
+  wrap.appendChild(readWrap);
+  container.appendChild(wrap);
+}
+
+function clearActiveTour() {
+  if (typeof state.activeTourCleanup === "function") {
+    state.activeTourCleanup();
+    state.activeTourCleanup = null;
+  }
+  const overlay = document.querySelector(".tour-overlay");
+  if (overlay) {
+    overlay.remove();
+  }
+  document.body.classList.remove("tour-active");
+}
+
+function renderTheoryTour(container, exercise, tour) {
+  clearActiveTour();
+
+  const steps = Array.isArray(tour && tour.steps) ? tour.steps : [];
+  if (steps.length === 0) {
+    appendTheoryReadButton(container, exercise);
+    return;
+  }
+
+  let stepIndex = 0;
+  const intro = createUiElement("section", "tour-intro");
+  intro.appendChild(createUiElement("h3", "", tour.title || "Rondleiding"));
+  intro.appendChild(
+    createUiElement(
+      "p",
+      "",
+      tour.intro || "Doorloop de belangrijkste onderdelen van de leeromgeving."
+    )
+  );
+  const startButton = createUiElement("button", "brand-btn primary", "Start rondleiding");
+  startButton.type = "button";
+  intro.appendChild(startButton);
+  container.appendChild(intro);
+
+  const overlay = createUiElement("div", "tour-overlay");
+  overlay.setAttribute("aria-live", "polite");
+  const highlight = createUiElement("div", "tour-highlight");
+  const callout = createUiElement("div", "tour-callout");
+  const calloutTitle = createUiElement("h3", "", "");
+  const calloutText = createUiElement("p", "", "");
+  const status = createUiElement("span", "tour-status", "");
+  const controls = createUiElement("div", "tour-controls");
+  const prevButton = createUiElement("button", "brand-btn", "Vorige");
+  const nextButton = createUiElement("button", "brand-btn primary", "Volgende");
+  const skipButton = createUiElement("button", "brand-btn", "Overslaan");
+  prevButton.type = "button";
+  nextButton.type = "button";
+  skipButton.type = "button";
+  controls.append(prevButton, nextButton, skipButton);
+  callout.append(calloutTitle, calloutText, status, controls);
+  overlay.append(highlight, callout);
+
+  function getStepTarget(step) {
+    if (!step || !step.selector) {
+      return ui.assignmentMarkdown || document.body;
+    }
+    return document.querySelector(step.selector) || ui.assignmentMarkdown || document.body;
+  }
+
+  function positionTour() {
+    const step = steps[stepIndex];
+    const target = getStepTarget(step);
+    const firstRect = target.getBoundingClientRect();
+    if (
+      target !== document.body &&
+      typeof target.scrollIntoView === "function" &&
+      (firstRect.top < 0 ||
+        firstRect.left < 0 ||
+        firstRect.bottom > window.innerHeight ||
+        firstRect.right > window.innerWidth)
+    ) {
+      target.scrollIntoView({ block: "center", inline: "center", behavior: "auto" });
+    }
+    const rect = target.getBoundingClientRect();
+    const margin = 8;
+    const left = Math.max(8, rect.left - margin);
+    const top = Math.max(8, rect.top - margin);
+    const width = Math.min(window.innerWidth - left - 8, rect.width + margin * 2);
+    const height = Math.min(window.innerHeight - top - 8, rect.height + margin * 2);
+
+    highlight.style.left = `${left}px`;
+    highlight.style.top = `${top}px`;
+    highlight.style.width = `${Math.max(48, width)}px`;
+    highlight.style.height = `${Math.max(36, height)}px`;
+
+    const calloutWidth = Math.min(340, window.innerWidth - 24);
+    const preferredLeft = Math.min(
+      Math.max(12, left + width + 14),
+      window.innerWidth - calloutWidth - 12
+    );
+    const belowTop = top + height + 12;
+    const preferredTop =
+      belowTop + 180 < window.innerHeight
+        ? belowTop
+        : Math.max(12, Math.min(top, window.innerHeight - 220));
+
+    callout.style.width = `${calloutWidth}px`;
+    callout.style.left = `${preferredLeft}px`;
+    callout.style.top = `${preferredTop}px`;
+  }
+
+  function renderStep() {
+    const step = steps[stepIndex];
+    calloutTitle.textContent = step.title || `Stap ${stepIndex + 1}`;
+    calloutText.textContent = step.text || "";
+    status.textContent = `Stap ${stepIndex + 1} van ${steps.length}`;
+    prevButton.disabled = stepIndex === 0;
+    nextButton.textContent = stepIndex === steps.length - 1 ? "Klaar" : "Volgende";
+    positionTour();
+  }
+
+  function finishTour(markComplete = true) {
+    clearActiveTour();
+    if (markComplete) {
+      markTheoryItemCompleted(exercise);
+    }
+  }
+
+  function startTour() {
+    clearActiveTour();
+    closeMenu();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    document.body.appendChild(overlay);
+    document.body.classList.add("tour-active");
+    state.activeTourCleanup = () => {
+      window.removeEventListener("resize", positionTour);
+      window.removeEventListener("scroll", positionTour, true);
+      overlay.remove();
+      document.body.classList.remove("tour-active");
+    };
+    window.addEventListener("resize", positionTour);
+    window.addEventListener("scroll", positionTour, true);
+    stepIndex = 0;
+    renderStep();
+  }
+
+  startButton.addEventListener("click", startTour);
+  prevButton.addEventListener("click", () => {
+    stepIndex = Math.max(0, stepIndex - 1);
+    renderStep();
+  });
+  nextButton.addEventListener("click", () => {
+    if (stepIndex >= steps.length - 1) {
+      finishTour(true);
+      return;
+    }
+    stepIndex += 1;
+    renderStep();
+  });
+  skipButton.addEventListener("click", () => finishTour(false));
+
+  window.requestAnimationFrame(startTour);
+}
+
 function getTheoryStepLineNumbers(step) {
   return [...new Set(Array.isArray(step && step.lines) ? step.lines : [])]
     .map((lineNumber) => Number(lineNumber))
@@ -1455,6 +1654,27 @@ async function enhanceTheoryAssignment(exercise, renderToken) {
     return;
   }
 
+  if (exercise.theoryKind === "notebook" || exercise.theoryKind === "colab") {
+    renderTheoryNotebook(ui.assignmentMarkdown, exercise);
+    return;
+  }
+
+  if (exercise.theoryKind === "tour" && exercise.theoryPath) {
+    let tour = null;
+    try {
+      tour = await fetchJsonFile(exercise.theoryPath);
+    } catch {
+      tour = null;
+    }
+    if (renderToken !== state.assignmentRenderToken) {
+      return;
+    }
+    if (tour) {
+      renderTheoryTour(ui.assignmentMarkdown, exercise, tour);
+      return;
+    }
+  }
+
   if (exercise.theoryKind === "steps" && exercise.theoryPath) {
     let theory = null;
     try {
@@ -1510,6 +1730,7 @@ async function resolveStarterCode(exercise) {
 }
 
 async function renderAssignmentInfo() {
+  clearActiveTour();
   const chapter = getCurrentChapter();
   const subchapter = getCurrentSubchapter();
   const exercise = getCurrentExercise();
@@ -1920,6 +2141,8 @@ function normalizeCatalog(rawCatalog) {
                 theoryKind: (exercise && exercise.theoryKind) || null,
                 theoryPath: (exercise && exercise.theoryPath) || null,
                 videoUrl: (exercise && exercise.videoUrl) || null,
+                colabUrl: (exercise && exercise.colabUrl) || null,
+                colabLabel: (exercise && exercise.colabLabel) || null,
               };
             })
             .filter(Boolean);

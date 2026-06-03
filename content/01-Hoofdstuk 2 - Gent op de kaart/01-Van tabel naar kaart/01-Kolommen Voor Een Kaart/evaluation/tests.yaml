@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Stadhuis Gent | bestuur | 51.0543, 3.725
+        Gent-Sint-Pieters | station | 51.0362, 3.7102
+        UZ Gent | ziekenhuis | 51.0247, 3.7268
+        Blaarmeersen | park | 51.047, 3.6807

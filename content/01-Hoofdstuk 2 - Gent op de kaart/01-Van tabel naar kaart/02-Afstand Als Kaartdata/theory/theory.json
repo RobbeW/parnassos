@@ -1,0 +1,91 @@
+{
+  "title": "Afstand toevoegen aan een plaats",
+  "summary": [
+    "Een kaartpunt kan meer bevatten dan naam en coördinaten.",
+    "We hergebruiken de afstandsberekening uit hoofdstuk 1.",
+    "De afstand wordt een extra waarde in de rij.",
+    "Die extra waarde kan later in Colab op de kaart verschijnen."
+  ],
+  "concepts": [
+    "math.sqrt()",
+    "afstand",
+    "kaartdata",
+    "extra kolom"
+  ],
+  "code": [
+    "import math",
+    "",
+    "centrum_lat = 51.0543",
+    "centrum_lon = 3.7250",
+    "",
+    "plaats = [\"Blaarmeersen\", \"park\", 51.0470, 3.6807]",
+    "",
+    "naam = plaats[0]",
+    "soort = plaats[1]",
+    "lat = plaats[2]",
+    "lon = plaats[3]",
+    "",
+    "dy = (lat - centrum_lat) * 111",
+    "dx = (lon - centrum_lon) * 70",
+    "afstand = round(math.sqrt(dx * dx + dy * dy), 1)",
+    "",
+    "kaart_rij = [naam, soort, lat, lon, afstand]",
+    "",
+    "print(kaart_rij)"
+  ],
+  "steps": [
+    {
+      "title": "Vertrek van een kaartpunt.",
+      "explanation": "De rij bevat naam, type, latitude en longitude.",
+      "lines": [3, 4, 6],
+      "variables": [
+        ["centrum", "Stadhuis Gent", "Referentiepunt."],
+        ["plaats", "Blaarmeersen", "Rij die we uitbreiden."]
+      ]
+    },
+    {
+      "title": "Lees de kolommen.",
+      "explanation": "We halen dezelfde kolommen uit de rij als bij de vorige theorie.",
+      "lines": [8, 9, 10, 11],
+      "variables": [
+        ["naam", "Blaarmeersen", "plaats[0]."],
+        ["soort", "park", "plaats[1]."],
+        ["lat", "51.0470", "plaats[2]."],
+        ["lon", "3.6807", "plaats[3]."]
+      ]
+    },
+    {
+      "title": "Bereken dx en dy.",
+      "explanation": "Latitude en longitude zetten we opnieuw om naar een ruwe afstand in kilometer.",
+      "lines": [13, 14],
+      "variables": [
+        ["dy", "-0.8103", "Blaarmeersen ligt zuidelijker dan het centrum."],
+        ["dx", "-3.101", "Blaarmeersen ligt westelijker dan het centrum."]
+      ]
+    },
+    {
+      "title": "Bereken de afstand.",
+      "explanation": "Met Pythagoras maken we van dx en dy één afstand.",
+      "lines": [15],
+      "variables": [
+        ["afstand", "3.2", "Afgerond op 1 cijfer na de komma."]
+      ]
+    },
+    {
+      "title": "Maak een uitgebreidere rij.",
+      "explanation": "De nieuwe kaart_rij bevat nu ook afstand. Dat is handig voor popuptekst of marker-kleur.",
+      "lines": [17, 19],
+      "variables": [
+        ["kaart_rij", "[naam, soort, lat, lon, afstand]", "De afstand is een extra kolom."]
+      ],
+      "output": "['Blaarmeersen', 'park', 51.047, 3.6807, 3.2]"
+    }
+  ],
+  "traceTitle": "Afstandsberekening",
+  "traceColumns": ["waarde", "berekening", "resultaat"],
+  "traceRows": [
+    ["dy", "(51.0470 - 51.0543) * 111", "-0.8103"],
+    ["dx", "(3.6807 - 3.7250) * 70", "-3.101"],
+    ["afstand", "sqrt(dx * dx + dy * dy)", "3.2"]
+  ]
+}
