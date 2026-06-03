@@ -57,7 +57,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-17";
+const APP_VERSION = "20260603-18";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -1334,17 +1334,6 @@ function renderTheoryTrace(table, theory) {
   table.appendChild(tbody);
 }
 
-function renderTheoryMistakes(container, theory) {
-  clearNode(container);
-  const mistakes = Array.isArray(theory.mistakes) ? theory.mistakes : [];
-  mistakes.forEach(([mistake, correction]) => {
-    const item = createUiElement("div", "theory-mistake");
-    item.appendChild(createUiElement("strong", "", mistake));
-    item.appendChild(createUiElement("span", "", correction));
-    container.appendChild(item);
-  });
-}
-
 function renderTheoryStepper(container, exercise, theory) {
   const steps = Array.isArray(theory && theory.steps) ? theory.steps : [];
   const codeLines = Array.isArray(theory && theory.code) ? theory.code : [];
@@ -1366,12 +1355,6 @@ function renderTheoryStepper(container, exercise, theory) {
     const summary = createUiElement("ul", "theory-summary");
     theory.summary.forEach((item) => summary.appendChild(createUiElement("li", "", item)));
     wrap.appendChild(summary);
-  }
-
-  if (Array.isArray(theory.concepts) && theory.concepts.length > 0) {
-    const concepts = createUiElement("div", "theory-concepts");
-    theory.concepts.forEach((concept) => concepts.appendChild(createUiElement("span", "theory-chip", concept)));
-    wrap.appendChild(concepts);
   }
 
   const stepButtons = createUiElement("div", "theory-step-buttons");
@@ -1424,21 +1407,6 @@ function renderTheoryStepper(container, exercise, theory) {
   renderTheoryTrace(traceTable, theory);
   traceDetails.appendChild(traceTable);
   wrap.appendChild(traceDetails);
-
-  const mistakes = createUiElement("div", "theory-mistakes");
-  renderTheoryMistakes(mistakes, theory);
-  if (mistakes.childElementCount > 0) {
-    const mistakeDetails = createUiElement("details", "theory-extra");
-    mistakeDetails.appendChild(createUiElement("summary", "", "Veelgemaakte fouten"));
-    mistakeDetails.appendChild(mistakes);
-    wrap.appendChild(mistakeDetails);
-  }
-
-  const fullCodeDetails = createUiElement("details", "theory-extra");
-  fullCodeDetails.appendChild(createUiElement("summary", "", "Volledige demo-code"));
-  const fullCode = createUiElement("pre", "theory-full-code", codeLines.join("\n"));
-  fullCodeDetails.appendChild(fullCode);
-  wrap.appendChild(fullCodeDetails);
 
   function selectStep(nextIndex) {
     stepIndex = Math.min(Math.max(nextIndex, 0), steps.length - 1);
