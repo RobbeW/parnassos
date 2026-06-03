@@ -56,7 +56,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-1";
+const APP_VERSION = "20260603-2";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -117,7 +117,7 @@ const PAPYROS_MODULE_URL = `https://unpkg.com/@dodona/papyros@${PAPYROS_VERSION}
 const PAPYROS_BACKEND_MANAGER_URL = `https://unpkg.com/@dodona/papyros@${PAPYROS_VERSION}/dist/communication/BackendManager.js?module`;
 const PAPYROS_BACKEND_MANAGER_FALLBACK_URL = `https://cdn.jsdelivr.net/npm/@dodona/papyros@${PAPYROS_VERSION}/dist/communication/BackendManager.js/+esm`;
 const SYNC_MESSAGE_MODULE_URL = "https://esm.sh/sync-message@0.0.12/es2022/sync-message.bundle.mjs";
-const COMLINK_BRIDGE_MODULE_URL = "https://esm.sh/comlink@4.4.2/es2022/comlink.bundle.mjs";
+const COMLINK_BRIDGE_MODULE_URL = "https://esm.sh/comlink?target=es2022";
 const PYTHON_WORKER_FILENAME = "papyros-python-worker.js";
 const JAVASCRIPT_WORKER_FILENAME = "papyros-javascript-worker.js";
 let papyrosModulePromise = null;
