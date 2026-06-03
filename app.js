@@ -52,11 +52,12 @@ const STORAGE = {
   selection: "pik-selection",
   evalStatus: "pik-eval",
   starterVersion: "pik-starter-version",
+  theoryStep: "pik-theory-step",
   snapshotsPrefix: "pik-snapshots",
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-14";
+const APP_VERSION = "20260603-17";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -160,6 +161,18 @@ function shouldRefreshStoredStarter(storedCode, starterCode, exercise) {
   if (isOutdatedFirstExerciseStarter(storedCode, exercise)) {
     return true;
   }
+  if (isOutdatedGentseCoordinatenStarter(storedCode, exercise)) {
+    return true;
+  }
+  if (isOutdatedAfstandStarter(storedCode, exercise)) {
+    return true;
+  }
+  if (isOutdatedFoutieveCoordinatenStarter(storedCode, exercise)) {
+    return true;
+  }
+  if (isOutdatedBevolkingStarter(storedCode, exercise)) {
+    return true;
+  }
   if (!hasSectionPlaceholders(starterCode) || hasSectionPlaceholders(storedCode)) {
     return false;
   }
@@ -189,6 +202,59 @@ function isOutdatedFirstExerciseStarter(storedCode, exercise) {
     code.includes('aantal_plaatsen = int(input("Aantal plaatsen: "))') &&
     code.includes('print("Onderzoeksgebied:", ...)') &&
     code.includes('print("Centrum:", ..., ...)')
+  );
+}
+
+function isOutdatedGentseCoordinatenStarter(storedCode, exercise) {
+  const exerciseId = String((exercise && exercise.id) || "");
+  if (!exerciseId.endsWith("/01-Gentse Coordinaten Inlezen")) {
+    return false;
+  }
+  const code = String(storedCode || "");
+  return (
+    code.includes("# TODO 1: haal de hekjes weg zodat de imports actief worden.") ||
+    code.includes("# import csv") ||
+    code.includes("# TODO 7: print de naam en het type.")
+  );
+}
+
+function isOutdatedAfstandStarter(storedCode, exercise) {
+  const exerciseId = String((exercise && exercise.id) || "");
+  if (!exerciseId.endsWith("/04-Afstand Tot Het Centrum")) {
+    return false;
+  }
+  const code = String(storedCode || "");
+  return (
+    code.includes("# TODO: importeer math.") ||
+    (code.includes("# TODO: bereken dy en dx in kilometer.") &&
+      code.includes("dy = 0") &&
+      code.includes("dx = 0")) ||
+    code.includes("# TODO: bereken de afstand met math.sqrt().")
+  );
+}
+
+function isOutdatedFoutieveCoordinatenStarter(storedCode, exercise) {
+  const exerciseId = String((exercise && exercise.id) || "");
+  if (!exerciseId.endsWith("/08-Foutieve Coordinaten")) {
+    return false;
+  }
+  const code = String(storedCode || "");
+  return (
+    code.includes("# TODO: controleer of lat en lon binnen de grenzen vallen.") ||
+    code.includes("geldig = False")
+  );
+}
+
+function isOutdatedBevolkingStarter(storedCode, exercise) {
+  const exerciseId = String((exercise && exercise.id) || "");
+  if (!exerciseId.endsWith("/09-Bevolking Per Wijk")) {
+    return false;
+  }
+  const code = String(storedCode || "");
+  return (
+    code.includes("# TODO: tel bevolking op bij totaal.") ||
+    code.includes("# TODO: controleer of dit de grootste wijk tot nu toe is.") ||
+    code.includes("# TODO: tel wijken met meer dan 20000 inwoners.")
   );
 }
 
@@ -1082,6 +1148,367 @@ function renderAssignmentMarkdown(markdown, basePath = null) {
   enhanceRenderedAssignmentMedia(ui.assignmentMarkdown, basePath);
 }
 
+function createUiElement(tag, className = "", text = null) {
+  const element = document.createElement(tag);
+  if (className) {
+    element.className = className;
+  }
+  if (text !== null && text !== undefined) {
+    element.textContent = String(text);
+  }
+  return element;
+}
+
+function clearNode(node) {
+  if (!node) {
+    return;
+  }
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
+  }
+}
+
+function normalizeYouTubeEmbedUrl(url) {
+  if (!url) {
+    return "";
+  }
+  try {
+    const parsed = new URL(url, window.location.href);
+    let videoId = "";
+    if (parsed.hostname.includes("youtu.be")) {
+      videoId = parsed.pathname.replace(/^\/+/, "").split("/")[0] || "";
+    } else if (parsed.hostname.includes("youtube.com")) {
+      videoId = parsed.searchParams.get("v") || "";
+      if (!videoId && parsed.pathname.includes("/embed/")) {
+        videoId = parsed.pathname.split("/embed/")[1].split("/")[0] || "";
+      }
+    }
+    return videoId ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}` : "";
+  } catch {
+    return "";
+  }
+}
+
+function markTheoryItemCompleted(exercise, options = {}) {
+  if (!exercise || !exercise.id) {
+    return;
+  }
+  const previous = getExerciseEvalStatus(exercise.id);
+  setExerciseEvalStatus(exercise.id, "success");
+  renderProgress();
+  renderChapterMenu();
+  if (options.toast !== false && previous !== "success") {
+    showToast("Theorie gemarkeerd als gelezen.", true);
+  }
+}
+
+function getStoredTheoryStepIndex(exerciseId, totalSteps) {
+  const raw = getStoredInt(toScopedStorageKey(STORAGE.theoryStep, exerciseId));
+  if (!Number.isFinite(raw)) {
+    return 0;
+  }
+  return Math.min(Math.max(raw, 0), Math.max(totalSteps - 1, 0));
+}
+
+function storeTheoryStepIndex(exercise, stepIndex, totalSteps) {
+  if (!exercise || !exercise.id) {
+    return;
+  }
+  const safeIndex = Math.min(Math.max(stepIndex, 0), Math.max(totalSteps - 1, 0));
+  localStorage.setItem(toScopedStorageKey(STORAGE.theoryStep, exercise.id), String(safeIndex));
+  if (safeIndex >= totalSteps - 1 && totalSteps > 0) {
+    markTheoryItemCompleted(exercise);
+  }
+}
+
+function appendTheoryReadButton(container, exercise) {
+  const wrap = createUiElement("div", "theory-read-actions");
+  const status = getExerciseEvalStatus(exercise && exercise.id);
+  const button = createUiElement(
+    "button",
+    "brand-btn theory-read-btn",
+    status === "success" ? "Gelezen" : "Markeer als gelezen"
+  );
+  button.type = "button";
+  button.disabled = status === "success";
+  button.addEventListener("click", () => {
+    markTheoryItemCompleted(exercise);
+    button.textContent = "Gelezen";
+    button.disabled = true;
+  });
+  wrap.appendChild(button);
+  container.appendChild(wrap);
+}
+
+function renderTheoryVideo(container, exercise) {
+  const videoUrl = exercise && exercise.videoUrl ? exercise.videoUrl : "";
+  const embedUrl = normalizeYouTubeEmbedUrl(videoUrl);
+  const wrap = createUiElement("section", "theory-video");
+  const title = createUiElement("h3", "", "Uitlegvideo");
+  wrap.appendChild(title);
+
+  if (embedUrl) {
+    const iframe = document.createElement("iframe");
+    iframe.src = embedUrl;
+    iframe.title = exercise.title || "Uitlegvideo";
+    iframe.loading = "lazy";
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    iframe.className = "assignment-media-iframe";
+    wrap.appendChild(iframe);
+  } else if (videoUrl) {
+    const link = createUiElement("a", "assignment-media-link", "Open de video");
+    link.href = videoUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    wrap.appendChild(link);
+  } else {
+    wrap.appendChild(createUiElement("p", "", "Er is nog geen video gekoppeld aan deze theorie."));
+  }
+
+  appendTheoryReadButton(wrap, exercise);
+  container.appendChild(wrap);
+}
+
+function getTheoryStepLineNumbers(step) {
+  return [...new Set(Array.isArray(step && step.lines) ? step.lines : [])]
+    .map((lineNumber) => Number(lineNumber))
+    .filter((lineNumber) => Number.isInteger(lineNumber) && lineNumber > 0)
+    .sort((a, b) => a - b);
+}
+
+function renderTheoryCodeLines(tbody, codeLines, step) {
+  clearNode(tbody);
+  const lineNumbers = getTheoryStepLineNumbers(step);
+  lineNumbers.forEach((lineNumber) => {
+    const row = document.createElement("tr");
+    const numberCell = createUiElement("td", "theory-line-no", String(lineNumber));
+    const codeCell = createUiElement("td", "theory-line-code", codeLines[lineNumber - 1] || " ");
+    row.append(numberCell, codeCell);
+    tbody.appendChild(row);
+  });
+}
+
+function renderTheoryVariables(tbody, variables) {
+  clearNode(tbody);
+  const rows = Array.isArray(variables) ? variables : [];
+  if (rows.length === 0) {
+    const row = document.createElement("tr");
+    const cell = createUiElement("td", "", "Nog geen variabelen op dit punt.");
+    cell.colSpan = 3;
+    row.appendChild(cell);
+    tbody.appendChild(row);
+    return;
+  }
+
+  rows.forEach(([name, value, note]) => {
+    const row = document.createElement("tr");
+    row.appendChild(createUiElement("td", "", name));
+    const valueCell = document.createElement("td");
+    valueCell.appendChild(createUiElement("code", "", value));
+    row.appendChild(valueCell);
+    row.appendChild(createUiElement("td", "", note));
+    tbody.appendChild(row);
+  });
+}
+
+function renderTheoryTrace(table, theory) {
+  clearNode(table);
+  if (!Array.isArray(theory.traceColumns) || !Array.isArray(theory.traceRows)) {
+    return;
+  }
+
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  theory.traceColumns.forEach((column) => headRow.appendChild(createUiElement("th", "", column)));
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  theory.traceRows.forEach((rowValues) => {
+    const row = document.createElement("tr");
+    (rowValues || []).forEach((value) => row.appendChild(createUiElement("td", "", value)));
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+}
+
+function renderTheoryMistakes(container, theory) {
+  clearNode(container);
+  const mistakes = Array.isArray(theory.mistakes) ? theory.mistakes : [];
+  mistakes.forEach(([mistake, correction]) => {
+    const item = createUiElement("div", "theory-mistake");
+    item.appendChild(createUiElement("strong", "", mistake));
+    item.appendChild(createUiElement("span", "", correction));
+    container.appendChild(item);
+  });
+}
+
+function renderTheoryStepper(container, exercise, theory) {
+  const steps = Array.isArray(theory && theory.steps) ? theory.steps : [];
+  const codeLines = Array.isArray(theory && theory.code) ? theory.code : [];
+  if (steps.length === 0 || codeLines.length === 0) {
+    appendTheoryReadButton(container, exercise);
+    return;
+  }
+
+  let stepIndex = getStoredTheoryStepIndex(exercise.id, steps.length);
+
+  const wrap = createUiElement("section", "theory-stepper");
+  const head = createUiElement("div", "theory-stepper-head");
+  head.appendChild(createUiElement("h3", "", theory.title || "Stap voor stap"));
+  const status = createUiElement("span", "theory-step-status", "");
+  head.appendChild(status);
+  wrap.appendChild(head);
+
+  if (Array.isArray(theory.summary) && theory.summary.length > 0) {
+    const summary = createUiElement("ul", "theory-summary");
+    theory.summary.forEach((item) => summary.appendChild(createUiElement("li", "", item)));
+    wrap.appendChild(summary);
+  }
+
+  if (Array.isArray(theory.concepts) && theory.concepts.length > 0) {
+    const concepts = createUiElement("div", "theory-concepts");
+    theory.concepts.forEach((concept) => concepts.appendChild(createUiElement("span", "theory-chip", concept)));
+    wrap.appendChild(concepts);
+  }
+
+  const stepButtons = createUiElement("div", "theory-step-buttons");
+  wrap.appendChild(stepButtons);
+
+  const card = createUiElement("article", "theory-step-card");
+  const stepTitle = createUiElement("h4", "", "");
+  const stepExplanation = createUiElement("p", "", "");
+  card.append(stepTitle, stepExplanation);
+  wrap.appendChild(card);
+
+  const codeWrap = createUiElement("div", "theory-code-wrap");
+  const codeTable = createUiElement("table", "theory-code-table");
+  const codeBody = document.createElement("tbody");
+  codeTable.appendChild(codeBody);
+  codeWrap.appendChild(codeTable);
+  wrap.appendChild(codeWrap);
+
+  const controls = createUiElement("div", "theory-controls");
+  const prevButton = createUiElement("button", "brand-btn", "Vorige stap");
+  const nextButton = createUiElement("button", "brand-btn primary", "Volgende stap");
+  prevButton.type = "button";
+  nextButton.type = "button";
+  controls.append(prevButton, nextButton);
+  wrap.appendChild(controls);
+
+  const detailsGrid = createUiElement("div", "theory-details-grid");
+  const variableBlock = createUiElement("div", "theory-detail-block");
+  variableBlock.appendChild(createUiElement("h4", "", "Variabelen"));
+  const variableTable = createUiElement("table", "theory-kv-table");
+  const variableHead = document.createElement("thead");
+  const variableHeadRow = document.createElement("tr");
+  ["Naam", "Waarde", "Waarom?"].forEach((header) => variableHeadRow.appendChild(createUiElement("th", "", header)));
+  variableHead.appendChild(variableHeadRow);
+  const variableBody = document.createElement("tbody");
+  variableTable.append(variableHead, variableBody);
+  variableBlock.appendChild(variableTable);
+
+  const outputBlock = createUiElement("div", "theory-detail-block");
+  outputBlock.appendChild(createUiElement("h4", "", "Uitvoer"));
+  const outputBox = createUiElement("pre", "theory-output-box", "");
+  outputBlock.appendChild(outputBox);
+  detailsGrid.append(variableBlock, outputBlock);
+  wrap.appendChild(detailsGrid);
+
+  const traceDetails = createUiElement("details", "theory-extra");
+  traceDetails.open = true;
+  traceDetails.appendChild(createUiElement("summary", "", theory.traceTitle || "Voorbeeldtrace"));
+  const traceTable = createUiElement("table", "theory-trace-table");
+  renderTheoryTrace(traceTable, theory);
+  traceDetails.appendChild(traceTable);
+  wrap.appendChild(traceDetails);
+
+  const mistakes = createUiElement("div", "theory-mistakes");
+  renderTheoryMistakes(mistakes, theory);
+  if (mistakes.childElementCount > 0) {
+    const mistakeDetails = createUiElement("details", "theory-extra");
+    mistakeDetails.appendChild(createUiElement("summary", "", "Veelgemaakte fouten"));
+    mistakeDetails.appendChild(mistakes);
+    wrap.appendChild(mistakeDetails);
+  }
+
+  const fullCodeDetails = createUiElement("details", "theory-extra");
+  fullCodeDetails.appendChild(createUiElement("summary", "", "Volledige demo-code"));
+  const fullCode = createUiElement("pre", "theory-full-code", codeLines.join("\n"));
+  fullCodeDetails.appendChild(fullCode);
+  wrap.appendChild(fullCodeDetails);
+
+  function selectStep(nextIndex) {
+    stepIndex = Math.min(Math.max(nextIndex, 0), steps.length - 1);
+    storeTheoryStepIndex(exercise, stepIndex, steps.length);
+    renderCurrentStep();
+  }
+
+  function renderCurrentStep() {
+    const step = steps[stepIndex];
+    status.textContent = `Stap ${stepIndex + 1} van ${steps.length}`;
+    stepTitle.textContent = step.title || `Stap ${stepIndex + 1}`;
+    stepExplanation.textContent = step.explanation || "";
+    renderTheoryCodeLines(codeBody, codeLines, step);
+    renderTheoryVariables(variableBody, step.variables || []);
+    outputBox.textContent = step.output || "(Nog geen uitvoer op dit punt.)";
+
+    prevButton.disabled = stepIndex === 0;
+    nextButton.disabled = stepIndex === steps.length - 1;
+    nextButton.textContent = stepIndex === steps.length - 1 ? "Laatste stap" : "Volgende stap";
+
+    Array.from(stepButtons.children).forEach((button, index) => {
+      button.classList.toggle("current", index === stepIndex);
+      button.setAttribute("aria-current", index === stepIndex ? "step" : "false");
+    });
+  }
+
+  steps.forEach((step, index) => {
+    const button = createUiElement("button", "theory-step-jump", String(index + 1));
+    button.type = "button";
+    button.title = step.title || `Stap ${index + 1}`;
+    button.addEventListener("click", () => selectStep(index));
+    stepButtons.appendChild(button);
+  });
+
+  prevButton.addEventListener("click", () => selectStep(stepIndex - 1));
+  nextButton.addEventListener("click", () => selectStep(stepIndex + 1));
+
+  container.appendChild(wrap);
+  renderCurrentStep();
+}
+
+async function enhanceTheoryAssignment(exercise, renderToken) {
+  if (!exercise || exercise.type !== "theory" || !ui.assignmentMarkdown) {
+    return;
+  }
+
+  if (exercise.theoryKind === "video") {
+    renderTheoryVideo(ui.assignmentMarkdown, exercise);
+    return;
+  }
+
+  if (exercise.theoryKind === "steps" && exercise.theoryPath) {
+    let theory = null;
+    try {
+      theory = await fetchJsonFile(exercise.theoryPath);
+    } catch {
+      theory = null;
+    }
+    if (renderToken !== state.assignmentRenderToken) {
+      return;
+    }
+    if (theory) {
+      renderTheoryStepper(ui.assignmentMarkdown, exercise, theory);
+      return;
+    }
+  }
+
+  appendTheoryReadButton(ui.assignmentMarkdown, exercise);
+}
+
 async function fetchTextFile(relativePath) {
   if (!relativePath) {
     return null;
@@ -1095,9 +1522,19 @@ async function fetchTextFile(relativePath) {
   return response.text();
 }
 
+async function fetchJsonFile(relativePath) {
+  const raw = await fetchTextFile(relativePath);
+  if (!raw) {
+    return null;
+  }
+  return JSON.parse(raw);
+}
+
 async function resolveStarterCode(exercise) {
   if (!exercise || !exercise.starterPath) {
-    return DEFAULT_CODE;
+    return exercise && exercise.type === "theory"
+      ? "# Theorie\n# Lees de uitleg rechts.\n"
+      : DEFAULT_CODE;
   }
   try {
     const text = await fetchTextFile(exercise.starterPath);
@@ -1161,6 +1598,7 @@ async function renderAssignmentInfo() {
     markdown && markdown.trim().length > 0 ? markdown.trim() : fallbackMarkdown,
     exercise.descriptionPath
   );
+  await enhanceTheoryAssignment(exercise, renderToken);
 }
 
 function clearOutputPanels() {
@@ -1509,10 +1947,14 @@ function normalizeCatalog(rawCatalog) {
                 type: exercise && exercise.type === "theory" ? "theory" : evaluable ? "exercise" : "theory",
                 evaluable,
                 path: (exercise && exercise.path) || null,
+                configPath: (exercise && exercise.configPath) || null,
                 descriptionPath: (exercise && exercise.descriptionPath) || null,
                 testsPath: (exercise && exercise.testsPath) || null,
                 testsFormat: (exercise && exercise.testsFormat) || null,
                 starterPath: (exercise && exercise.starterPath) || null,
+                theoryKind: (exercise && exercise.theoryKind) || null,
+                theoryPath: (exercise && exercise.theoryPath) || null,
+                videoUrl: (exercise && exercise.videoUrl) || null,
               };
             })
             .filter(Boolean);
@@ -4808,7 +5250,8 @@ function clearAllProgressData() {
       key.startsWith(`${STORAGE.attempts}:`) ||
       key.startsWith(`${STORAGE.workMs}:`) ||
       key.startsWith(`${STORAGE.evalStatus}:`) ||
-      key.startsWith(`${STORAGE.starterVersion}:`);
+      key.startsWith(`${STORAGE.starterVersion}:`) ||
+      key.startsWith(`${STORAGE.theoryStep}:`);
 
     const isGlobalProgressData =
       key === STORAGE.selection ||
@@ -4830,6 +5273,7 @@ async function resetCurrentExerciseProgress() {
   localStorage.setItem(toScopedStorageKey(STORAGE.starterVersion, exerciseId), APP_VERSION);
   localStorage.removeItem(toScopedStorageKey(STORAGE.attempts, exerciseId));
   localStorage.removeItem(toScopedStorageKey(STORAGE.workMs, exerciseId));
+  localStorage.removeItem(toScopedStorageKey(STORAGE.theoryStep, exerciseId));
   if (exercise && exercise.id) {
     setExerciseEvalStatus(exercise.id, null);
     clearSnapshotsForExercise(exercise.id);

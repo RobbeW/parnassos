@@ -651,6 +651,213 @@ body {
   font-size: 0.85rem;
 }
 
+.theory-read-actions,
+.theory-controls,
+.theory-stepper-head,
+.theory-step-buttons,
+.theory-concepts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.theory-video,
+.theory-stepper {
+  margin-top: 1rem;
+  border-top: 1px solid #ececf3;
+  padding-top: 0.9rem;
+}
+
+.theory-stepper-head {
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.theory-stepper h3,
+.theory-step-card h4,
+.theory-detail-block h4 {
+  margin: 0;
+  color: var(--brand-purple);
+}
+
+.theory-step-status {
+  border-radius: 999px;
+  border: 1px solid rgba(82, 0, 255, 0.18);
+  background: #fff;
+  color: var(--brand-purple);
+  padding: 0.32rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.theory-summary {
+  margin: 0 0 0.75rem;
+  padding-left: 1.15rem;
+}
+
+.theory-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(82, 0, 255, 0.18);
+  background: #f7f3ff;
+  color: var(--brand-purple);
+  padding: 0.28rem 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.theory-step-buttons {
+  margin: 0.75rem 0;
+}
+
+.theory-step-jump {
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-purple);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  opacity: 0.72;
+}
+
+.theory-step-jump.current {
+  background: #fff;
+  color: var(--brand-purple);
+  outline: 2px solid var(--brand-purple);
+  opacity: 1;
+}
+
+.theory-step-card {
+  border-left: 4px solid var(--brand-purple);
+  border-radius: 8px;
+  background: #fbfbff;
+  padding: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.theory-step-card p {
+  margin: 0.35rem 0 0;
+}
+
+.theory-code-wrap,
+.theory-full-code,
+.theory-output-box {
+  border-radius: 8px;
+  background: #161820;
+  color: #fff;
+}
+
+.theory-code-wrap {
+  overflow: auto;
+  margin-bottom: 0.8rem;
+}
+
+.theory-code-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.theory-line-no {
+  width: 3.2rem;
+  color: #9aa2ba;
+  text-align: right;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 0.1rem 0.7rem;
+  user-select: none;
+  vertical-align: top;
+}
+
+.theory-line-code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 0.1rem 0.75rem;
+  vertical-align: top;
+}
+
+.theory-controls {
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.theory-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.theory-kv-table,
+.theory-trace-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.45rem;
+  font-size: 0.86rem;
+}
+
+.theory-kv-table th,
+.theory-kv-table td,
+.theory-trace-table th,
+.theory-trace-table td {
+  border-bottom: 1px solid #e6eaf3;
+  padding: 0.42rem 0.48rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.theory-kv-table th,
+.theory-trace-table th {
+  color: #555f76;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.theory-output-box,
+.theory-full-code {
+  margin: 0.45rem 0 0;
+  padding: 0.7rem 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+}
+
+.theory-extra {
+  margin-top: 0.75rem;
+  border: 1px solid #ececf3;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.65rem 0.75rem;
+}
+
+.theory-extra summary {
+  color: var(--brand-purple);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.theory-mistakes {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+}
+
+.theory-mistake {
+  border-left: 4px solid #ff8fa3;
+  border-radius: 7px;
+  background: #fff8fa;
+  padding: 0.55rem 0.65rem;
+}
+
+.theory-mistake strong {
+  display: block;
+  color: #a1142b;
+  margin-bottom: 0.2rem;
+}
+
 .splitter {
   width: 8px;
   min-width: 8px;

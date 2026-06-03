@@ -1,7 +1,7 @@
 # Parnassos
 
 Parnassos is een cursusomgeving voor Python, data en GIS. Leerlingen gebruiken
-Python om geografische vragen te onderzoeken met tabellen, coordinaten, kaarten
+Python om geografische vragen te onderzoeken met tabellen, coördinaten, kaarten
 en lokale data over Gent.
 
 De leeromgeving combineert twee werkvormen:
@@ -17,7 +17,7 @@ De inhoud groeit naar een aparte cursus rond Python en geografisch onderzoek.
 Parnassos ondersteunt leerlingen en lesgevers bij:
 
 - het herhalen van Python in een geografische context;
-- het leren werken met tabellen, coordinaten en eenvoudige datasets;
+- het leren werken met tabellen, coördinaten en eenvoudige datasets;
 - het voorbereiden van Colab-notebooks waarin leerlingen grotere GIS-opdrachten maken;
 - het koppelen van code aan kaart, plaats, afstand, wijk en ruimtelijke vraag.
 
@@ -31,7 +31,7 @@ Parnassos-oefeningen en een grotere Colab-opdracht.
 Voorlopige opbouw:
 
 1. **Gent als dataset**  
-   Python herhalen met Gentse plaatsen, coordinaten, wijken en bevolkingscijfers.
+   Python herhalen met Gentse plaatsen, coördinaten, wijken en bevolkingscijfers.
 
 2. **Van tabel naar kaart**  
    CSV's lezen, dataframes bekijken en kaartlagen opbouwen.
@@ -59,18 +59,19 @@ Dit hoofdstuk bevat een subhoofdstuk:
 01-Python als geografisch gereedschap/
 ```
 
-Daarin staan tien voorbereidingsoefeningen:
+Daarin staan elf onderdelen: een korte theoriekaart en tien voorbereidingsoefeningen.
 
 1. Van Python naar GIS
-2. Gentse Coordinaten Inlezen
-3. Coordinaten Lezen En Omzetten
-4. Noord Zuid Oost West
-5. Afstand Tot Het Centrum
-6. Gentse Plaatsen Tellen
-7. Dichtbij Of Veraf
-8. Gemiddelde Afstand
-9. Foutieve Coordinaten
-10. Bevolking Per Wijk
+2. Coördinaten inlezen met CSV (theorie)
+3. Gentse coördinaten inlezen
+4. Coördinaten lezen en omzetten
+5. Noord, zuid, oost en west
+6. Afstand tot het centrum
+7. Gentse plaatsen tellen
+8. Dichtbij of veraf
+9. Gemiddelde afstand
+10. Foutieve coördinaten
+11. Bevolking per wijk
 
 De map `content/` bevat daarnaast nog overgenomen Delphi-oefeningen. Die zijn
 voorlopig aanwezig als technische basis en referentie. De kern van de
