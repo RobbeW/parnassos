@@ -56,7 +56,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-2";
+const APP_VERSION = "20260603-14";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -100,6 +100,9 @@ const state = {
   inputSwAvailable: false,
   inputSwIssue: "",
   inputChannelBroken: false,
+  inputSendInFlight: false,
+  inputPumpTimer: null,
+  backendInputBridgeInstalled: false,
   liveOutputTimer: null,
   toastTimer: null,
   timerRunning: false,
@@ -114,9 +117,9 @@ const state = {
 
 const PAPYROS_VERSION = "4.0.7";
 const PAPYROS_MODULE_URL = `https://unpkg.com/@dodona/papyros@${PAPYROS_VERSION}/dist/frontend/state/Papyros.js?module`;
-const PAPYROS_BACKEND_MANAGER_URL = `https://unpkg.com/@dodona/papyros@${PAPYROS_VERSION}/dist/communication/BackendManager.js?module`;
+const PAPYROS_BACKEND_MANAGER_URL = `https://unpkg.com/@dodona/papyros@${PAPYROS_VERSION}/dist/communication/BackendManager?module`;
 const PAPYROS_BACKEND_MANAGER_FALLBACK_URL = `https://cdn.jsdelivr.net/npm/@dodona/papyros@${PAPYROS_VERSION}/dist/communication/BackendManager.js/+esm`;
-const SYNC_MESSAGE_MODULE_URL = "https://esm.sh/sync-message@0.0.12/es2022/sync-message.bundle.mjs";
+const SYNC_MESSAGE_MODULE_URL = "https://esm.sh/sync-message?target=es2022";
 const COMLINK_BRIDGE_MODULE_URL = "https://esm.sh/comlink?target=es2022";
 const PYTHON_WORKER_FILENAME = "papyros-python-worker.js";
 const JAVASCRIPT_WORKER_FILENAME = "papyros-javascript-worker.js";
@@ -154,6 +157,9 @@ function shouldRefreshStoredStarter(storedCode, starterCode, exercise) {
   if (!exercise || !exercise.starterPath || typeof storedCode !== "string") {
     return false;
   }
+  if (isOutdatedFirstExerciseStarter(storedCode, exercise)) {
+    return true;
+  }
   if (!hasSectionPlaceholders(starterCode) || hasSectionPlaceholders(storedCode)) {
     return false;
   }
@@ -169,6 +175,20 @@ function shouldRefreshStoredStarter(storedCode, starterCode, exercise) {
     storedCode.trim() === "" ||
     isLegacyPlaceholderCode(storedCode) ||
     String(exerciseId).startsWith("00-Hoofdstuk 1 - Gent als dataset/")
+  );
+}
+
+function isOutdatedFirstExerciseStarter(storedCode, exercise) {
+  const exerciseId = String((exercise && exercise.id) || "");
+  if (!exerciseId.endsWith("/00-Van Python naar GIS")) {
+    return false;
+  }
+  const code = String(storedCode || "");
+  return (
+    code.includes('gebied = input("Onderzoeksgebied: ")') &&
+    code.includes('aantal_plaatsen = int(input("Aantal plaatsen: "))') &&
+    code.includes('print("Onderzoeksgebied:", ...)') &&
+    code.includes('print("Centrum:", ..., ...)')
   );
 }
 
@@ -799,6 +819,7 @@ async function submitRuntimeInputValue() {
   ui.runtimeInput.value = "";
 
   const io = state.papyros && state.papyros.io;
+  syncRuntimeInputStateFromPapyros();
   if (state.awaitingInput && io && typeof io.provideInput === "function") {
     try {
       await provideRuntimeInputSafely(io, value);
@@ -815,6 +836,7 @@ async function submitRuntimeInputValue() {
   }
 
   state.pendingInputs.push(value);
+  syncRuntimeInputStateFromPapyros();
   setRuntimeInputStatus(`Invoer in wachtrij: ${state.pendingInputs.length}`, "queued");
   renderLiveOutputFromPapyros();
 }
@@ -2372,7 +2394,6 @@ async function loadPapyrosModule() {
       (comlinkBridgeModule && comlinkBridgeModule.proxy) ||
       (comlinkBridgeModule && comlinkBridgeModule.default && comlinkBridgeModule.default.proxy) ||
       null;
-
     if (!papyros) {
       throw new Error("Papyros module geladen, maar geen geldige export gevonden.");
     }
@@ -2385,7 +2406,6 @@ async function loadPapyrosModule() {
     if (!ComlinkProxy || typeof ComlinkProxy !== "function") {
       throw new Error("Comlink proxy kon niet worden geladen.");
     }
-
     return {
       papyros,
       BackendManager,
@@ -2905,9 +2925,9 @@ function patchRunnerLaunch(papyros, BackendManager, comlinkProxy) {
     this.backend = new Promise(async (resolve, reject) => {
       try {
         const workerProxy = backend.workerProxy;
-        await workerProxy.launch(comlinkProxy((event) =>
-          BackendManager.publish(normalizePapyrosEventForPublish(event))
-        ));
+        await workerProxy.launch(comlinkProxy((event) => {
+          BackendManager.publish(normalizePapyrosEventForPublish(event));
+        }));
         if (typeof self.updateRunModes === "function") {
           self.updateRunModes();
         }
@@ -3225,6 +3245,7 @@ function formatConsoleTextForDisplay(text) {
 }
 
 function renderLiveOutputFromPapyros() {
+  syncRuntimeInputStateFromPapyros({ render: false });
   if (state.liveOutputTimer === null) {
     return;
   }
@@ -3249,6 +3270,92 @@ function startLiveOutputRendering() {
     }
     renderLiveOutputFromPapyros();
   }, 120);
+}
+
+function isPapyrosAwaitingInput(io) {
+  if (io && io.awaitingInput) {
+    return true;
+  }
+  const runnerState = String(
+    state.papyros && state.papyros.runner && state.papyros.runner.state
+      ? state.papyros.runner.state
+      : ""
+  ).toLowerCase();
+  return runnerState === "awaiting_input" || runnerState.includes("awaiting");
+}
+
+function syncRuntimeInputStateFromPapyros(options = {}) {
+  if (state.inputChannelBroken) {
+    return false;
+  }
+  const io = state.papyros && state.papyros.io;
+  if (!io) {
+    return false;
+  }
+
+  const awaiting = isPapyrosAwaitingInput(io);
+  if (!awaiting) {
+    if (state.awaitingInput) {
+      state.awaitingInput = false;
+      state.currentInputPrompt = "";
+      refreshRuntimeInputStatus();
+    }
+    return false;
+  }
+
+  state.awaitingInput = true;
+  state.currentInputPrompt = extractInputPromptText(io);
+
+  sendNextPendingRuntimeInput(io, options);
+
+  refreshRuntimeInputStatus();
+  return true;
+}
+
+function sendNextPendingRuntimeInput(io, options = {}) {
+  if (
+    !io ||
+    state.pendingInputs.length === 0 ||
+    typeof io.provideInput !== "function" ||
+    state.inputSendInFlight
+  ) {
+    return false;
+  }
+
+  const nextValue = state.pendingInputs.shift();
+  state.inputSendInFlight = true;
+  provideRuntimeInputSafely(io, nextValue)
+    .then(() => {
+      state.inputSendInFlight = false;
+      state.awaitingInput = false;
+      state.currentInputPrompt = "";
+      refreshRuntimeInputStatus();
+      if (options.render !== false) {
+        renderLiveOutputFromPapyros();
+      }
+    })
+    .catch((error) => {
+      state.inputSendInFlight = false;
+      state.pendingInputs.unshift(nextValue);
+      markInputChannelBroken(error);
+      refreshRuntimeInputStatus();
+    });
+
+  return true;
+}
+
+function startRuntimeInputPump() {
+  stopRuntimeInputPump();
+  state.inputPumpTimer = window.setInterval(() => {
+    syncRuntimeInputStateFromPapyros({ render: false });
+  }, 80);
+}
+
+function stopRuntimeInputPump() {
+  if (state.inputPumpTimer !== null) {
+    window.clearInterval(state.inputPumpTimer);
+    state.inputPumpTimer = null;
+  }
 }
 
 function getPapyrosEntryPayload(entry) {
@@ -3293,6 +3400,39 @@ function extractTextOutputFromEntries(entries) {
   });
 
   return joinConsoleTextPartsForDisplay(textParts);
+}
+
+function extractStudentTextOutputFromEntries(entries) {
+  const textParts = [];
+
+  (entries || []).forEach((entry) => {
+    if (isPapyrosErrorEntry(entry)) {
+      return;
+    }
+
+    if (typeof entry === "string") {
+      textParts.push(entry);
+      return;
+    }
+
+    if (!entry || typeof entry !== "object") {
+      textParts.push(String(entry));
+      return;
+    }
+
+    const type = String(entry.type || entry.channel || "").toLowerCase();
+    const content = getPapyrosEntryPayload(entry);
+
+    if (typeof content === "string" && (type.includes("image") || content.startsWith("data:image"))) {
+      return;
+    }
+
+    if (content !== undefined && content !== null) {
+      textParts.push(String(content));
+    }
+  });
+
+  return joinConsoleTextPartsForDisplay(textParts).trimEnd();
 }
 
 function isPapyrosErrorEntry(entry) {
@@ -4091,11 +4231,19 @@ async function runSingleEvaluationCase(code, stdin, setupCode = "") {
       throw new Error("Papyros runner.start() is niet beschikbaar.");
     }
 
+    startRuntimeInputPump();
     try {
-      await state.papyros.runner.start();
+      await Promise.race([
+        state.papyros.runner.start(),
+        wait(8000).then(() => {
+          throw new Error("Timeout: het programma bleef wachten op invoer tijdens de evaluatie.");
+        }),
+      ]);
     } catch (error) {
       const runtimeError = extractRuntimeErrorFromEntries(getPapyrosOutputEntries());
       throw new Error(runtimeError || formatErrorDetails(error) || String(error || "Onbekende runtime-fout"));
+    } finally {
+      stopRuntimeInputPump();
     }
     await waitForOutputStability();
 
@@ -4236,6 +4384,7 @@ function setupInputBridge() {
   }
 
   state.inputChannelBroken = false;
+  state.inputSendInFlight = false;
   setRuntimeInputControlsDisabled(false);
   state.awaitingInput = false;
   state.currentInputPrompt = "";
@@ -4275,6 +4424,40 @@ function setupInputBridge() {
     refreshRuntimeInputStatus();
     return "";
   }, "awaitingInput");
+}
+
+function setupBackendInputBridge(BackendManager) {
+  if (
+    state.backendInputBridgeInstalled ||
+    !BackendManager ||
+    typeof BackendManager.subscribe !== "function"
+  ) {
+    return;
+  }
+
+  BackendManager.subscribe("input", (event) => {
+    const io = state.papyros && state.papyros.io;
+    state.awaitingInput = true;
+    state.currentInputPrompt =
+      extractPromptTextCandidate(event && event.data) ||
+      extractInputPromptText(io);
+    refreshRuntimeInputStatus();
+    renderLiveOutputFromPapyros();
+    sendNextPendingRuntimeInput(io);
+  });
+
+  const clearInputState = () => {
+    state.awaitingInput = false;
+    state.currentInputPrompt = "";
+    state.inputSendInFlight = false;
+    refreshRuntimeInputStatus();
+  };
+  BackendManager.subscribe("end", clearInputState);
+  BackendManager.subscribe("error", clearInputState);
+  BackendManager.subscribe("interrupt", clearInputState);
+  BackendManager.subscribe("stop", clearInputState);
+
+  state.backendInputBridgeInstalled = true;
 }
 
 async function checkInputServiceWorker() {
@@ -4357,6 +4540,7 @@ async function initializePapyros() {
     patchPapyrosBackends(mod.BackendManagerFallback);
   }
   patchRunnerLaunch(state.papyros, mod.BackendManager, mod.ComlinkProxy);
+  setupBackendInputBridge(mod.BackendManager);
 
   if (!hasSharedArrayBuffer && !hasInputSw) {
     if (
@@ -4550,7 +4734,10 @@ async function runCode() {
     showToast(toastMessage, toastOk);
   } catch (error) {
     const friendly = translateRuntimeError(error && error.message ? error.message : String(error));
-    ui.consoleOutput.textContent = `Fout: ${friendly}`;
+    const partialOutput = extractStudentTextOutputFromEntries(getPapyrosOutputEntries());
+    ui.consoleOutput.textContent = partialOutput
+      ? `${partialOutput}\n\nFout: ${friendly}`
+      : `Fout: ${friendly}`;
     const exercise = getCurrentExercise();
     if (exercise && exercise.evaluable) {
       setExerciseEvalStatus(exercise.id, "fail");
@@ -4580,8 +4767,10 @@ async function runCode() {
     showToast("Uitvoering mislukte. Bekijk de foutmelding.", false);
   } finally {
     stopLiveOutputRendering();
+    stopRuntimeInputPump();
     state.awaitingInput = false;
     state.currentInputPrompt = "";
+    state.inputSendInFlight = false;
     state.running = false;
     ui.runButton.disabled = false;
     ui.runButton.textContent = "Uitvoeren";

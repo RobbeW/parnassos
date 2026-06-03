@@ -1,4 +1,4 @@
-import * as Comlink from "https://esm.sh/comlink@4.4.2/es2022/comlink.bundle.mjs";
+import * as Comlink from "https://esm.sh/comlink?target=es2022";
 
 function ensureWorkerCompatGlobals() {
   const g = globalThis;

@@ -1,5 +1,5 @@
-import * as Comlink from "https://esm.sh/comlink@4.4.2/es2022/comlink.bundle.mjs";
-import { syncExpose } from "https://esm.sh/comsync@0.0.9/es2022/comsync.bundle.mjs";
+import * as Comlink from "https://esm.sh/comlink?target=es2022";
+import { syncExpose } from "https://esm.sh/comsync@0.0.9/es2022/comsync.mjs";
 import { loadPyodide } from "https://cdn.jsdelivr.net/npm/pyodide@0.29.0/+esm";
 
 const PYTHON_PACKAGE_URL =
@@ -298,10 +298,16 @@ class PythonWorker extends Backend {
     }
 
     await this.installImports(code);
-    return this.papyros?.run_async.callKwargs({
-      source_code: code,
-      mode,
-    });
+    try {
+      return await this.papyros?.run_async.callKwargs({
+        source_code: code,
+        mode,
+      });
+    } finally {
+      if (this.queue && typeof this.queue.flush === "function") {
+        this.queue.flush();
+      }
+    }
   }
 
   async lintCode(code) {
