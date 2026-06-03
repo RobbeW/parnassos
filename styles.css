@@ -167,6 +167,18 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@keyframes tourStartPulse {
+  0% {
+    box-shadow: 0 2px 8px rgba(82, 0, 255, 0.10), 0 0 0 0 rgba(82, 0, 255, 0.28);
+  }
+  70% {
+    box-shadow: 0 2px 8px rgba(82, 0, 255, 0.10), 0 0 0 10px rgba(82, 0, 255, 0);
+  }
+  100% {
+    box-shadow: 0 2px 8px rgba(82, 0, 255, 0.10), 0 0 0 0 rgba(82, 0, 255, 0);
+  }
+}
+
 .topbar {
   width: 100%;
   border-bottom: 1.5px solid #eee;
@@ -700,6 +712,14 @@ body {
   color: var(--brand-purple);
 }
 
+.tour-start-btn {
+  margin-top: 0.2rem;
+}
+
+.tour-start-btn.is-suggested {
+  animation: tourStartPulse 1.8s ease-out 3;
+}
+
 .tour-overlay {
   position: fixed;
   inset: 0;
@@ -754,8 +774,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .tour-start-btn.is-suggested,
   .tour-highlight,
   .tour-callout {
+    animation: none;
     transition: none;
   }
 }

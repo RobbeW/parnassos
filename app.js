@@ -57,7 +57,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260603-22";
+const APP_VERSION = "20260603-23";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);
@@ -1345,7 +1345,12 @@ function renderTheoryTour(container, exercise, tour) {
       tour.intro || "Doorloop de belangrijkste onderdelen van de leeromgeving."
     )
   );
-  const startButton = createUiElement("button", "brand-btn primary", "Start rondleiding");
+  const completionStatus = getExerciseEvalStatus(exercise && exercise.id);
+  const startButton = createUiElement(
+    "button",
+    `brand-btn primary tour-start-btn${completionStatus === "success" ? "" : " is-suggested"}`,
+    completionStatus === "success" ? "Rondleiding opnieuw starten" : "Start rondleiding"
+  );
   startButton.type = "button";
   intro.appendChild(startButton);
   container.appendChild(intro);
@@ -1356,7 +1361,7 @@ function renderTheoryTour(container, exercise, tour) {
   const callout = createUiElement("div", "tour-callout");
   const calloutTitle = createUiElement("h3", "", "");
   const calloutText = createUiElement("p", "", "");
-  const status = createUiElement("span", "tour-status", "");
+  const stepStatus = createUiElement("span", "tour-status", "");
   const controls = createUiElement("div", "tour-controls");
   const prevButton = createUiElement("button", "brand-btn", "Vorige");
   const nextButton = createUiElement("button", "brand-btn primary", "Volgende");
@@ -1365,7 +1370,7 @@ function renderTheoryTour(container, exercise, tour) {
   nextButton.type = "button";
   skipButton.type = "button";
   controls.append(prevButton, nextButton, skipButton);
-  callout.append(calloutTitle, calloutText, status, controls);
+  callout.append(calloutTitle, calloutText, stepStatus, controls);
   overlay.append(highlight, callout);
 
   function getStepTarget(step) {
@@ -1421,7 +1426,7 @@ function renderTheoryTour(container, exercise, tour) {
     const step = steps[stepIndex];
     calloutTitle.textContent = step.title || `Stap ${stepIndex + 1}`;
     calloutText.textContent = step.text || "";
-    status.textContent = `Stap ${stepIndex + 1} van ${steps.length}`;
+    stepStatus.textContent = `Stap ${stepIndex + 1} van ${steps.length}`;
     prevButton.disabled = stepIndex === 0;
     nextButton.textContent = stepIndex === steps.length - 1 ? "Klaar" : "Volgende";
     positionTour();
@@ -1431,6 +1436,8 @@ function renderTheoryTour(container, exercise, tour) {
     clearActiveTour();
     if (markComplete) {
       markTheoryItemCompleted(exercise);
+      startButton.classList.remove("is-suggested");
+      startButton.textContent = "Rondleiding opnieuw starten";
     }
   }
 
@@ -1466,8 +1473,6 @@ function renderTheoryTour(container, exercise, tour) {
     renderStep();
   });
   skipButton.addEventListener("click", () => finishTour(false));
-
-  window.requestAnimationFrame(startTour);
 }
 
 function getTheoryStepLineNumbers(step) {
