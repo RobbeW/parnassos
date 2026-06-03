@@ -1,3 +1,6 @@
+import math
+
+
 # Invoer
 
 centrum_lat = 51.0543
@@ -9,8 +12,6 @@ plaatsen = [
     ["Gravensteen", 51.0573, 3.7208],
 ]
 
-# TODO: importeer math.
-
 
 # Verwerking
 
@@ -19,12 +20,10 @@ for plaats in plaatsen:
     lat = plaats[1]
     lon = plaats[2]
 
-    # TODO: bereken dy en dx in kilometer.
-    dy = 0
-    dx = 0
+    dy = ...
+    dx = ...
 
-    # TODO: bereken de afstand met math.sqrt().
-    afstand = 0
+    afstand = ...
 
 
     # Uitvoer

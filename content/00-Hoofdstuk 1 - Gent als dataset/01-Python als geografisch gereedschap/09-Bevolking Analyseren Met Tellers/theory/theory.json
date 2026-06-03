@@ -1,0 +1,110 @@
+{
+  "title": "Wijken analyseren in één lus",
+  "summary": [
+    "We starten met een lijst van wijken.",
+    "Voor de lus zetten we tellers en somvariabelen klaar.",
+    "In de lus verwerken we elke wijk.",
+    "Na de lus printen we de resultaten."
+  ],
+  "concepts": [
+    "lijst van lijsten",
+    "for-lus",
+    "somvariabele",
+    "maximum",
+    "teller"
+  ],
+  "code": [
+    "wijken = [",
+    "    [\"Muide - Meulestede\", 9000],",
+    "    [\"Nieuw Gent - UZ\", 13000],",
+    "    [\"Dampoort\", 18000],",
+    "]",
+    "",
+    "totaal = 0",
+    "grootste_wijk = \"\"",
+    "grootste_bevolking = 0",
+    "aantal_boven_10000 = 0",
+    "",
+    "for wijk in wijken:",
+    "    naam = wijk[0]",
+    "    bevolking = wijk[1]",
+    "",
+    "    totaal = totaal + bevolking",
+    "",
+    "    if bevolking > grootste_bevolking:",
+    "        grootste_wijk = naam",
+    "        grootste_bevolking = bevolking",
+    "",
+    "    if bevolking > 10000:",
+    "        aantal_boven_10000 = aantal_boven_10000 + 1",
+    "",
+    "print(\"Totale bevolking:\", totaal)",
+    "print(\"Grootste wijk:\", grootste_wijk)",
+    "print(\"Wijken boven 10000:\", aantal_boven_10000)"
+  ],
+  "steps": [
+    {
+      "title": "Zet de tabel klaar.",
+      "explanation": "Elke rij bevat een wijknaam en een bevolkingscijfer.",
+      "lines": [1, 2, 3, 4, 5],
+      "variables": [
+        ["wijken", "3 rijen", "Elke rij is opnieuw een lijst."],
+        ["wijk[0]", "naam", "De eerste kolom."],
+        ["wijk[1]", "bevolking", "De tweede kolom."]
+      ]
+    },
+    {
+      "title": "Geef de variabelen een startwaarde.",
+      "explanation": "Voor de lus begint, moet Python weten waar het totaal, de grootste wijk en de teller starten.",
+      "lines": [7, 8, 9, 10],
+      "variables": [
+        ["totaal", "0", "Hier tellen we bevolking bij op."],
+        ["grootste_wijk", "\"\"", "Nog geen wijk gevonden."],
+        ["grootste_bevolking", "0", "De grootste waarde tot nu toe."],
+        ["aantal_boven_10000", "0", "Nog geen wijken geteld."]
+      ]
+    },
+    {
+      "title": "Lees één rij in de lus.",
+      "explanation": "Bij elke herhaling krijgt wijk een nieuwe rij. Daarna halen we naam en bevolking uit die rij.",
+      "lines": [12, 13, 14],
+      "variables": [
+        ["wijk", "[\"Muide - Meulestede\", 9000]", "De eerste rij."],
+        ["naam", "Muide - Meulestede", "wijk[0]."],
+        ["bevolking", "9000", "wijk[1]."]
+      ]
+    },
+    {
+      "title": "Werk totaal en grootste wijk bij.",
+      "explanation": "Het totaal groeit bij elke rij. De grootste wijk verandert alleen wanneer de huidige bevolking groter is dan de grootste waarde tot nu toe.",
+      "lines": [16, 18, 19, 20],
+      "variables": [
+        ["totaal", "40000", "Na drie rijen."],
+        ["grootste_wijk", "Dampoort", "Dampoort heeft hier het hoogste cijfer."],
+        ["grootste_bevolking", "18000", "De grootste waarde tot nu toe."]
+      ]
+    },
+    {
+      "title": "Tel wijken boven de grens.",
+      "explanation": "De teller stijgt alleen wanneer bevolking groter is dan 10000.",
+      "lines": [22, 23, 25, 26, 27],
+      "variables": [
+        ["aantal_boven_10000", "2", "Nieuw Gent - UZ en Dampoort."],
+        ["uitvoer", "3 regels", "Totaal, grootste wijk en teller."]
+      ],
+      "output": "Totale bevolking: 40000\nGrootste wijk: Dampoort\nWijken boven 10000: 2"
+    }
+  ],
+  "traceTitle": "Lustrace",
+  "traceColumns": ["wijk", "bevolking", "totaal", "grootste wijk", "teller"],
+  "traceRows": [
+    ["Muide - Meulestede", "9000", "9000", "Muide - Meulestede", "0"],
+    ["Nieuw Gent - UZ", "13000", "22000", "Nieuw Gent - UZ", "1"],
+    ["Dampoort", "18000", "40000", "Dampoort", "2"]
+  ],
+  "mistakes": [
+    ["totaal = bevolking schrijven.", "Dan overschrijf je het totaal bij elke rij. Gebruik totaal = totaal + bevolking."],
+    ["grootste_bevolking niet mee aanpassen.", "Dan blijft de vergelijking fout lopen."],
+    [">= gebruiken wanneer de opdracht meer dan zegt.", "Meer dan 10000 betekent > 10000."]
+  ]
+}

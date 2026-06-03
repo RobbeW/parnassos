@@ -1,0 +1,93 @@
+{
+  "title": "Een afstand schatten met Python",
+  "summary": [
+    "We vertrekken van een centrumcoördinaat.",
+    "We berekenen het verschil in latitude en longitude.",
+    "We zetten die verschillen om naar kilometer.",
+    "Met Pythagoras schatten we de afstand."
+  ],
+  "concepts": [
+    "import math",
+    "math.sqrt()",
+    "verschil",
+    "kilometer",
+    "round()"
+  ],
+  "code": [
+    "import math",
+    "",
+    "centrum_lat = 51.0543",
+    "centrum_lon = 3.7250",
+    "",
+    "plaats = [\"Citadelpark\", 51.0389, 3.7257]",
+    "",
+    "naam = plaats[0]",
+    "lat = plaats[1]",
+    "lon = plaats[2]",
+    "",
+    "dy = (lat - centrum_lat) * 111",
+    "dx = (lon - centrum_lon) * 70",
+    "",
+    "afstand = math.sqrt(dx * dx + dy * dy)",
+    "",
+    "print(naam + \":\", round(afstand, 1), \"km\")"
+  ],
+  "steps": [
+    {
+      "title": "Importeer math.",
+      "explanation": "Voor de wortel hebben we math.sqrt() nodig.",
+      "lines": [1],
+      "variables": [
+        ["math", "module", "Bevat onder andere sqrt()."]
+      ]
+    },
+    {
+      "title": "Zet centrum en plaats klaar.",
+      "explanation": "Het Stadhuis gebruiken we als centrum. Citadelpark is de plaats die we vergelijken.",
+      "lines": [3, 4, 6, 8, 9, 10],
+      "variables": [
+        ["centrum_lat", "51.0543", "Latitude van het centrum."],
+        ["centrum_lon", "3.7250", "Longitude van het centrum."],
+        ["naam", "Citadelpark", "De naam die straks in de uitvoer komt."]
+      ]
+    },
+    {
+      "title": "Bereken het verschil in kilometer.",
+      "explanation": "Latitudeverschil vermenigvuldigen we met 111. Longitudeverschil vermenigvuldigen we met 70.",
+      "lines": [12, 13],
+      "variables": [
+        ["dy", "-1.7094", "Citadelpark ligt zuidelijker dan het centrum."],
+        ["dx", "0.049", "Citadelpark ligt bijna even oostelijk."]
+      ]
+    },
+    {
+      "title": "Gebruik Pythagoras.",
+      "explanation": "dx en dy vormen twee rechthoekszijden. De afstand is de schuine zijde.",
+      "lines": [15],
+      "variables": [
+        ["afstand", "ongeveer 1.71", "math.sqrt(dx * dx + dy * dy)."]
+      ]
+    },
+    {
+      "title": "Print de afgeronde afstand.",
+      "explanation": "round(afstand, 1) toont één cijfer na de komma.",
+      "lines": [17],
+      "variables": [
+        ["uitvoer", "Citadelpark: 1.7 km", "De afstand is afgerond."]
+      ],
+      "output": "Citadelpark: 1.7 km"
+    }
+  ],
+  "traceTitle": "Afstandstrace",
+  "traceColumns": ["waarde", "berekening", "resultaat"],
+  "traceRows": [
+    ["dy", "(51.0389 - 51.0543) * 111", "-1.7094"],
+    ["dx", "(3.7257 - 3.7250) * 70", "0.049"],
+    ["afstand", "sqrt(dx * dx + dy * dy)", "1.7101"]
+  ],
+  "mistakes": [
+    ["Graden direct als kilometer gebruiken.", "Zet latitude en longitude eerst om met de benadering."],
+    ["math.sqrt() gebruiken zonder import.", "Zet import math bovenaan."],
+    ["dx en dy niet kwadrateren.", "Gebruik dx * dx en dy * dy in de wortel."]
+  ]
+}

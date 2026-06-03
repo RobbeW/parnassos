@@ -1,0 +1,105 @@
+{
+  "title": "CSV lezen met Brugse plaatsen",
+  "summary": [
+    "We starten met een tabel als tekst.",
+    "StringIO laat Python die tekst lezen alsof het een bestand is.",
+    "csv.reader leest de tabel rij per rij.",
+    "Met rij[0] en rij[1] halen we kolommen uit een rij."
+  ],
+  "concepts": [
+    "import csv",
+    "StringIO",
+    "csv.reader",
+    "next()",
+    "lijstindex",
+    "for-lus"
+  ],
+  "code": [
+    "import csv",
+    "from io import StringIO",
+    "",
+    "data = \"\"\"naam,type,lat,lon",
+    "Belfort Brugge,erfgoed,51.2089,3.2242",
+    "Station Brugge,station,51.1972,3.2172",
+    "Minnewater,park,51.2014,3.2246",
+    "Sint-Janshospitaal,museum,51.2046,3.2240",
+    "\"\"\"",
+    "",
+    "bestand = StringIO(data)",
+    "lezer = csv.reader(bestand)",
+    "next(lezer)",
+    "",
+    "aantal = 0",
+    "",
+    "for rij in lezer:",
+    "    naam = rij[0]",
+    "    soort = rij[1]",
+    "    print(naam, \"-\", soort)",
+    "    aantal = aantal + 1",
+    "",
+    "print(\"Aantal plaatsen:\", aantal)"
+  ],
+  "steps": [
+    {
+      "title": "Importeer de bouwstenen.",
+      "explanation": "csv kan tabellen lezen. StringIO maakt van een tekstblok iets dat Python als bestand kan behandelen.",
+      "lines": [1, 2],
+      "variables": [
+        ["csv", "module", "Leest CSV-tabellen."],
+        ["StringIO", "functie", "Maakt een leesbaar tekstbestand in het geheugen."]
+      ]
+    },
+    {
+      "title": "Zet de tabel klaar.",
+      "explanation": "data is een meerregelige tekst. De eerste rij bevat de kolomnamen.",
+      "lines": [4, 5, 6, 7, 8, 9],
+      "variables": [
+        ["data", "5 regels tekst", "Een koprij en vier plaatsen."],
+        ["kolommen", "naam, type, lat, lon", "Latitude en longitude staan al in de tabel."]
+      ]
+    },
+    {
+      "title": "Maak een CSV-lezer.",
+      "explanation": "StringIO(data) maakt de tekst leesbaar. csv.reader verdeelt elke rij in kolommen.",
+      "lines": [11, 12],
+      "variables": [
+        ["bestand", "StringIO(data)", "Een bestandachtig object."],
+        ["lezer", "csv.reader(bestand)", "Leest de tabel rij per rij."]
+      ]
+    },
+    {
+      "title": "Sla de koprij over.",
+      "explanation": "De eerste rij bevat alleen kolomnamen. Met next(lezer) begin je daarna bij de echte plaatsen.",
+      "lines": [13, 15],
+      "variables": [
+        ["next(lezer)", "naam,type,lat,lon", "Deze rij wordt niet verwerkt als plaats."],
+        ["aantal", "0", "Nog geen plaatsen geteld."]
+      ]
+    },
+    {
+      "title": "Lees elke plaats.",
+      "explanation": "Elke rij is een lijst. rij[0] is de naam, rij[1] is het type. Daarna print je en verhoog je de teller.",
+      "lines": [17, 18, 19, 20, 21, 23],
+      "variables": [
+        ["rij", "[\"Belfort Brugge\", \"erfgoed\", \"51.2089\", \"3.2242\"]", "De eerste plaats."],
+        ["naam", "Belfort Brugge", "Eerste kolom."],
+        ["soort", "erfgoed", "Tweede kolom."],
+        ["aantal", "4", "Na de laatste rij zijn vier plaatsen geteld."]
+      ],
+      "output": "Belfort Brugge - erfgoed\nStation Brugge - station\nMinnewater - park\nSint-Janshospitaal - museum\nAantal plaatsen: 4"
+    }
+  ],
+  "traceTitle": "Voorbeeldtrace",
+  "traceColumns": ["rij", "rij[0]", "rij[1]", "aantal"],
+  "traceRows": [
+    ["1", "Belfort Brugge", "erfgoed", "1"],
+    ["2", "Station Brugge", "station", "2"],
+    ["3", "Minnewater", "park", "3"],
+    ["4", "Sint-Janshospitaal", "museum", "4"]
+  ],
+  "mistakes": [
+    ["De koprij niet overslaan.", "Dan probeert je lus ook de kolomnamen als plaats te verwerken."],
+    ["rij[1] gebruiken voor de naam.", "Python telt vanaf 0. De eerste kolom is rij[0]."],
+    ["aantal buiten de lus niet op 0 zetten.", "Een teller moet een startwaarde krijgen voor je begint te tellen."]
+  ]
+}

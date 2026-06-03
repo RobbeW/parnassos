@@ -1,11 +1,13 @@
 ## Opgave
 
-Gebruik deze ruwe grenzen:
+Je hebt net gezien hoe je één plaats controleert met ruwe grenzen rond Gent.
+
+Controleer nu elke rij in de lijst.
+
+Gebruik deze grenzen:
 
 * latitude tussen `51.00` en `51.10`;
 * longitude tussen `3.65` en `3.80`.
-
-Print `geldig` als beide coordinaten binnen de grenzen liggen. Print anders `fout`.
 
 #### Verwachte uitvoer
 

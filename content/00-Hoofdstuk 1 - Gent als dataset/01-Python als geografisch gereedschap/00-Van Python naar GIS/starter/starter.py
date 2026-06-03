@@ -1,9 +1,9 @@
 # Invoer
 
-gebied = input("Onderzoeksgebied: ")
-aantal_plaatsen = int(input("Aantal plaatsen: "))
-latitude = float(input("Latitude centrum: "))
-longitude = float(input("Longitude centrum: "))
+gebied = ...
+aantal_plaatsen = ...
+latitude = ...
+longitude = ...
 
 
 # Verwerking
@@ -12,6 +12,6 @@ longitude = float(input("Longitude centrum: "))
 
 # Uitvoer
 
-print("Onderzoeksgebied:", ...)
-print("Aantal plaatsen:", ...)
-print("Centrum:", ..., ...)
+print(...)
+print(...)
+print(...)

@@ -20,11 +20,14 @@ for wijk in wijken:
     naam = wijk[0]
     bevolking = wijk[1]
 
-    # TODO: tel bevolking op bij totaal.
+    totaal = ...
 
-    # TODO: controleer of dit de grootste wijk tot nu toe is.
+    if ...:
+        grootste_wijk = ...
+        grootste_bevolking = ...
 
-    # TODO: tel wijken met meer dan 20000 inwoners.
+    if ...:
+        aantal_boven_20000 = ...
 
 
 # Uitvoer

@@ -9,7 +9,7 @@ naam, latitude, longitude
 1. Overloop elke rij.
 2. Haal de naam, latitude en longitude uit de rij.
 3. Zet latitude en longitude om naar `float`.
-4. Print de naam met de twee coordinaten.
+4. Print de naam met de twee coördinaten.
 
 #### Verwachte uitvoer
 

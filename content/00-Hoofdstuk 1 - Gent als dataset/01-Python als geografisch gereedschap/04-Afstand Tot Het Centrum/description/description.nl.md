@@ -1,10 +1,12 @@
 ## Opgave
 
-1. Importeer `math`.
-2. Bereken voor elke plaats het verschil in latitude en longitude.
-3. Zet die verschillen om naar kilometers.
-4. Gebruik de formule van Pythagoras.
-5. Print de afstand afgerond op 1 cijfer na de komma.
+Je hebt net gezien hoe je een afstand schat met coördinaten.
+
+Doe nu hetzelfde voor drie plaatsen in Gent.
+
+1. Bereken `dy` en `dx` in kilometer.
+2. Bereken de afstand met `math.sqrt()`.
+3. Print de afstand afgerond op 1 cijfer na de komma.
 
 #### Verwachte uitvoer
 

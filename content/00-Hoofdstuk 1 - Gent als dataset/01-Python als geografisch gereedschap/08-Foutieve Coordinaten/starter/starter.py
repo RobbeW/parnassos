@@ -15,8 +15,9 @@ for plaats in plaatsen:
     lat = plaats[1]
     lon = plaats[2]
 
-    # TODO: controleer of lat en lon binnen de grenzen vallen.
-    geldig = False
+    lat_ok = ...
+    lon_ok = ...
+    geldig = ...
 
 
     # Uitvoer

@@ -1,0 +1,90 @@
+{
+  "title": "Foutieve coördinaten herkennen",
+  "summary": [
+    "We controleren latitude en longitude apart.",
+    "Een latitude moet tussen 51.00 en 51.10 liggen.",
+    "Een longitude moet tussen 3.65 en 3.80 liggen.",
+    "Alleen wanneer beide controles kloppen, is de plaats geldig."
+  ],
+  "concepts": [
+    ">=",
+    "<=",
+    "and",
+    "boolean",
+    "if/else"
+  ],
+  "code": [
+    "plaats = [\"Korenmarkt\", 51.0546, 3.7217]",
+    "",
+    "naam = plaats[0]",
+    "lat = plaats[1]",
+    "lon = plaats[2]",
+    "",
+    "lat_ok = lat >= 51.00 and lat <= 51.10",
+    "lon_ok = lon >= 3.65 and lon <= 3.80",
+    "",
+    "geldig = lat_ok and lon_ok",
+    "",
+    "if geldig:",
+    "    print(naam + \": geldig\")",
+    "else:",
+    "    print(naam + \": fout\")"
+  ],
+  "steps": [
+    {
+      "title": "Lees de plaats.",
+      "explanation": "De rij bevat naam, latitude en longitude. Die halen we eerst uit de lijst.",
+      "lines": [1, 3, 4, 5],
+      "variables": [
+        ["naam", "Korenmarkt", "De plaats die we controleren."],
+        ["lat", "51.0546", "Latitude uit de rij."],
+        ["lon", "3.7217", "Longitude uit de rij."]
+      ]
+    },
+    {
+      "title": "Controleer latitude.",
+      "explanation": "lat_ok wordt True als de latitude binnen de ruwe Gentse grenzen ligt.",
+      "lines": [7],
+      "variables": [
+        ["lat_ok", "True", "51.0546 ligt tussen 51.00 en 51.10."]
+      ]
+    },
+    {
+      "title": "Controleer longitude.",
+      "explanation": "lon_ok wordt True als de longitude binnen de ruwe Gentse grenzen ligt.",
+      "lines": [8],
+      "variables": [
+        ["lon_ok", "True", "3.7217 ligt tussen 3.65 en 3.80."]
+      ]
+    },
+    {
+      "title": "Combineer beide controles.",
+      "explanation": "Met and zeg je dat beide voorwaarden moeten kloppen.",
+      "lines": [10],
+      "variables": [
+        ["geldig", "True", "lat_ok en lon_ok zijn allebei True."]
+      ]
+    },
+    {
+      "title": "Print geldig of fout.",
+      "explanation": "De if/else gebruikt de boolean geldig.",
+      "lines": [12, 13, 14, 15],
+      "variables": [
+        ["uitvoer", "Korenmarkt: geldig", "De plaats valt binnen de grenzen."]
+      ],
+      "output": "Korenmarkt: geldig"
+    }
+  ],
+  "traceTitle": "Controletrace",
+  "traceColumns": ["plaats", "lat_ok", "lon_ok", "geldig"],
+  "traceRows": [
+    ["Korenmarkt", "True", "True", "True"],
+    ["Foutpunt noord", "False", "True", "False"],
+    ["Foutpunt oost", "True", "False", "False"]
+  ],
+  "mistakes": [
+    ["or gebruiken tussen lat_ok en lon_ok.", "Dan is één juiste coördinaat al genoeg. Hier moeten beide kloppen."],
+    ["De ondergrens vergeten.", "Controleer telkens ondergrens én bovengrens."],
+    ["Een tekstwaarde opslaan in geldig.", "Gebruik een boolean: True of False."]
+  ]
+}
