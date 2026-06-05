@@ -57,7 +57,7 @@ const STORAGE = {
   snapshotsIndex: "pik-snapshots-index",
 };
 
-const APP_VERSION = "20260605-2";
+const APP_VERSION = "20260605-5";
 
 function readBooleanQueryParam(name, fallback = false) {
   const raw = new URLSearchParams(window.location.search).get(name);

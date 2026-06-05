@@ -697,6 +697,14 @@ body {
   text-decoration: none;
 }
 
+.assignment-markdown a.notebook-launch-button,
+.assignment-markdown a.notebook-launch-button:visited,
+.assignment-markdown a.notebook-launch-button:hover,
+.assignment-markdown a.notebook-launch-button:focus-visible {
+  color: #fff;
+  text-decoration: none;
+}
+
 .notebook-read-action {
   margin-top: 0.85rem;
 }
@@ -1818,6 +1826,13 @@ body.dark .assignment-markdown blockquote {
 
 body.dark .assignment-markdown a {
   color: #8bb3ff;
+}
+
+body.dark .assignment-markdown a.notebook-launch-button,
+body.dark .assignment-markdown a.notebook-launch-button:visited,
+body.dark .assignment-markdown a.notebook-launch-button:hover,
+body.dark .assignment-markdown a.notebook-launch-button:focus-visible {
+  color: #fff;
 }
 
 body.dark .assignment-media-image {

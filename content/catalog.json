@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T11:49:43.988Z",
+  "generatedAt": "2026-06-05T12:06:45.876Z",
   "sourceRoot": "content",
   "totals": {
     "chapters": 3,
@@ -428,7 +428,7 @@
               "theoryKind": "notebook",
               "theoryPath": null,
               "videoUrl": null,
-              "colabUrl": "https://drive.google.com/file/d/1REpdy4MMMjwzgJ-7lffepq_peb9wk0Iz/view?usp=sharing",
+              "colabUrl": "https://colab.research.google.com/drive/1REpdy4MMMjwzgJ-7lffepq_peb9wk0Iz?usp=sharing",
               "colabLabel": "Open Gent op de kaart"
             },
             {
@@ -446,7 +446,7 @@
               "theoryKind": "notebook",
               "theoryPath": null,
               "videoUrl": null,
-              "colabUrl": "https://drive.google.com/file/d/13GBYYOAZPbyDjr_R5m-ecWO500pVS_Ia/view?usp=sharing",
+              "colabUrl": "https://colab.research.google.com/drive/13GBYYOAZPbyDjr_R5m-ecWO500pVS_Ia?usp=sharing",
               "colabLabel": "Open fijnstofproject"
             }
           ]

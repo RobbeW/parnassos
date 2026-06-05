@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-  <link rel="stylesheet" href="styles.css?v=20260605-2">
+  <link rel="stylesheet" href="styles.css?v=20260605-5">
   <style id="platform-language-toggle-styles">
 .language-toggle {
   display: inline-flex;
@@ -442,15 +442,15 @@ html.dark .topbar.learning-header .opdracht span {
       <ul class="chapter-list" id="menu-chapters"></ul>
       <div class="menu-project-panel">
         <details class="menu-project-details">
-          <summary>Over Project Delphi</summary>
+          <summary>Over Parnassos</summary>
           <div class="menu-project-body">
             <p>
-              <strong>Project Delphi</strong> is mijn Python-versie van het idee achter JS in de Klas:
-              leerlingen laten oefenen in de browser, met duidelijke feedback en zo weinig mogelijk technische ballast.
+              <strong>Parnassos</strong> is de begeleidende leeromgeving bij Python en GIS:
+              korte voorbereidingsoefeningen, theorie, feedback en de sprong naar Colab-notebooks.
             </p>
             <p>
-              De inhoud kan uit Dodona-achtige oefenmappen komen, maar Delphi zelf is bewust kleiner:
-              handig voor klassikaal oefenen, snel testen en een helder PDF-bewijs achteraf.
+              De shell houdt de volgorde en basiscontrole bij. De grotere kaartopdrachten
+              staan in Google Colab.
             </p>
             <p>
               Contact:
@@ -460,11 +460,11 @@ html.dark .topbar.learning-header .opdracht span {
             </p>
             <p>
               Deze webomgeving is bedoeld voor gebruik in de klas en voor collega-leerkrachten
-              die de cursus willen inkijken, aanpassen of fork-en.
+              die de cursus willen inkijken of aanpassen.
             </p>
             <p>
               Licenties:
-              <a href="LICENSE" target="_blank" rel="noopener noreferrer">Project Delphi License</a>
+              <a href="LICENSE" target="_blank" rel="noopener noreferrer">Parnassos License</a>
               (educatief gebruik met expliciete naamsvermelding) en
               <a href="THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">third-party notices</a>
               voor gebruikte componenten zoals Papyros (MIT).
@@ -1128,7 +1128,7 @@ print("Aantal jaren:", jaar)</code></pre>
       }
     }
   </script>
-  <script src="app.js?v=20260605-2"></script>
+  <script src="app.js?v=20260605-5"></script>
 <script id="platform-language-toggle-script">
 (() => {
   const LANGUAGE_KEY = "aiindeklas:index-language";
@@ -1251,16 +1251,16 @@ print("Aantal jaren:", jaar)</code></pre>
   "Geen open input-vraag.": "No open input question.",
   "Runtime initialiseren...": "Initialising runtime...",
   "Beschrijving": "Description",
-  "Over Project Delphi": "About Project Delphi",
-  "is mijn Python-versie van het idee achter JS in de Klas:": "is my Python version of the idea behind JS in de Klas:",
-  "leerlingen laten oefenen in de browser, met duidelijke feedback en zo weinig mogelijk technische ballast.": "letting students practise in the browser, with clear feedback and as little technical baggage as possible.",
-  "De inhoud kan uit Dodona-achtige oefenmappen komen, maar Delphi zelf is bewust kleiner:": "The content can come from Dodona-like exercise folders, but Delphi itself is deliberately smaller:",
-  "handig voor klassikaal oefenen, snel testen en een helder PDF-bewijs achteraf.": "useful for classroom practice, quick testing and clear PDF evidence afterwards.",
+  "Over Parnassos": "About Parnassos",
+  "is de begeleidende leeromgeving bij Python en GIS:": "is the companion learning environment for Python and GIS:",
+  "korte voorbereidingsoefeningen, theorie, feedback en de sprong naar Colab-notebooks.": "short preparatory exercises, theory, feedback and the jump to Colab notebooks.",
+  "De shell houdt de volgorde en basiscontrole bij. De grotere kaartopdrachten": "The shell keeps track of sequence and basic checks. The larger map assignments",
+  "staan in Google Colab.": "are in Google Colab.",
   "Contact:": "Contact:",
   "Deze webomgeving is bedoeld voor gebruik in de klas en voor collega-leerkrachten": "This web environment is intended for classroom use and for fellow teachers",
-  "die de cursus willen inkijken, aanpassen of fork-en.": "who want to inspect, adapt or fork the course.",
+  "die de cursus willen inkijken of aanpassen.": "who want to inspect or adapt the course.",
   "Licenties:": "Licences:",
-  "Project Delphi License": "Project Delphi License",
+  "Parnassos License": "Parnassos License",
   "(educatief gebruik met expliciete naamsvermelding) en": "(educational use with explicit attribution) and",
   "voor gebruikte componenten zoals Papyros (MIT).": "for components used, such as Papyros (MIT).",
   "Uitvoer, invoer en variabelen": "Output, input and variables",
@@ -1375,8 +1375,8 @@ print("Aantal jaren:", jaar)</code></pre>
   }
 ];
   const META = {
-  "title": "Project Delphi - Python in the Classroom",
-  "description": "Lightweight Python learning environment for class."
+  "title": "Parnassos - Python en GIS",
+  "description": "Leeromgeving voor Python, geodata en GIS."
 };
   const SKIP_SELECTOR = "script, style, noscript, textarea, input, canvas, svg, iframe, code, pre, kbd, samp, [contenteditable='true'], .CodeMirror, .cm-editor, .blocklySvg, .blocklyWidgetDiv, .blocklyTooltipDiv";
   const TRANSLATABLE_ATTRIBUTES = ["aria-label", "alt", "title", "placeholder"];
