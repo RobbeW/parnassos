@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-03T17:05:46.615Z",
+  "generatedAt": "2026-06-05T11:49:43.988Z",
   "sourceRoot": "content",
   "totals": {
     "chapters": 3,
     "subchapters": 3,
-    "exercises": 21,
+    "exercises": 22,
     "evaluableExercises": 13,
-    "theoryItems": 8
+    "theoryItems": 9
   },
   "chapters": [
     {
@@ -428,8 +428,26 @@
               "theoryKind": "notebook",
               "theoryPath": null,
               "videoUrl": null,
-              "colabUrl": "https://colab.research.google.com/",
-              "colabLabel": "Open Colab-notebook (draft)"
+              "colabUrl": "https://drive.google.com/file/d/1REpdy4MMMjwzgJ-7lffepq_peb9wk0Iz/view?usp=sharing",
+              "colabLabel": "Open Gent op de kaart"
+            },
+            {
+              "id": "01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/06-Open Het Fijnstofproject",
+              "title": "Open het fijnstofproject",
+              "order": 6,
+              "type": "theory",
+              "evaluable": false,
+              "path": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/06-Open Het Fijnstofproject",
+              "configPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/06-Open Het Fijnstofproject/config.json",
+              "descriptionPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/06-Open Het Fijnstofproject/description/description.nl.md",
+              "testsPath": null,
+              "testsFormat": null,
+              "starterPath": "content/01-Hoofdstuk 2 - Gent op de kaart/01-Van tabel naar kaart/06-Open Het Fijnstofproject/starter/starter.py",
+              "theoryKind": "notebook",
+              "theoryPath": null,
+              "videoUrl": null,
+              "colabUrl": "https://drive.google.com/file/d/13GBYYOAZPbyDjr_R5m-ecWO500pVS_Ia/view?usp=sharing",
+              "colabLabel": "Open fijnstofproject"
             }
           ]
         }

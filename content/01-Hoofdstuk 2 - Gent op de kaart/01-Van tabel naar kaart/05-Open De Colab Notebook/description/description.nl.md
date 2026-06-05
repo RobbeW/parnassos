@@ -1,27 +1,22 @@
 ## Colab
 
-In de notebook maak je van de Gentse tabel een interactieve kaart.
+Open de leerlingenversie van de notebook wanneer je leerkracht dat aangeeft.
 
-Je gebruikt daar:
+Je vertrekt van een gegeven tabel met Gentse plaatsen en maakt daar een interactieve kaart van.
 
-* een tabel met plaatsen in Gent;
+Je gebruikt:
+
 * latitude en longitude;
-* markerteksten;
+* popuptekst voor markers;
 * afstand tot het Stadhuis;
 * marker-kleuren op basis van afstand.
 
-### Checklist
+Voor je start:
 
-Voor je naar Colab gaat:
-
-* ik kan een rij uit een lijst van lijsten lezen;
-* ik weet welke kolommen een kaart nodig heeft;
+* ik kan kolommen uit een rij lezen;
 * ik kan de afstandsberekening uit hoofdstuk 1 opnieuw gebruiken;
-* ik kan met `if`, `elif` en `else` een klasse of kleur kiezen.
+* ik kan met `if`, `elif` en `else` een kleur kiezen.
 
-### Reviewvragen
+### Voor leerkrachten
 
-1. Waarom heeft een kaart latitude en longitude nodig?
-2. Wat kan er misgaan wanneer een coördinaat fout is?
-3. Waarom is afstand nuttig als extra kolom in een tabel?
-4. Wanneer zou een rechte afstand misleidend kunnen zijn?
+De leerkrachtversie staat niet publiek in deze leeromgeving. Gebruik de gedeelde Drive-map met leerkrachtmateriaal.
