@@ -1,0 +1,72 @@
+{
+  "title": "Van meetpunt naar kaartlaag",
+  "summary": [
+    "Een kaartlaag bundelt gegevens die bij elkaar horen.",
+    "Elke rij kan een meetpunt op de kaart voorstellen.",
+    "Latitude en longitude bepalen waar het punt komt.",
+    "Extra kolommen geven betekenis aan de marker."
+  ],
+  "code": [
+    "meetpunt = [\"Dampoort\", \"luchtkwaliteit\", 51.0571, 3.7390, \"Dampoort\", 13.5, 41.0]",
+    "",
+    "naam = meetpunt[0]",
+    "laag = meetpunt[1]",
+    "lat = meetpunt[2]",
+    "lon = meetpunt[3]",
+    "wijk = meetpunt[4]",
+    "pm25 = meetpunt[5]",
+    "pm10 = meetpunt[6]",
+    "",
+    "popup = naam + \" | \" + wijk + \" | PM2.5: \" + str(pm25) + \" | PM10: \" + str(pm10)",
+    "",
+    "print(laag)",
+    "print(popup)",
+    "print(lat, lon)"
+  ],
+  "steps": [
+    {
+      "title": "Lees de voorbeelddata.",
+      "explanation": "De rij beschrijft één meetpunt. Er staan ook waarden in voor PM2.5 en PM10.",
+      "lines": [1],
+      "variables": [
+        ["meetpunt", "7 waarden", "Eén plaats met coördinaten en luchtkwaliteitswaarden."],
+        ["meetpunt[0]", "Dampoort", "Naam van het meetpunt."],
+        ["meetpunt[1]", "luchtkwaliteit", "Naam van de kaartlaag."]
+      ]
+    },
+    {
+      "title": "Haal de kolommen uit de rij.",
+      "explanation": "We geven elke waarde een duidelijke variabelenaam. Dat maakt de verwerking leesbaarder.",
+      "lines": [3, 4, 5, 6, 7, 8, 9],
+      "variables": [
+        ["naam", "Dampoort", "Kolom 0."],
+        ["lat", "51.0571", "Kolom 2."],
+        ["lon", "3.7390", "Kolom 3."],
+        ["pm25", "13.5", "Kolom 5."]
+      ]
+    },
+    {
+      "title": "Maak tekst voor de marker.",
+      "explanation": "Een kaartpunt heeft vaak popuptekst. Die tekst combineert waarden uit dezelfde rij.",
+      "lines": [11],
+      "variables": [
+        ["popup", "Dampoort | Dampoort | PM2.5: 13.5 | PM10: 41.0", "Tekst die later bij een marker kan staan."]
+      ]
+    },
+    {
+      "title": "Controleer laag, tekst en coördinaten.",
+      "explanation": "Voor we kaarten maken, controleren we eerst of de juiste gegevens uit de rij komen.",
+      "lines": [13, 14, 15],
+      "variables": [
+        ["laag", "luchtkwaliteit", "Deze rij hoort bij de luchtkwaliteitslaag."],
+        ["coördinaten", "51.0571 3.739", "Locatie van het meetpunt."]
+      ],
+      "output": "luchtkwaliteit\nDampoort | Dampoort | PM2.5: 13.5 | PM10: 41.0\n51.0571 3.739"
+    }
+  ],
+  "traceTitle": "Voorbeelddata",
+  "traceColumns": ["naam", "laag", "lat", "lon", "wijk", "PM2.5", "PM10"],
+  "traceRows": [
+    ["Dampoort", "luchtkwaliteit", "51.0571", "3.7390", "Dampoort", "13.5", "41.0"]
+  ]
+}

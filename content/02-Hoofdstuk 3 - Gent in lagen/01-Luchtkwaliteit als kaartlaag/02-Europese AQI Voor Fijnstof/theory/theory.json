@@ -1,0 +1,98 @@
+{
+  "title": "De slechtste fijnstofklasse telt",
+  "summary": [
+    "PM2.5 en PM10 krijgen elk een niveau.",
+    "Niveau 0 is goed, niveau 5 is extreem slecht.",
+    "Bij twee verschillende niveaus gebruiken we het hoogste niveau.",
+    "Daarna vertalen we het niveau naar een leesbare klasse."
+  ],
+  "code": [
+    "pm25 = 26.0",
+    "pm10 = 72.0",
+    "",
+    "if pm25 <= 5:",
+    "    niveau_pm25 = 0",
+    "elif pm25 <= 15:",
+    "    niveau_pm25 = 1",
+    "elif pm25 <= 50:",
+    "    niveau_pm25 = 2",
+    "elif pm25 <= 90:",
+    "    niveau_pm25 = 3",
+    "elif pm25 <= 140:",
+    "    niveau_pm25 = 4",
+    "else:",
+    "    niveau_pm25 = 5",
+    "",
+    "if pm10 <= 15:",
+    "    niveau_pm10 = 0",
+    "elif pm10 <= 45:",
+    "    niveau_pm10 = 1",
+    "elif pm10 <= 120:",
+    "    niveau_pm10 = 2",
+    "elif pm10 <= 195:",
+    "    niveau_pm10 = 3",
+    "elif pm10 <= 270:",
+    "    niveau_pm10 = 4",
+    "else:",
+    "    niveau_pm10 = 5",
+    "",
+    "niveau = max(niveau_pm25, niveau_pm10)",
+    "klassen = [\"goed\", \"redelijk\", \"matig\", \"slecht\", \"zeer slecht\", \"extreem slecht\"]",
+    "klasse = klassen[niveau]",
+    "",
+    "print(\"PM2.5-niveau:\", niveau_pm25)",
+    "print(\"PM10-niveau:\", niveau_pm10)",
+    "print(\"EAQI-klasse:\", klasse)"
+  ],
+  "steps": [
+    {
+      "title": "Lees de meetwaarden.",
+      "explanation": "PM2.5 en PM10 zijn twee soorten fijnstof. Ze krijgen elk hun eigen beoordeling.",
+      "lines": [1, 2],
+      "variables": [
+        ["pm25", "26.0", "Waarde voor fijne stofdeeltjes."],
+        ["pm10", "72.0", "Waarde voor grovere stofdeeltjes."]
+      ]
+    },
+    {
+      "title": "Bepaal het PM2.5-niveau.",
+      "explanation": "De waarde 26.0 valt boven 15 en onder of gelijk aan 50. Dat wordt niveau 2.",
+      "lines": [4, 5, 6, 7, 8, 9],
+      "variables": [
+        ["niveau_pm25", "2", "PM2.5 valt in de klasse matig."]
+      ]
+    },
+    {
+      "title": "Bepaal het PM10-niveau.",
+      "explanation": "De waarde 72.0 valt boven 45 en onder of gelijk aan 120. Ook dat wordt niveau 2.",
+      "lines": [17, 18, 19, 20, 21, 22],
+      "variables": [
+        ["niveau_pm10", "2", "PM10 valt in dezelfde klasse."]
+      ]
+    },
+    {
+      "title": "Neem de slechtste klasse.",
+      "explanation": "Met max() kiezen we het hoogste niveau. Dat is de strengste beoordeling.",
+      "lines": [30, 31, 32],
+      "variables": [
+        ["niveau", "2", "Het hoogste niveau van PM2.5 en PM10."],
+        ["klasse", "matig", "De leesbare naam van niveau 2."]
+      ]
+    },
+    {
+      "title": "Controleer de uitvoer.",
+      "explanation": "De uitvoer toont beide niveaus en de uiteindelijke klasse.",
+      "lines": [34, 35, 36],
+      "variables": [
+        ["uitvoer", "3 regels", "Controle voor de berekening."]
+      ],
+      "output": "PM2.5-niveau: 2\nPM10-niveau: 2\nEAQI-klasse: matig"
+    }
+  ],
+  "traceTitle": "Voorbeelddata",
+  "traceColumns": ["stof", "waarde", "klassegrens", "niveau"],
+  "traceRows": [
+    ["PM2.5", "26.0", "16 tot 50", "2"],
+    ["PM10", "72.0", "46 tot 120", "2"]
+  ]
+}

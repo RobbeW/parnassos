@@ -1,0 +1,9 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Sint-Lievenscollege: #50f0e6
+        Dampoort: #50ccaa
+        Rabotpark: #f0e641
+        Heirnis: #ff5050
+        Muide: #960032

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-  <link rel="stylesheet" href="styles.css?v=20260605-5">
+  <link rel="stylesheet" href="styles.css?v=20260611-2">
   <style id="platform-language-toggle-styles">
 .language-toggle {
   display: inline-flex;
@@ -565,6 +565,7 @@ print("Proficiat", naam + ", je behaalde", punten, "punten.")</code></pre>
             <li><code>//</code> deelt zonder rest: <code>17 // 5</code> geeft <code>3</code>.</li>
             <li><code>%</code> geeft de rest: <code>17 % 5</code> geeft <code>2</code>.</li>
             <li><code>round(x, 2)</code> rondt af op twee cijfers na de komma.</li>
+            <li><code>max(a, b)</code> geeft de grootste waarde.</li>
           </ul>
           <pre><code>prijs = 12.5
 aantal = 3
@@ -805,6 +806,12 @@ print("Aantal jaren:", jaar)</code></pre>
               <td>Rondt een waarde af.</td>
               <td><code>round(x, 2)</code></td>
               <td><code>round(x)</code> geeft een <code>int</code>. <code>round(x, 0)</code> geeft een <code>float</code>.</td>
+            </tr>
+            <tr>
+              <td><code>max()</code></td>
+              <td>Geeft de grootste waarde.</td>
+              <td><code>max(a, b)</code></td>
+              <td>Handig wanneer de slechtste of hoogste klasse telt.</td>
             </tr>
             <tr>
               <td><code>import</code></td>
@@ -1128,7 +1135,7 @@ print("Aantal jaren:", jaar)</code></pre>
       }
     }
   </script>
-  <script src="app.js?v=20260605-5"></script>
+  <script src="app.js?v=20260611-2"></script>
 <script id="platform-language-toggle-script">
 (() => {
   const LANGUAGE_KEY = "aiindeklas:index-language";
@@ -1282,6 +1289,8 @@ print("Aantal jaren:", jaar)</code></pre>
   "geeft": "gives",
   "geeft de rest:": "gives the remainder:",
   "rondt af op twee cijfers na de komma.": "rounds to two decimal places.",
+  "geeft de grootste waarde.": "gives the largest value.",
+  "Handig wanneer de slechtste of hoogste klasse telt.": "Useful when the worst or highest class counts.",
   "Math en random": "Math and random",
   "zet wiskundige functies klaar.": "prepares mathematical functions.",
   "berekent een vierkantswortel.": "calculates a square root.",

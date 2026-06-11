@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Sint-Lievenscollege | Binnenstad | PM2.5: 4.2 | PM10: 14.0
+        Dampoort | Dampoort | PM2.5: 13.5 | PM10: 41.0
+        Rabotpark | Rabot | PM2.5: 26.0 | PM10: 72.0
+        Gentbrugge | Gentbrugge | PM2.5: 8.0 | PM10: 28.0

@@ -1,0 +1,8 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Binnenstad: 5.5
+        Dampoort: 15.0
+        Rabot: 29.0
+        Gentbrugge: 8.0

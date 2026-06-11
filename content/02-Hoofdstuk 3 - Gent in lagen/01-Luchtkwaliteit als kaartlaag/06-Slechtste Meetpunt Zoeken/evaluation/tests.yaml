@@ -1,0 +1,7 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdout: |
+        Slechtste meetpunt: Heirnis
+        Wijk: Dampoort
+        Niveau: 3

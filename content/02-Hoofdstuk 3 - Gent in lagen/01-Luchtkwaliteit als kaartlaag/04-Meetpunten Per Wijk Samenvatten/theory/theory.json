@@ -1,0 +1,91 @@
+{
+  "title": "Van losse meetpunten naar wijkgemiddelde",
+  "summary": [
+    "Een wijk kan meerdere meetpunten hebben.",
+    "Een teller houdt bij hoeveel meetpunten meetellen.",
+    "Een somvariabele telt de PM2.5-waarden op.",
+    "Na de lus berekenen we het gemiddelde."
+  ],
+  "code": [
+    "meetpunten = [",
+    "    [\"Binnenstad\", 4.2],",
+    "    [\"Dampoort\", 13.5],",
+    "    [\"Dampoort\", 16.5],",
+    "    [\"Rabot\", 26.0],",
+    "]",
+    "",
+    "gekozen_wijk = \"Dampoort\"",
+    "",
+    "totaal = 0",
+    "aantal = 0",
+    "",
+    "for meetpunt in meetpunten:",
+    "    wijk = meetpunt[0]",
+    "    pm25 = meetpunt[1]",
+    "",
+    "    if wijk == gekozen_wijk:",
+    "        totaal = totaal + pm25",
+    "        aantal = aantal + 1",
+    "",
+    "gemiddelde = round(totaal / aantal, 1)",
+    "",
+    "print(gekozen_wijk)",
+    "print(\"Aantal metingen:\", aantal)",
+    "print(\"Gemiddelde PM2.5:\", gemiddelde)"
+  ],
+  "steps": [
+    {
+      "title": "Lees de voorbeelddata.",
+      "explanation": "Elke rij bevat een wijk en een PM2.5-waarde.",
+      "lines": [1, 2, 3, 4, 5, 6, 8],
+      "variables": [
+        ["meetpunten", "4 rijen", "Oefendata voor drie wijken."],
+        ["gekozen_wijk", "Dampoort", "De wijk die we willen samenvatten."]
+      ]
+    },
+    {
+      "title": "Start teller en som.",
+      "explanation": "Voor de lus zetten we totaal en aantal op nul.",
+      "lines": [10, 11],
+      "variables": [
+        ["totaal", "0", "Som van de PM2.5-waarden."],
+        ["aantal", "0", "Aantal meetpunten in de gekozen wijk."]
+      ]
+    },
+    {
+      "title": "Controleer elke rij.",
+      "explanation": "De for-lus bekijkt elk meetpunt. Alleen meetpunten uit Dampoort tellen mee.",
+      "lines": [13, 14, 15, 17],
+      "variables": [
+        ["wijk", "Dampoort", "Waarde uit de rij."],
+        ["pm25", "13.5", "PM2.5-waarde uit de rij."]
+      ]
+    },
+    {
+      "title": "Werk teller en som bij.",
+      "explanation": "Bij een meetpunt uit Dampoort verhogen we zowel totaal als aantal.",
+      "lines": [18, 19],
+      "variables": [
+        ["totaal", "30.0", "13.5 + 16.5 na de volledige lus."],
+        ["aantal", "2", "Twee meetpunten in Dampoort."]
+      ]
+    },
+    {
+      "title": "Bereken en print het gemiddelde.",
+      "explanation": "Na de lus delen we de som door het aantal meetpunten.",
+      "lines": [21, 23, 24, 25],
+      "variables": [
+        ["gemiddelde", "15.0", "Gemiddelde PM2.5 voor Dampoort."]
+      ],
+      "output": "Dampoort\nAantal metingen: 2\nGemiddelde PM2.5: 15.0"
+    }
+  ],
+  "traceTitle": "Voorbeelddata",
+  "traceColumns": ["wijk", "PM2.5"],
+  "traceRows": [
+    ["Binnenstad", "4.2"],
+    ["Dampoort", "13.5"],
+    ["Dampoort", "16.5"],
+    ["Rabot", "26.0"]
+  ]
+}

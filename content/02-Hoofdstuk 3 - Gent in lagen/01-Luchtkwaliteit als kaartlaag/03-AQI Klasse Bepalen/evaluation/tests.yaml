@@ -1,0 +1,15 @@
+- tab: Feedback
+  contexts:
+  - testcases:
+    - stdin: "4.2\n14.0\n"
+      stdout: |
+        EAQI-klasse: goed
+    - stdin: "13.5\n41.0\n"
+      stdout: |
+        EAQI-klasse: redelijk
+    - stdin: "26.0\n72.0\n"
+      stdout: |
+        EAQI-klasse: matig
+    - stdin: "95.0\n180.0\n"
+      stdout: |
+        EAQI-klasse: zeer slecht
